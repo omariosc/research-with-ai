@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this tutorial, please cite it using the metadata below."
+title: "Research with AI: Three Practical Workshops"
+type: software
+authors:
+  - family-names: Choudhry
+    given-names: Omar
+version: 0.1.0
+date-released: 2026-07-25
+url: "https://agenticresearch.omarchoudhry.co.uk"
+license: MIT
+keywords:
+  - agentic AI
+  - research workflow
+  - reproducibility
+  - research websites
+  - annotation tools
+  - MICCAI
