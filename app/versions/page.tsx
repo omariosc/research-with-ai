@@ -85,22 +85,30 @@ export default function VersionsPage() {
             </time>
           </div>
           <div>
-            <h3>Evidence and learning upgrade</h3>
+            <h3>Guided workflow upgrade</h3>
             <ul>
               <li>
-                Audience, prerequisites, outcomes, and a timed orientation route
+                Five-phase lifecycle maps and four goal-based routes for every
+                workshop
               </li>
               <li>
-                A runnable BreastMNIST evidence pack with pinned inputs,
-                independent metrics, rights, and claim states
+                Thirty stage field guides with concise definitions and
+                researcher tricks
               </li>
               <li>
-                Pinned repository and annotation cases with explicit claim
-                boundaries
+                Hosted, institution-managed, and local or offline alternatives
+                with data, network, cost, hardware, evidence, and tradeoff
+                notes
               </li>
-              <li>Evidence notes and Ready, Revise, or Stop decisions</li>
-              <li>Applied scenarios with immediate explanatory feedback</li>
-              <li>Stronger safety, accessibility, provenance, and honest timing</li>
+              <li>Ninety saved practice checks with observable evidence targets</li>
+              <li>
+                Context help and stage-specific next actions for Ready, Revise,
+                and Stop decisions
+              </li>
+              <li>
+                Progress schema migration plus laptop, mobile, light, and dark
+                mode browser checks
+              </li>
             </ul>
             <p>
               The shared homepage remains available at{" "}
@@ -109,6 +117,27 @@ export default function VersionsPage() {
               </a>
               .
             </p>
+          </div>
+        </section>
+
+        <section className="release-notes release-notes-previous">
+          <div>
+            <p>Previous release</p>
+            <h2>v1.1.0</h2>
+            <time dateTime="2026-07-26">Released 2026-07-26</time>
+          </div>
+          <div>
+            <h3>Evidence and learning upgrade</h3>
+            <ul>
+              <li>Audience, prerequisites, outcomes, and a timed orientation route</li>
+              <li>
+                A runnable BreastMNIST evidence pack with pinned inputs,
+                independent metrics, rights, and claim states
+              </li>
+              <li>Pinned repository and annotation cases</li>
+              <li>Evidence notes and Ready, Revise, or Stop decisions</li>
+              <li>Applied scenarios with explanatory feedback</li>
+            </ul>
             <p>
               Download the{" "}
               <a
@@ -128,7 +157,7 @@ export default function VersionsPage() {
 
         <section className="release-notes release-notes-previous">
           <div>
-            <p>Previous release</p>
+            <p>Earlier release</p>
             <h2>v1.0.0</h2>
             <time dateTime="2026-07-26">Released 2026-07-26</time>
           </div>

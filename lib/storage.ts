@@ -4,7 +4,15 @@ import type {
 } from "@/lib/types";
 
 export const STORAGE_PREFIX = "research-with-ai:v1";
-export const PROGRESS_SCHEMA_VERSION = 2 as const;
+export const PROGRESS_SCHEMA_VERSION = 3 as const;
+
+export type ProgressScope = {
+  stepIds: readonly string[];
+  routeIds: readonly string[];
+  pathIds: Record<string, readonly string[]>;
+  practiceIds: Record<string, readonly string[]>;
+  assessmentItemIds: readonly string[];
+};
 
 export function progressKey(slug: WorkshopSlug) {
   return `${STORAGE_PREFIX}:progress:${slug}`;
@@ -36,17 +44,40 @@ function decisionRecord(value: unknown): StoredWorkshopProgress["decisions"] {
   );
 }
 
+function stringArrayRecord(
+  value: unknown,
+): StoredWorkshopProgress["practiceChecks"] {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+  return Object.fromEntries(
+    Object.entries(value).flatMap(([key, candidate]) => {
+      if (!Array.isArray(candidate)) return [];
+      const items = [
+        ...new Set(
+          candidate.filter(
+            (item): item is string => typeof item === "string",
+          ),
+        ),
+      ];
+      return items.length ? [[key, items]] : [];
+    }),
+  );
+}
+
 export function readProgress(
   slug: WorkshopSlug,
   firstStep: string,
+  scope?: ProgressScope,
 ): StoredWorkshopProgress {
   const fallback: StoredWorkshopProgress = {
     schemaVersion: PROGRESS_SCHEMA_VERSION,
     completed: [],
     approved: [],
     activeStep: firstStep,
+    routeId: "",
     evidenceNotes: {},
     decisions: {},
+    pathChoices: {},
+    practiceChecks: {},
     assessmentAnswers: {},
     updatedAt: new Date(0).toISOString(),
   };
@@ -57,8 +88,18 @@ export function readProgress(
     const raw = window.localStorage.getItem(progressKey(slug));
     if (!raw) return fallback;
     const parsed = JSON.parse(raw) as Partial<StoredWorkshopProgress>;
-    const evidenceNotes = stringRecord(parsed.evidenceNotes);
-    const decisions = decisionRecord(parsed.decisions);
+    const stepIsValid = (id: string) =>
+      !scope || scope.stepIds.includes(id);
+    const evidenceNotes = Object.fromEntries(
+      Object.entries(stringRecord(parsed.evidenceNotes)).filter(([id]) =>
+        stepIsValid(id),
+      ),
+    );
+    const decisions = Object.fromEntries(
+      Object.entries(decisionRecord(parsed.decisions)).filter(([id]) =>
+        stepIsValid(id),
+      ),
+    );
     const candidateApproved = Array.isArray(parsed.approved)
       ? parsed.approved.filter(
           (value): value is string => typeof value === "string",
@@ -77,15 +118,51 @@ export function readProgress(
           )
         : []
     ).filter((id) => approved.includes(id) && decisions[id] === "ready");
+    const pathChoices = Object.fromEntries(
+      Object.entries(stringRecord(parsed.pathChoices)).filter(
+        ([stepId, pathId]) =>
+          stepIsValid(stepId) &&
+          (!scope || scope.pathIds[stepId]?.includes(pathId)),
+      ),
+    );
+    const practiceChecks = Object.fromEntries(
+      Object.entries(stringArrayRecord(parsed.practiceChecks)).flatMap(
+        ([stepId, itemIds]) => {
+          if (!stepIsValid(stepId)) return [];
+          const validIds = scope
+            ? itemIds.filter((id) =>
+                scope.practiceIds[stepId]?.includes(id),
+              )
+            : itemIds;
+          return validIds.length ? [[stepId, validIds]] : [];
+        },
+      ),
+    );
+    const assessmentAnswers = Object.fromEntries(
+      Object.entries(stringRecord(parsed.assessmentAnswers)).filter(
+        ([itemId]) =>
+          !scope || scope.assessmentItemIds.includes(itemId),
+      ),
+    );
     return {
       schemaVersion: PROGRESS_SCHEMA_VERSION,
       completed,
       approved,
       activeStep:
-        typeof parsed.activeStep === "string" ? parsed.activeStep : firstStep,
+        typeof parsed.activeStep === "string" &&
+        stepIsValid(parsed.activeStep)
+          ? parsed.activeStep
+          : firstStep,
+      routeId:
+        typeof parsed.routeId === "string" &&
+        (!scope || scope.routeIds.includes(parsed.routeId))
+          ? parsed.routeId
+          : "",
       evidenceNotes,
       decisions,
-      assessmentAnswers: stringRecord(parsed.assessmentAnswers),
+      pathChoices,
+      practiceChecks,
+      assessmentAnswers,
       updatedAt:
         typeof parsed.updatedAt === "string"
           ? parsed.updatedAt

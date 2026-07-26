@@ -11,21 +11,26 @@ The project is one responsive application with three focused entry points:
 - [Developing Custom Annotation Tools Using AI](https://annotate.omarchoudhry.co.uk)
 
 Each route contains explicit outcomes and prerequisites, a ten-stage
-checklist, a pinned first-hand case, evidence-backed checkpoints, applied
-scenarios, copyable prompts, primary sources, an editable planning tool, and a
-Markdown export. The annotation route also includes a small interactive
-labelling demo informed by the
+checklist, a five-phase lifecycle map, four goal-based routes, a pinned
+first-hand case, evidence-backed checkpoints, applied scenarios, copyable
+prompts, primary sources, an editable planning tool, and a Markdown export.
+Every stage also has plain-language definitions, researcher tricks, three
+delivery alternatives with operational tradeoffs, and a saved short practice.
+Suggested routes are labelled as suggestions, and exports record only choices
+the learner actually made.
+The annotation route includes a small interactive labelling demo informed by the
 [frame-annotator repository](https://github.com/omariosc/frame-annotator).
 The agentic and website routes share a
 [worked BreastMNIST evidence page](https://researchwithai.omarchoudhry.co.uk/worked-examples/medmnist-breast)
 with a runnable metric check, pinned inputs, a repository finding, figure
 attribution, and explicit limits on what was reproduced.
 
-The current content release is **v1.1.0**, released on 2026-07-26. The
+The current content release is **v1.2.0**, released on 2026-07-26. The
 [version history](https://researchwithai.omarchoudhry.co.uk/versions) records
-the current canonical address for each independently submitted tutorial. A
-[checksum-recorded source snapshot](public/releases/research-with-ai-v1.1.0-source.zip)
-preserves reviewed commit `bd3c4a2e0b1c03109773fecaadc3335066f8eb7f`.
+the current canonical address for each independently submitted tutorial. The
+[v1.1.0 source snapshot](public/releases/research-with-ai-v1.1.0-source.zip)
+remains available with its checksum while the v1.2.0 release snapshot is
+finalised.
 
 ## What this project contributes
 
@@ -73,9 +78,10 @@ offline.
 
 ## Privacy and persistence
 
-Workshop progress, evidence notes, assessment answers, and builder drafts are
-stored in unencrypted browser `localStorage`. Browser extensions and other
-people using the device may be able to read it. The
+Workshop route, alternative and practice choices, progress, evidence notes,
+assessment answers, and builder drafts are stored in unencrypted browser
+`localStorage`. Browser extensions and other people using the device may be
+able to read it. The
 application has no database, user account, analytics, tracking cookie, or
 server-side submission form. Browser storage is separate on each public
 address, so clearing it on one address does not clear another.

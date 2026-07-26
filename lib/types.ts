@@ -9,6 +9,72 @@ export type Source = {
   note?: string;
 };
 
+export type WorkflowPhase = {
+  id: string;
+  title: string;
+  summary: string;
+  stepIds: string[];
+};
+
+export type WorkshopRoute = {
+  id: string;
+  title: string;
+  description: string;
+  bestFor: string;
+  stepIds: string[];
+};
+
+export type GuideTerm = {
+  label: string;
+  definition: string;
+};
+
+export type GuideTip = {
+  title: string;
+  body: string;
+};
+
+export type GuidePathMode = "hosted" | "managed" | "local";
+
+export type GuidePath = {
+  id: string;
+  mode: GuidePathMode;
+  title: string;
+  bestFor: string;
+  approach: string;
+  tradeoff: string;
+  dataBoundary: string;
+  network: string;
+  cost: string;
+  hardware: string;
+  evidence: string;
+  sources: Source[];
+};
+
+export type GuidePracticeItem = {
+  id: string;
+  label: string;
+};
+
+export type WorkshopStepGuide = {
+  why: string;
+  terms: GuideTerm[];
+  tips: GuideTip[];
+  paths: GuidePath[];
+  tryNow: {
+    intro: string;
+    items: GuidePracticeItem[];
+    evidence: string;
+  };
+};
+
+export type WorkshopGuidance = {
+  lastVerified: string;
+  phases: WorkflowPhase[];
+  routes: WorkshopRoute[];
+  steps: Record<string, WorkshopStepGuide>;
+};
+
 export type WorkshopStep = {
   id: string;
   title: string;
@@ -77,12 +143,15 @@ export type Workshop = {
 };
 
 export type StoredWorkshopProgress = {
-  schemaVersion: 2;
+  schemaVersion: 3;
   completed: string[];
   approved: string[];
   activeStep: string;
+  routeId: string;
   evidenceNotes: Record<string, string>;
   decisions: Record<string, "ready" | "revise" | "stop">;
+  pathChoices: Record<string, string>;
+  practiceChecks: Record<string, string[]>;
   assessmentAnswers: Record<string, string>;
   updatedAt: string;
 };

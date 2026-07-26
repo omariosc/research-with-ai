@@ -2,7 +2,7 @@
 
 Record date: 26 July 2026
 
-Content release: `v1.1.0`
+Content release: `v1.2.0`
 Author and accountable reviewer: Omar Choudhry
 
 ## Purpose
@@ -22,9 +22,9 @@ sign-off. It is not a scientific reproduction record.
 | frame-annotator | First-hand repository audit and annotation teaching image | Commit `3e94ed03c1487331b8c041ca755421686b41d031` | Author-owned public repository; one interface image reused with its origin and hash recorded |
 | `frame-annotator-safety-interface.png` | Annotation demo source image | 1600 by 900 pixels; SHA-256 `87c105e2c0fed14477179052dc08d953441cc7cb483fa5680ec490b23a8cc97c` | Reused only as a labelled teaching example |
 | `research-with-ai-social.png` | Social preview | Generated for this project with an OpenAI image model | AI origin disclosed; selected and reviewed by the author |
-| Tutorial prose, diagrams, and interface | Original educational material | Release `v1.1.0` | CC BY 4.0 |
-| Application source | Website implementation | Release `v1.1.0` | MIT |
-| Source snapshot | Downloadable reviewed application source | Commit `bd3c4a2e0b1c03109773fecaadc3335066f8eb7f`; SHA-256 `d7a95965a7421c2fad8f7ffc166115d8e10694cbc39b6fd3958d3fb18cf17636` | Generated with `git archive`; source rights remain itemised by file |
+| Tutorial prose, diagrams, and interface | Original educational material | Release `v1.2.0` | CC BY 4.0 |
+| Application source | Website implementation | Release `v1.2.0` | MIT |
+| Source snapshot | Downloadable reviewed application source | Generated from the reviewed v1.2 source commit; the final audit and checksum file record the exact commit and SHA-256 | Generated with `git archive`; source rights remain itemised by file |
 | External papers, standards, and documentation | Evidence links | Exact URLs appear beside the relevant stages | Linked and paraphrased; external rights retained |
 
 MedMNIST Figure 1 is the only copied publisher figure. It is reused under
@@ -39,6 +39,10 @@ media.
 | --- | --- | --- |
 | Each tutorial can be opened at a dedicated root domain | Host selection in `app/page.tsx`, canonical release data in `lib/version.ts`, and rendered host tests | Live DNS and routing must still be checked after every deployment |
 | Progress and builders remain local | Browser storage implementation in `lib/storage.ts` and the client builders; no application database or submission endpoint | Browser storage is unencrypted and separate for each origin |
+| A learner can follow a complete workflow or a shorter goal-based route | Five phases, four ordered routes, route-aware previous and next controls, and route-scoped progress in every workshop | A shorter route is an orientation sequence, not permission to omit skipped controls from a real release |
+| Delivery choices are compared without silently recommending hosted processing | Unselected radio groups compare hosted, institution-managed, and local or offline paths; exports record only explicit choices | The learner and accountable institution still decide whether a path is permitted |
+| Every stage supplies practical help without hiding the primary task | Collapsed field guide with definitions, two researcher tricks, three operational paths, three saved practice checks, and context help | The guidance is a decision aid, not a substitute for local policy or domain expertise |
+| Guidance sources remain inspectable | The full source library deduplicates stage sources and every cited alternative | Some uncited paths are labelled design patterns rather than product claims |
 | Annotation YAML follows the supplied schema | Immutable JSON Schema plus valid and invalid fixture tests | Structural validity does not establish annotation validity |
 | The annotation case reports an actual repository inspection | Pinned commands, environment, test output, source links, and limits in `/audits/frame-annotator-2026-07-26.md` | The surgical workflow has no passing test coverage in the audited suite |
 | The BreastMNIST case recovers two reported Table 3 cells | Three selected prediction-member hashes, official test-label file hash, independent implementation of the official binary metric contract, locked environment, negative tests, and reviewed output | Prediction-artifact metric re-evaluation only; no training reproduction or clinical validation |
@@ -59,10 +63,11 @@ npm audit --audit-level=high
 npx wrangler deploy --dry-run --config edge-proxy/wrangler.jsonc
 ```
 
-The test command builds the production application, renders the hub and all
-three workshops, checks custom-domain roots and metadata, validates the
-annotation YAML against its JSON Schema, checks the source-image hash, exercises
-edge routing and headers, and records tutorial word counts.
+The test command runs 40 checks. It builds the production application, renders
+the hub and all three workshops, checks custom-domain roots and metadata,
+validates both immutable annotation schema releases and current YAML, checks the
+source-image hash, exercises edge routing and headers, checks route navigation
+and required annotation controls, and records tutorial word counts.
 The annotation check exports two synthetic canonical records to review CSV and
 reimports them without field loss. It also proves that one YOLO box returns
 exactly while declaring the phase, named keypoints, visibility meaning, and
@@ -71,9 +76,15 @@ The MedMNIST check validates source hashes, runs four offline negative and metri
 tests, reads three selected released prediction files, and independently
 recalculates the reported AUC and accuracy.
 
-The external-link audit checked 120 unique URLs on 26 July 2026. One hundred
-and eleven were reachable, nine publisher or vendor pages returned HTTP 403
+The external-link audit checked 151 unique URLs on 26 July 2026. One hundred
+and forty-one were reachable, ten publisher or vendor pages returned HTTP 403
 and were retained for manual review, and none returned an automated failure.
+The audit retries a minimal GET when a site incorrectly returns 404 to a HEAD
+request.
+
+Rendered visible-word counts were 2,593 for Agentic AI in Research, 2,483 for
+Building a Website for Your Research Using AI, and 3,349 for Developing Custom
+Annotation Tools Using AI.
 
 ## Human release gates
 
@@ -86,9 +97,11 @@ and were retained for manual review, and none returned an automated failure.
 - Record author sign-off, learner pilots, video captions, transcript, and the
   public repository snapshot before submission.
 
-At the time this record was written, the Chrome-profile interaction pass,
-learner pilots, videos, and public repository snapshot were still pending. They
-remain named submission gates rather than completed claims.
+A preliminary Chrome-profile pass covered route and path selection,
+persistence, stage focus, light and dark modes, 1200 by 718 laptop layout, and
+390 by 844 mobile layout. A final refresh after the radio-control, tablet, and
+field-guide-density changes remains pending, along with learner pilots, videos,
+the public repository snapshot, and author sign-off.
 
 ## Claim boundary
 

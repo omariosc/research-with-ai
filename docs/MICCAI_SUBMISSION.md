@@ -33,6 +33,7 @@ communication, annotation tools, human oversight
 - [ ] Exact AI-use disclosure and named human sign-off
 - [ ] Accessibility statement and known limitations
 - [ ] Version, release notes, citation, and feedback route
+- [ ] Goal-based route, stage alternatives, and Try it now task demonstrated
 
 ## Evidence review
 
@@ -45,6 +46,11 @@ communication, annotation tools, human oversight
 - [ ] Remove credentials, personal data, private infrastructure details, and
       restricted research material
 - [ ] Test every route in a clean desktop and mobile browser
+- [ ] Confirm route, alternative, and practice state survives reload and resets
+      only when requested
+- [ ] Confirm a suggested route is not recorded as the learner's choice and no
+      delivery path is preselected
+- [ ] Confirm every cited alternative appears in the full source library
 - [ ] Download and inspect every generated Markdown or YAML file
 - [ ] Confirm keyboard use, colour contrast, image alternatives, and captions
 - [ ] Record a release-time word count below 4,000 words, excluding references

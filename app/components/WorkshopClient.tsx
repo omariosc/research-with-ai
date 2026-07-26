@@ -9,8 +9,12 @@ import {
 import type {
   StoredWorkshopProgress,
   Workshop,
+  WorkshopGuidance,
+  WorkshopRoute,
   WorkshopStep,
+  WorkshopStepGuide,
 } from "@/lib/types";
+import { guidanceByWorkshop } from "@/lib/content/guidance";
 import {
   TUTORIAL_HOMEPAGE,
   TUTORIAL_VERSION_LABEL,
@@ -25,6 +29,7 @@ import {
   readProgress,
   writeProgress,
 } from "@/lib/storage";
+import { routeNeighbours } from "@/lib/workshop-navigation";
 import {
   AnnotationDemo,
   AnnotationSpecBuilder,
@@ -43,6 +48,12 @@ import {
 import { PrivacyNote } from "./PrivacyNote";
 import { SiteNav } from "./SiteNav";
 import { SiteFooter } from "./HomeClient";
+import {
+  ContextHelp,
+  StageFieldGuide,
+  WorkflowNavigator,
+  routeProgress,
+} from "./WorkshopGuidance";
 
 function toggleItem(items: string[], id: string) {
   return items.includes(id)
@@ -52,25 +63,49 @@ function toggleItem(items: string[], id: string) {
 
 export function WorkshopClient({ workshop }: { workshop: Workshop }) {
   const firstStep = workshop.steps[0].id;
+  const guidance = guidanceByWorkshop[workshop.slug];
+  const progressScope = useMemo(
+    () => ({
+      stepIds: workshop.steps.map((step) => step.id),
+      routeIds: guidance.routes.map((route) => route.id),
+      pathIds: Object.fromEntries(
+        Object.entries(guidance.steps).map(([stepId, guide]) => [
+          stepId,
+          guide.paths.map((path) => path.id),
+        ]),
+      ),
+      practiceIds: Object.fromEntries(
+        Object.entries(guidance.steps).map(([stepId, guide]) => [
+          stepId,
+          guide.tryNow.items.map((item) => item.id),
+        ]),
+      ),
+      assessmentItemIds: workshop.assessment.map((item) => item.id),
+    }),
+    [guidance, workshop],
+  );
   const [progress, setProgress] = useState<StoredWorkshopProgress>({
     schemaVersion: PROGRESS_SCHEMA_VERSION,
     completed: [],
     approved: [],
     activeStep: firstStep,
+    routeId: "",
     evidenceNotes: {},
     decisions: {},
+    pathChoices: {},
+    practiceChecks: {},
     assessmentAnswers: {},
     updatedAt: new Date(0).toISOString(),
   });
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    const stored = readProgress(workshop.slug, firstStep);
+    const stored = readProgress(workshop.slug, firstStep, progressScope);
     queueMicrotask(() => {
       setProgress(stored);
       setHydrated(true);
     });
-  }, [firstStep, workshop.slug]);
+  }, [firstStep, progressScope, workshop.slug]);
 
   const save = useCallback(
     (next: StoredWorkshopProgress) => {
@@ -86,10 +121,23 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
     workshop.steps.findIndex((step) => step.id === progress.activeStep),
   );
   const active = workshop.steps[activeIndex];
-  const percent = Math.round(
+  const overallPercent = Math.round(
     (progress.completed.length / workshop.steps.length) * 100,
   );
+  const currentRoute = routeProgress(workshop, guidance, progress);
+  const { next: nextStep, previous: previousStep } = routeNeighbours(
+    workshop,
+    currentRoute.route,
+    active.id,
+  );
   const release = workshopRelease(workshop.slug);
+  const structuredCitations = [
+    ...workshop.sourceLibrary,
+    ...workshop.steps.flatMap((step) => step.sources),
+    ...Object.values(guidance.steps).flatMap((guide) =>
+      guide.paths.flatMap((path) => path.sources),
+    ),
+  ].map((source) => source.url);
   const structuredData = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "LearningResource",
@@ -115,11 +163,10 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
     },
     teaches: workshop.outcomes,
     learningResourceType: "Interactive tutorial",
-    citation: workshop.sourceLibrary.map((source) => source.url),
+    citation: [...new Set(structuredCitations)],
   }).replaceAll("<", "\\u003c");
 
-  function selectStep(step: WorkshopStep) {
-    save({ ...progress, activeStep: step.id });
+  function focusLesson() {
     window.requestAnimationFrame(() => {
       const heading = document.querySelector<HTMLElement>("#lesson-heading");
       heading?.focus({ preventScroll: true });
@@ -132,6 +179,24 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
     });
   }
 
+  function selectStep(step: WorkshopStep) {
+    save({ ...progress, activeStep: step.id });
+    focusLesson();
+  }
+
+  function chooseRoute(route: WorkshopRoute) {
+    save({ ...progress, routeId: route.id });
+  }
+
+  function startRoute(route: WorkshopRoute) {
+    const step = workshop.steps.find(
+      (candidate) => candidate.id === route.stepIds[0],
+    );
+    if (!step) return;
+    save({ ...progress, routeId: route.id, activeStep: step.id });
+    focusLesson();
+  }
+
   function reset() {
     if (!window.confirm("Clear this workshop's saved progress?")) return;
     clearProgress(workshop.slug);
@@ -140,8 +205,11 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
       completed: [],
       approved: [],
       activeStep: firstStep,
+      routeId: "",
       evidenceNotes: {},
       decisions: {},
+      pathChoices: {},
+      practiceChecks: {},
       assessmentAnswers: {},
       updatedAt: new Date(0).toISOString(),
     });
@@ -149,15 +217,34 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
 
   function exportNotes() {
     const release = workshopRelease(workshop.slug);
+    const selectedRoute = guidance.routes.find(
+      (route) => route.id === progress.routeId,
+    );
     const text = `# ${workshop.title}: working record
 
 Generated: ${new Date().toISOString()}
 Tutorial version: ${TUTORIAL_VERSION_LABEL}
 Canonical tutorial: ${release.canonicalUrl}
+Selected route: ${selectedRoute?.title ?? "not selected"}
 
 ${workshop.steps
   .map(
-    (step, index) => `## ${index + 1}. ${step.title}
+    (step, index) => {
+      const guide = guidance.steps[step.id];
+      const selectedPath =
+        guide.paths.find(
+          (path) => path.id === progress.pathChoices[step.id],
+        );
+      const checked = progress.practiceChecks[step.id] ?? [];
+      const sources = [
+        ...step.sources,
+        ...(selectedPath?.sources ?? []),
+      ].filter(
+        (source, sourceIndex, entries) =>
+          entries.findIndex((entry) => entry.url === source.url) ===
+          sourceIndex,
+      );
+      return `## ${index + 1}. ${step.title}
 
 - [${progress.completed.includes(step.id) ? "x" : " "}] Stage complete
 - [${progress.approved.includes(step.id) ? "x" : " "}] Human checkpoint completed
@@ -165,6 +252,24 @@ ${workshop.steps
 - **Action:** ${step.action}
 - **Checkpoint:** ${step.checkpoint}
 - **Decision:** ${progress.decisions[step.id] ?? "not recorded"}
+- **Working path:** ${selectedPath?.title ?? "not selected"}
+- **Path tradeoff:** ${selectedPath?.tradeoff ?? "Choose a path before recording its tradeoff."}
+- **Evidence to keep:** ${selectedPath?.evidence ?? "Choose a path before recording its evidence target."}
+
+### Short practice
+
+${guide.tryNow.items
+  .map(
+    (item) =>
+      `- [${checked.includes(item.id) ? "x" : " "}] ${item.label}`,
+  )
+  .join("\n")}
+
+Done when: ${guide.tryNow.evidence}
+
+### Researcher tricks
+
+${guide.tips.map((tip) => `- **${tip.title}:** ${tip.body}`).join("\n")}
 
 ### Evidence note
 
@@ -178,8 +283,9 @@ ${step.prompt}
 
 ### Sources
 
-${step.sources.map((source) => `- [${source.title}](${source.url})`).join("\n")}
-`,
+${sources.map((source) => `- [${source.title}](${source.url})`).join("\n")}
+`;
+    },
   )
   .join("\n")}
 
@@ -241,27 +347,49 @@ This export records a teaching checklist, not proof that the scientific checks w
           </aside>
         </section>
 
-        <WorkshopPrimer onSelect={selectStep} workshop={workshop} />
+        <WorkshopPrimer
+          guidance={guidance}
+          onChooseRoute={chooseRoute}
+          onSelect={selectStep}
+          onStartRoute={startRoute}
+          routeId={progress.routeId}
+          workshop={workshop}
+        />
         <CaseStudy workshop={workshop} />
 
         <section className="workbench" aria-label={`${workshop.title} checklist`}>
           <div className="workbench-progress">
             <div>
-              <span>Workshop progress</span>
+              <span>
+                {currentRoute.selected
+                  ? currentRoute.route.title
+                  : `Suggested: ${currentRoute.route.title}`}
+              </span>
               <strong>
-                {progress.completed.length} / {workshop.steps.length}
+                {currentRoute.completed} / {currentRoute.total}
               </strong>
+              <small>
+                All stages {progress.completed.length} /{" "}
+                {currentRoute.workshopTotal}
+              </small>
             </div>
             <div
-              aria-label={`${percent} percent complete`}
+              aria-label={`${currentRoute.percent} percent complete on ${currentRoute.route.title}`}
               aria-valuemax={100}
               aria-valuemin={0}
-              aria-valuenow={percent}
+              aria-valuenow={currentRoute.percent}
               className="progress-track"
               role="progressbar"
             >
-              <span style={{ width: hydrated ? `${percent}%` : "0%" }} />
+              <span
+                style={{
+                  width: hydrated ? `${currentRoute.percent}%` : "0%",
+                }}
+              />
             </div>
+            <span className="overall-progress">
+              Overall completion {overallPercent}%
+            </span>
           </div>
 
           <div className="workbench-body">
@@ -270,11 +398,17 @@ This export records a teaching checklist, not proof that the scientific checks w
                 {workshop.steps.map((step, index) => {
                   const complete = progress.completed.includes(step.id);
                   const selected = active.id === step.id;
+                  const inRoute = currentRoute.steps.has(step.id);
                   return (
                     <li key={step.id}>
                       <button
                         aria-current={selected ? "step" : undefined}
-                        className={selected ? "is-active" : ""}
+                        className={[
+                          selected ? "is-active" : "",
+                          inRoute ? "is-route-step" : "",
+                        ]
+                          .filter(Boolean)
+                          .join(" ")}
                         onClick={() => selectStep(step)}
                         type="button"
                       >
@@ -283,7 +417,10 @@ This export records a teaching checklist, not proof that the scientific checks w
                         </span>
                         <div>
                           <strong>{step.title}</strong>
-                          <small>{step.output}</small>
+                          <small>
+                            {step.output}
+                            {inRoute ? " · selected route" : ""}
+                          </small>
                         </div>
                       </button>
                     </li>
@@ -303,7 +440,10 @@ This export records a teaching checklist, not proof that the scientific checks w
               count={workshop.steps.length}
               decision={progress.decisions[active.id] ?? ""}
               evidenceNote={progress.evidenceNotes[active.id] ?? ""}
-              next={workshop.steps[activeIndex + 1]}
+              guide={guidance.steps[active.id]}
+              key={active.id}
+              lastVerified={guidance.lastVerified}
+              next={nextStep}
               onApprove={() =>
                 save(
                   progress.approved.includes(active.id)
@@ -358,8 +498,37 @@ This export records a teaching checklist, not proof that the scientific checks w
                   },
                 })
               }
+              onPathChoice={(pathId) =>
+                save({
+                  ...progress,
+                  approved: progress.approved.filter(
+                    (id) => id !== active.id,
+                  ),
+                  completed: progress.completed.filter(
+                    (id) => id !== active.id,
+                  ),
+                  pathChoices: {
+                    ...progress.pathChoices,
+                    [active.id]: pathId,
+                  },
+                })
+              }
+              onPracticeToggle={(itemId) =>
+                save({
+                  ...progress,
+                  practiceChecks: {
+                    ...progress.practiceChecks,
+                    [active.id]: toggleItem(
+                      progress.practiceChecks[active.id] ?? [],
+                      itemId,
+                    ),
+                  },
+                })
+              }
               onSelect={selectStep}
-              previous={workshop.steps[activeIndex - 1]}
+              practiceChecks={progress.practiceChecks[active.id] ?? []}
+              previous={previousStep}
+              selectedPathId={progress.pathChoices[active.id] ?? ""}
             />
           </div>
         </section>
@@ -387,7 +556,7 @@ This export records a teaching checklist, not proof that the scientific checks w
           workshop={workshop}
         />
         <WorkshopGlossary workshop={workshop} />
-        <SourceLibrary workshop={workshop} />
+        <SourceLibrary guidance={guidance} workshop={workshop} />
         <NextWorkshop current={workshop.slug} />
         <SiteFooter />
       </main>
@@ -397,20 +566,20 @@ This export records a teaching checklist, not proof that the scientific checks w
 }
 
 function WorkshopPrimer({
+  guidance,
+  onChooseRoute,
   onSelect,
+  onStartRoute,
+  routeId,
   workshop,
 }: {
+  guidance: WorkshopGuidance;
+  onChooseRoute: (route: WorkshopRoute) => void;
   onSelect: (step: WorkshopStep) => void;
+  onStartRoute: (route: WorkshopRoute) => void;
+  routeId: string;
   workshop: Workshop;
 }) {
-  const quickSteps = workshop.quickRoute
-    .map((id) => workshop.steps.find((step) => step.id === id))
-    .filter((step): step is WorkshopStep => Boolean(step));
-  const quickMinutes = quickSteps.reduce(
-    (total, step) => total + (Number.parseInt(step.duration ?? "0", 10) || 0),
-    0,
-  );
-
   return (
     <section className="workshop-primer" aria-labelledby="primer-title">
       <div className="primer-heading">
@@ -421,7 +590,7 @@ function WorkshopPrimer({
           Real project: {workshop.projectTime}
         </span>
       </div>
-      <div className="primer-grid">
+      <div className="primer-grid primer-grid-basics">
         <article>
           <h3>Prerequisites</h3>
           <ul>
@@ -438,22 +607,15 @@ function WorkshopPrimer({
             ))}
           </ol>
         </article>
-        <article className="quick-route">
-          <h3>{quickMinutes}-minute orientation route</h3>
-          <p>
-            Use this route for orientation. Return to all ten stages before
-            treating the exported record as a project plan.
-          </p>
-          <div>
-            {quickSteps.map((step, index) => (
-              <button key={step.id} onClick={() => onSelect(step)} type="button">
-                <span>{index + 1}</span>
-                {step.title}
-              </button>
-            ))}
-          </div>
-        </article>
       </div>
+      <WorkflowNavigator
+        guidance={guidance}
+        onChooseRoute={onChooseRoute}
+        onSelect={onSelect}
+        onStartRoute={onStartRoute}
+        routeId={routeId}
+        workshop={workshop}
+      />
     </section>
   );
 }
@@ -505,6 +667,50 @@ function CaseStudy({ workshop }: { workshop: Workshop }) {
   );
 }
 
+function DecisionGuidance({
+  active,
+  decision,
+  next,
+}: {
+  active: WorkshopStep;
+  decision: "ready" | "revise" | "stop";
+  next?: WorkshopStep;
+}) {
+  const copy = {
+    ready: {
+      when: `Use Ready only when the evidence note supports this checkpoint: ${active.checkpoint}`,
+      next: next
+        ? `Record the review, complete this stage, then continue to ${next.title}.`
+        : "Record the review, complete this stage, then inspect the final export.",
+    },
+    revise: {
+      when: "Use Revise when evidence exists but the checkpoint is not yet satisfied.",
+      next: `Keep the stage open, correct ${active.output}, rerun the relevant check, and update the evidence note.`,
+    },
+    stop: {
+      when: `Use Stop when the safety boundary applies or the evidence cannot be checked: ${active.watchFor}`,
+      next: "Do not continue automatically. Preserve the record and ask the accountable researcher to resolve the boundary.",
+    },
+  }[decision];
+
+  return (
+    <div
+      aria-live="polite"
+      className={`decision-guidance decision-${decision}`}
+    >
+      <strong>{decision[0].toUpperCase() + decision.slice(1)}</strong>
+      <p>
+        <span>When this applies</span>
+        {copy.when}
+      </p>
+      <p>
+        <span>Next action</span>
+        {copy.next}
+      </p>
+    </div>
+  );
+}
+
 function LessonPanel({
   active,
   activeIndex,
@@ -513,13 +719,19 @@ function LessonPanel({
   count,
   decision,
   evidenceNote,
+  guide,
+  lastVerified,
   next,
   onApprove,
   onComplete,
   onDecision,
   onEvidenceNote,
+  onPathChoice,
+  onPracticeToggle,
   onSelect,
+  practiceChecks,
   previous,
+  selectedPathId,
 }: {
   active: WorkshopStep;
   activeIndex: number;
@@ -528,13 +740,19 @@ function LessonPanel({
   count: number;
   decision: "" | "ready" | "revise" | "stop";
   evidenceNote: string;
+  guide: WorkshopStepGuide;
+  lastVerified: string;
   next?: WorkshopStep;
   onApprove: () => void;
   onComplete: () => void;
   onDecision: (decision: "ready" | "revise" | "stop") => void;
   onEvidenceNote: (evidenceNote: string) => void;
+  onPathChoice: (pathId: string) => void;
+  onPracticeToggle: (itemId: string) => void;
   onSelect: (step: WorkshopStep) => void;
+  practiceChecks: string[];
   previous?: WorkshopStep;
+  selectedPathId: string;
 }) {
   const [copied, setCopied] = useState(false);
   const evidenceReady = evidenceNote.trim().length >= 20 && decision !== "";
@@ -553,7 +771,13 @@ function LessonPanel({
           <p>{active.summary}</p>
         </div>
         <div className="lesson-output">
-          <span>Keep</span>
+          <div className="label-with-help">
+            <span>Keep</span>
+            <ContextHelp label="Keep">
+              Save this named artefact with the project so another person can
+              inspect the decision later.
+            </ContextHelp>
+          </div>
           <code>{active.output}</code>
         </div>
       </header>
@@ -579,6 +803,14 @@ function LessonPanel({
             </div>
             <pre>{active.prompt}</pre>
           </div>
+          <StageFieldGuide
+            checkedItems={practiceChecks}
+            guide={guide}
+            lastVerified={lastVerified}
+            onPathChoice={onPathChoice}
+            onPracticeToggle={onPracticeToggle}
+            selectedPathId={selectedPathId}
+          />
           <div className="watch-note">
             <span>Watch for</span>
             <p>{active.watchFor}</p>
@@ -586,15 +818,19 @@ function LessonPanel({
         </section>
 
         <aside className="checkpoint-panel">
-          <p className="lesson-label">Human checkpoint</p>
+          <div className="label-with-help checkpoint-label">
+            <p className="lesson-label">Human checkpoint</p>
+            <ContextHelp label="Human checkpoint">
+              A named person reviews the evidence. The agent cannot approve its
+              own work.
+            </ContextHelp>
+          </div>
           <span className="checkpoint-intent">
             {active.checkpointLabel ?? "Review the evidence"}
           </span>
           <p>{active.checkpoint}</p>
           <label className="evidence-field">
-            <span>
-              Record agent retrieval separately from checks a person performed
-            </span>
+            <span>Record what was retrieved and what a person checked</span>
             <textarea
               onChange={(event) => onEvidenceNote(event.target.value)}
               placeholder={"agent_retrieved: artefact or locator\nhuman_opened: source or output\nclaim_checked: result and remaining issue\n\nAn agent must leave the human fields blank."}
@@ -602,6 +838,13 @@ function LessonPanel({
               value={evidenceNote}
             />
           </label>
+          <div className="checkpoint-help">
+            <span>Evidence note help</span>
+            <ContextHelp label="Evidence note">
+              Name the source or output, the check performed, the result, and
+              anything still unresolved.
+            </ContextHelp>
+          </div>
           <fieldset className="decision-field">
             <legend>Decision</legend>
             {(["ready", "revise", "stop"] as const).map((value) => (
@@ -617,6 +860,16 @@ function LessonPanel({
               </label>
             ))}
           </fieldset>
+          <div className="checkpoint-help decision-help">
+            <span>Decision help</span>
+            <ContextHelp label="Decision">
+              Ready can proceed. Revise needs another pass. Stop records a
+              boundary that prevents safe continuation.
+            </ContextHelp>
+          </div>
+          {decision ? (
+            <DecisionGuidance active={active} decision={decision} next={next} />
+          ) : null}
           <button
             aria-pressed={approved}
             className={`approval-check ${approved ? "is-approved" : ""}`}
@@ -808,14 +1061,23 @@ function WorkshopGlossary({ workshop }: { workshop: Workshop }) {
   );
 }
 
-function SourceLibrary({ workshop }: { workshop: Workshop }) {
+function SourceLibrary({
+  guidance,
+  workshop,
+}: {
+  guidance: WorkshopGuidance;
+  workshop: Workshop;
+}) {
   const sources = useMemo(() => {
     const all = [
       ...workshop.steps.flatMap((step) => step.sources),
       ...workshop.sourceLibrary,
+      ...Object.values(guidance.steps).flatMap((guide) =>
+        guide.paths.flatMap((path) => path.sources),
+      ),
     ];
     return Array.from(new Map(all.map((source) => [source.url, source])).values());
-  }, [workshop]);
+  }, [guidance, workshop]);
 
   return (
     <section className="source-library" id="sources">
@@ -823,9 +1085,10 @@ function SourceLibrary({ workshop }: { workshop: Workshop }) {
         <p>Source library</p>
         <h2>Follow the evidence yourself</h2>
         <span>
+          This includes the stage instructions and every cited alternative.
           Source links reviewed 26 July 2026. Product capabilities and policies
-          change, so open the source and check its current version before
-          relying on it.
+          change, so open the source and check its current version before relying
+          on it.
         </span>
       </div>
       <ol>

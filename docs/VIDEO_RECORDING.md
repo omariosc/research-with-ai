@@ -11,6 +11,12 @@ with a file the viewer can keep.
   identifiable records.
 - Increase browser and terminal text to a readable size before recording.
 - Keep the checklist open beside the live tool so each action has context.
+- Choose the goal-based route on camera and state that skipped stages still
+  need review before a real release.
+- At one stage, compare the hosted, institution-managed, and local or offline
+  paths using the visible data, network, cost, hardware, and evidence notes.
+- Complete one Try it now checklist and show the evidence it produces.
+- Open a definition or researcher trick only when it resolves a real question.
 - Show the prompt, the agent's action, the evidence inspected, and the human
   decision as four distinct moments.
 - Record a clean run only after rehearsing the full workflow once.
@@ -26,8 +32,8 @@ with a file the viewer can keep.
 Target length: 12 to 18 minutes.
 
 1. Open a paper and state the narrow reproduction question.
-2. State the audience and outcomes, then open the BreastMNIST worked evidence
-   page.
+2. Select the Paper reproduction route, state the audience and outcomes, then
+   open the BreastMNIST worked evidence page.
 3. Complete the research contract builder and export `research_contract.md`.
 4. Use deep research to create a claim-evidence map, then open two primary
    sources to check it.
@@ -48,7 +54,8 @@ Target length: 12 to 18 minutes.
 Target length: 10 to 15 minutes.
 
 1. Start with the paper, repository, intended reader, and reuse rights.
-2. Complete the website brief and export `website_brief.md`.
+2. Select the route that fits the intended companion, complete the website
+   brief, and export `website_brief.md`.
 3. Show why a PDF or repository is untrusted input before executing anything.
 4. Build a source manifest for sections, figures, tables, captions, and code.
 5. Show how Paper2All motivates the conversion step, then explain the extra
@@ -67,20 +74,22 @@ Target length: 10 to 15 minutes.
 Target length: 12 to 18 minutes.
 
 1. Show the original frames and write the annotation protocol before coding.
-2. Distinguish the repository's frame-annotator and surgical-annotator
+2. Select the local offline, assisted labelling, or private team route and
+   explain the data boundary that rules the other paths in or out.
+3. Distinguish the repository's frame-annotator and surgical-annotator
    tools.
-3. Show the pinned audit, including passing core tests and uncovered surgical
+4. Show the pinned audit, including passing core tests and uncovered surgical
    assumptions.
-4. Complete the specification builder and export valid `annotation-spec.yaml`.
-5. Generate a minimal keyboard-first local workflow using synthetic fixtures.
-6. Use the embedded demo to label phase, box, and point data.
-7. Export the two-record fixture to review CSV, reimport it, and state which
+5. Complete the specification builder and export valid `annotation-spec.yaml`.
+6. Implement the chosen route with synthetic fixtures. For a custom build,
+   generate a minimal keyboard-first local workflow.
+7. Use the embedded demo to label phase, box, and point data.
+8. Export the two-record fixture to review CSV, reimport it, and state which
    canonical fields the chosen export would lose.
-8. Run locally with network access disabled.
-9. Add assisted suggestions only after calibration and the manual baseline.
-10. Show that the
-   annotator must accept or reject each suggestion.
-11. Attempt an agreement scenario and show the clustered analysis decision.
+9. For the local or offline route, run with network access disabled.
+10. Add assisted suggestions only after calibration and the manual baseline.
+11. Show that the annotator must accept or reject each suggestion.
+12. Attempt an agreement scenario and show the clustered analysis decision.
 
 ## One-minute finalist cut
 

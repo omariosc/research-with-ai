@@ -351,33 +351,33 @@ Expert notes:
     },
     {
       id: "local-app",
-      title: "Generate the local offline core",
+      title: "Choose and implement the annotation core",
       duration: "10 minutes guided",
-      checkpointLabel: "Manual offline path tested",
+      checkpointLabel: "Manual workflow tested",
       summary:
-        "Begin with deterministic manual annotation. Preserve frame-annotator's clip and timeline workflow and surgical-annotator's geometry tasks while moving study assumptions into configuration.",
+        "Begin with deterministic manual annotation. Configure a hosted tool, adapt a managed platform, or build offline only after the data boundary and task specification make the choice defensible.",
       action:
-        "Audit the two applications separately, then add manifest discovery, schema validation, atomic writes, backups, undo, safe recovery, and a local-only default.",
-      output: "src/annotation_app/",
-      prompt: `Inspect omariosc/frame-annotator at commit 3e94ed03c1487331b8c041ca755421686b41d031. Treat frame-annotator for clip and timeline classification and surgical-annotator for masks, keypoints, visibility, and multi-task geometry as separate applications. Do not claim that the 13 passing core tests cover surgical-annotator. Propose a configuration-driven manual workflow from annotation-spec.yaml. Replace hard-coded Windows exporter paths and fixed study assumptions. Bind to 127.0.0.1, disable debug mode, and keep the complete manual workflow usable with network access blocked. Use synthetic fixtures and show every change as a reviewable diff.`,
+        "Compare configure, adapt, and build options against the approved data flow and required interactions. Implement the smallest option that completes every manual task, saves atomically, recovers safely, and exports portably.",
+      output: "implementation-record.md",
+      prompt: `Use annotation-spec.yaml and the approved data-flow record to compare three routes: configure a hosted annotation service, adapt an institution-managed platform, or build an offline application. For each route, identify unsupported tasks, data transfers, network dependence, export format, recovery behaviour, operating owner, and exit plan. Recommend nothing until those gaps are visible. For a custom route, inspect omariosc/frame-annotator at commit 3e94ed03c1487331b8c041ca755421686b41d031, keep frame-annotator and surgical-annotator as separate application boundaries, replace hard-coded paths and study assumptions, bind to 127.0.0.1, disable debug mode, and package all assets locally. Use only synthetic fixtures and show configuration or code changes as reviewable diffs.`,
       checkpoint:
-        "A clean machine loads synthetic fixtures and completes the declared manual tasks offline. Tests cover both application boundaries, and annotations survive refresh and forced termination without silent loss.",
+        "The selected implementation completes every declared manual task with synthetic fixtures, preserves work across refresh or interruption, and produces a portable export. The record names the exact service version, managed release, or source commit plus its operating owner.",
       watchFor:
-        "Passing the 13 core tests does not validate surgical-annotator. A local browser interface is not private if it binds to 0.0.0.0, enables debug mode, loads remote assets, or logs raw frames.",
+        "A familiar tool is not automatically the right one. Hosted convenience may breach the data boundary, while custom code creates a maintenance duty. Passing frame-annotator's 13 core tests does not validate surgical-annotator.",
       videoCue:
-        "Open the same synthetic case before and after moving labels from source code into annotation-spec.yaml.",
+        "Score the same synthetic case against hosted, managed, and offline routes, then show why one route passes the study's data and interaction requirements.",
       sources: [
         {
           title: "frame-annotator at the audited commit",
           url: "https://github.com/omariosc/frame-annotator/tree/3e94ed03c1487331b8c041ca755421686b41d031",
         },
         {
-          title: "Python packaging guide",
-          url: "https://packaging.python.org/en/latest/guides/writing-pyproject-toml/",
+          title: "Label Studio labelling configuration",
+          url: "https://labelstud.io/guide/setup.html",
         },
         {
-          title: "Flask server configuration",
-          url: "https://flask.palletsprojects.com/en/stable/api/",
+          title: "CVAT overview",
+          url: "https://docs.cvat.ai/docs/getting_started/overview/",
         },
       ],
     },
@@ -415,33 +415,33 @@ Expert notes:
     },
     {
       id: "test-package",
-      title: "Test and package the offline release",
+      title: "Test and package the chosen release",
       duration: "8 minutes guided",
       checkpointLabel: "Installed release tested",
       summary:
-        "Running from a source checkout is not a release test. Build the package, install it into an empty environment, and exercise the installed UI.",
+        "A source checkout, staging project, and managed deployment can each hide failures. Test the exact release form that annotators will receive.",
       action:
-        "Add unit, API, schema, browser, interruption, export, and accessibility tests for both applications. Verify HTML, CSS, JavaScript, and templates are packaged.",
-      output: "tests/test_release_install.py",
-      prompt: `Build a release verification suite. Treat the 13 passing core tests as the current baseline, not evidence that surgical-annotator works. Install the wheel into a new empty environment rather than editable mode. Fail if an HTML template, JavaScript file, stylesheet, or package asset is missing. Add coverage for clip selection, timeline classification, masks, keypoints, multi-task geometry, draw, edit, undo, autosave, reload, visibility, review, and portable export. Test malformed input, interrupted writes, and paths on a non-Windows system. Report accessibility checks that still require a person.`,
+        "Test the selected hosted, managed, or offline release with synthetic fixtures, every declared task, interruption, recovery, export, roles where relevant, and the oldest supported client.",
+      output: "release-verification.md",
+      prompt: `Create an acceptance suite for the chosen annotation release. Cover clip selection, timeline classification, boxes, masks, keypoints, multi-task geometry, draw, edit, undo, autosave, reload, visibility, review, and portable export wherever the specification requires them. Test malformed input, interrupted writes, limited bandwidth where relevant, and the oldest supported operating system and browser. For a hosted service, pin the service version and test staging, roles, export, and account closure. For a managed deployment, restore a synthetic backup and test promotion. For custom code, build the wheel, install it into a new empty environment rather than editable mode, and fail if any template, script, stylesheet, or asset is missing. Report accessibility checks that still require a person.`,
       checkpoint:
-        "CI covers the declared frame and surgical workflows, the wheel launches from a clean environment, export round-trips without loss on a second platform, and keyboard operation has no unexplained high-severity accessibility failure.",
+        "The exact selected release passes the declared task, interruption, recovery, and export checks in a clean target environment. Keyboard operation has no unexplained high-severity accessibility failure, and a named person accepts the remaining manual checks.",
       watchFor:
-        "Editable installs can hide missing package assets. Tests that run only from the repository can pass while the installed application is broken.",
+        "Test evidence from a different delivery path is not transferable. A provider status page does not replace study acceptance, and a source-checkout test does not prove that the installed package works.",
       videoCue:
-        "Install the built wheel in an empty environment and launch it. Show a packaging test catching a deliberately absent template.",
+        "Run one release-specific failure: interrupt hosted autosave, restore managed staging, or install a custom wheel with a deliberately missing template.",
       sources: [
         {
-          title: "PyPA build and publish guidance",
+          title: "Label Studio labelling guide",
+          url: "https://labelstud.io/guide/labeling/",
+        },
+        {
+          title: "CVAT testing guide",
+          url: "https://docs.cvat.ai/docs/contributing/running-tests/",
+        },
+        {
+          title: "Python build and publish guidance",
           url: "https://packaging.python.org/en/latest/guides/section-build-and-publish/",
-        },
-        {
-          title: "Playwright accessibility testing",
-          url: "https://playwright.dev/docs/accessibility-testing",
-        },
-        {
-          title: "WCAG 2.2",
-          url: "https://www.w3.org/TR/WCAG22/",
         },
       ],
     },

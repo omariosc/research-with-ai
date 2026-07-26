@@ -56,9 +56,9 @@ async function inspect(url) {
       method: "HEAD",
       redirect: "follow",
       signal: controller.signal,
-      headers: { "user-agent": "Research-with-AI-link-check/1.1" },
+      headers: { "user-agent": "Research-with-AI-link-check/1.2" },
     });
-    if (response.status === 405) {
+    if (response.status === 404 || response.status === 405) {
       await response.body?.cancel();
       response = await fetch(url, {
         method: "GET",
@@ -66,7 +66,7 @@ async function inspect(url) {
         signal: controller.signal,
         headers: {
           range: "bytes=0-0",
-          "user-agent": "Research-with-AI-link-check/1.1",
+          "user-agent": "Research-with-AI-link-check/1.2",
         },
       });
     }

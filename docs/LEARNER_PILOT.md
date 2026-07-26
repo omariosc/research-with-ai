@@ -19,12 +19,13 @@ restricted datasets. Obtain consent before recording a screen, voice, or name.
 
 1. Record the tutorial URL, version, browser, device, date, and facilitator.
 2. Give the learner the stated prerequisites, but no private coaching.
-3. Ask the learner to complete the predeclared task from a clean browser
+3. Ask the learner to choose a tutorial route and explain why it fits the task.
+4. Ask the learner to complete the predeclared task from a clean browser
    profile. They may use the tutorial, its prompts, and linked evidence.
-4. Note observable difficulty and requested help. Do not reveal the intended
+5. Note observable difficulty and requested help. Do not reveal the intended
    answer until the task or stop rule is reached.
-5. Give a short transfer task with different material.
-6. Debrief only after the scored work is complete.
+6. Give a short transfer task with different material.
+7. Debrief only after the scored work is complete.
 
 Stop the task if the learner is about to disclose sensitive information, run
 untrusted code outside the declared sandbox, change external state without
@@ -67,6 +68,8 @@ them to:
 
 - write one include rule, exclude rule, and ambiguity rule;
 - choose a coordinate frame and missing-value convention;
+- choose hosted, institution-managed, or local delivery and name the data or
+  workflow constraint that rules out another path;
 - identify which work must remain possible without AI assistance;
 - export and reimport the canonical record; and
 - name each scientific field lost by the training-format export.
@@ -122,6 +125,8 @@ Research stage:
 Relevant prior experience:
 Browser, device, and accessibility setup:
 Task material and version:
+Route chosen and rationale:
+Alternative path chosen and rationale:
 Start and finish time:
 Help requests:
 Critical errors:

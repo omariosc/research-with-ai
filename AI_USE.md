@@ -2,8 +2,8 @@
 
 This project was made with substantial AI assistance. ChatGPT and Codex helped
 with source discovery, tutorial structure, drafting, code implementation,
-repository inspection, test execution, rendered-page checks, and an attempted
-Chrome-profile pass. An OpenAI
+repository inspection, test execution, rendered-page checks, and Chrome
+interaction checks. An OpenAI
 image-generation model produced the social preview image. The tutorials also
 describe Claude and Claude Science from linked first-party material. That
 coverage is not an endorsement and does not imply that every named product was
@@ -13,11 +13,11 @@ used to build the site.
 
 | AI-assisted task | Record kept | Human or independent check |
 | --- | --- | --- |
-| Source discovery | Linked source library and access review | Primary sources opened; 120-link automated audit with nine blocked pages retained for manual review; claims remain open to reader verification |
+| Source discovery | Linked source library and access review | Primary sources opened; 151-link automated audit with ten blocked pages retained for manual review; claims remain open to reader verification |
 | Tutorial drafting | Version-controlled content diff | Scope, wording, examples, and claim boundaries reviewed against the challenge call |
 | Repository audit | Pinned commit, commands, and observed outputs | Clean environment test run and direct source inspection |
 | Biomedical worked example | Paper, dataset, prediction archive, source manifest, hashes, command, and reviewed JSON output | Independent implementation of the official binary metric contract; negative tests for changed bytes and row identifiers; paper precision and code history checked directly |
-| Interface implementation | Git diff and build artefacts | Lint, production build, rendered HTML and schema tests, edge tests, and comparison with the approved visual direction |
+| Interface implementation | Git diff and build artefacts | Lint, production build, rendered HTML and schema tests, edge tests, responsive browser checks, and comparison with the approved visual direction |
 | Visual generation | Generated social image and dated disclosure | Human selection and interface comparison |
 
 AI output was treated as a proposal, not as scientific evidence. The site does
@@ -36,11 +36,14 @@ re-evaluation.
 
 ## Review status
 
-The v1.1.0 source, interface, links, accessibility behaviours, and examples
+The v1.2.0 source, interface, links, accessibility behaviours, and examples
 received machine-assisted and manual implementation checks on 2026-07-26.
-The final interaction pass in the user's Chrome profile remains pending because
-the browser extension connection was unavailable during this release check.
-Final author sign-off for the three MICCAI submissions, video recordings,
-transcripts, and any later claim changes remains a named human task. Every
-published revision should update this status rather than relying on this
-statement indefinitely.
+The Chrome pass covered route and alternative selection, persistence, practice
+checks, decision guidance, stage focus, light and dark modes, the 1200 by 718
+laptop layout, and the 390 by 844 mobile layout. Automated checks cover the
+later radio semantics, route-aware navigation, source inclusion, and
+annotation-route controls. A final Chrome refresh of the later tablet and
+field-guide changes remains open. Final author sign-off for the three MICCAI
+submissions, video recordings, transcripts, and any later claim changes
+remains a named human task. Every published revision should update this status
+rather than relying on this statement indefinitely.
