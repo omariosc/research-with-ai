@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "model_id": "synthetic-linear-demo-v1",
+  "feature_order": [
+    "x1",
+    "x2",
+    "x3"
+  ],
+  "input_units": [
+    "unitless",
+    "unitless",
+    "unitless"
+  ],
+  "weights": [
+    0.8,
+    -0.4,
+    0.25
+  ],
+  "bias": -0.1,
+  "threshold": 0.5,
+  "class_map": {
+    "0": "demo-negative",
+    "1": "demo-positive"
+  },
+  "intended_use": "Container tutorial only. Synthetic model, not for scientific or clinical decisions.",
+  "limitations": [
+    "Synthetic weights and features",
+    "No relationship to a patient, dataset, or research claim",
+    "No evidence of accuracy, fairness, safety, or usefulness"
+  ]
+}

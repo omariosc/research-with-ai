@@ -40,12 +40,15 @@ checksums, use, and claim boundary are recorded in
 The manifest also traces BreastMNIST to the original BUSI dataset paper rather
 than treating the derivative benchmark as the start of the provenance chain.
 
-## frame-annotator interface image
+## Historical frame-annotator interface image
 
-`public/frame-annotator-safety-interface.png` is taken from the author's public
+The immutable v1.1.0 and v1.2.0 source snapshots contain
+`public/frame-annotator-safety-interface.png`, taken from the author's public
 `omariosc/frame-annotator` repository at commit
-`3e94ed03c1487331b8c041ca755421686b41d031`. It is used as a labelled teaching
-example and remains subject to the source repository's rights.
+`3e94ed03c1487331b8c041ca755421686b41d031`. It remains subject to the source
+repository's rights. The current annotation demo replaces it with the original
+vector fixture `public/worked-examples/annotation-synthetic-frame.svg`, which
+contains no patient or clinical image.
 
 ## Generated social preview
 

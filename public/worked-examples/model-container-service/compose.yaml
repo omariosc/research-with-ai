@@ -1,0 +1,44 @@
+name: portable-model-api
+
+services:
+  api:
+    build:
+      context: .
+    image: portable-model-api:local
+    init: true
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8080:8080"
+    secrets:
+      - source: api_token
+        target: api_token
+    environment:
+      API_TOKEN_FILE: /run/secrets/api_token
+      ENABLE_DOCS: "0"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/readyz', timeout=2)"
+        ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    read_only: true
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    mem_limit: 512m
+    cpus: 1.0
+    stop_grace_period: 20s
+
+secrets:
+  api_token:
+    file: ${MODEL_API_TOKEN_FILE:-./.secrets/api_token}

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { readProgress } from "@/lib/storage";
+import { readProgress, readWorkspace } from "@/lib/storage";
 import type { Workshop, WorkshopSlug } from "@/lib/types";
 import {
   TUTORIAL_HOMEPAGE,
@@ -32,10 +32,18 @@ export function HomeClient({ workshops }: { workshops: Workshop[] }) {
   const refresh = useCallback(() => {
     setProgress(
       Object.fromEntries(
-        workshops.map((workshop) => [
-          workshop.slug,
-          readProgress(workshop.slug, workshop.steps[0].id).completed.length,
-        ]),
+        workshops.map((workshop) => {
+          const workspace = readWorkspace(workshop.slug);
+          return [
+            workshop.slug,
+            readProgress(
+              workshop.slug,
+              workshop.steps[0].id,
+              undefined,
+              workspace.activeProjectId,
+            ).completed.length,
+          ];
+        }),
       ) as Record<WorkshopSlug, number>,
     );
   }, [workshops]);
@@ -48,9 +56,11 @@ export function HomeClient({ workshops }: { workshops: Workshop[] }) {
     }
     queueMicrotask(refresh);
     window.addEventListener("research-with-ai-progress", refresh);
+    window.addEventListener("research-with-ai-workspace", refresh);
     window.addEventListener("storage", refresh);
     return () => {
       window.removeEventListener("research-with-ai-progress", refresh);
+      window.removeEventListener("research-with-ai-workspace", refresh);
       window.removeEventListener("storage", refresh);
     };
   }, [refresh, router]);

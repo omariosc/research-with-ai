@@ -27,11 +27,11 @@ export function PrivacyNote() {
       <div>
         <strong>Drafts are stored locally, not securely.</strong>
         <p>
-          Checklist notes and builders use unencrypted local storage. Browser
-          extensions or other people using this device may be able to read it.
-          Do not enter patient data, secrets, or sensitive research details.
-          Storage is separate on each tutorial address. There is no account,
-          analytics, advertising, or tracking cookie.
+          Project names, notes, checklists, and builders use unencrypted local
+          storage. Browser extensions or other people using this device may be
+          able to read it. Do not enter patient data, secrets, or sensitive
+          research details. Storage is separate on each tutorial address.
+          There is no account, analytics, advertising, or tracking cookie.
         </p>
       </div>
       <button

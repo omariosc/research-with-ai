@@ -18,19 +18,27 @@ Every stage also has plain-language definitions, researcher tricks, three
 delivery alternatives with operational tradeoffs, and a saved short practice.
 Suggested routes are labelled as suggestions, and exports record only choices
 the learner actually made.
+Readers can create and rename local projects in every tutorial. Each project
+keeps separate notes, checklist state, assessment answers, and builder drafts,
+with a scoped reset and an exportable working record.
 The annotation route includes a small interactive labelling demo informed by the
-[frame-annotator repository](https://github.com/omariosc/frame-annotator).
+[frame-annotator repository](https://github.com/omariosc/frame-annotator), a
+first-hand tool-development account, and the versioned
+[LASK dataset record](https://doi.org/10.5281/zenodo.20752651).
 The agentic and website routes share a
 [worked BreastMNIST evidence page](https://researchwithai.omarchoudhry.co.uk/worked-examples/medmnist-breast)
 with a runnable metric check, pinned inputs, a repository finding, figure
 attribution, and explicit limits on what was reproduced.
+The agentic route also contains an original comparison of prominent AI
+scientist systems. The website route includes a runnable synthetic model API,
+Docker profile, target-hardware checklist, and remote-access decision record.
 
-The current content release is **v1.2.0**, released on 2026-07-26. The
+The current content release is **v1.3.0**, released on 2026-07-26. The
 [version history](https://researchwithai.omarchoudhry.co.uk/versions) records
 the current canonical address for each independently submitted tutorial. A
-[checksum-recorded v1.2.0 source snapshot](public/releases/research-with-ai-v1.2.0-source.zip)
-preserves reviewed commit `a3044724d9e1d0ac2707c442a64fc5be40113fd0`.
-The historical v1.1.0 snapshot remains available from the version history.
+[checksum-recorded v1.3.0 source snapshot](public/releases/research-with-ai-v1.3.0-source.zip)
+preserves reviewed commit `V1_3_FEATURE_COMMIT`. Historical v1.1.0 and v1.2.0
+snapshots remain available from the version history.
 
 ## What this project contributes
 
@@ -76,12 +84,18 @@ members of a larger Zenodo archive by byte-range request. It validates every
 selected input before calculation. The normal application test suite remains
 offline.
 
+The portable model-service pack has its own locked Python tests and Docker
+acceptance route in
+[`public/worked-examples/model-container-service/README.md`](public/worked-examples/model-container-service/README.md).
+It uses a transparent synthetic model and makes no research or clinical
+performance claim.
+
 ## Privacy and persistence
 
-Workshop route, alternative and practice choices, progress, evidence notes,
-assessment answers, and builder drafts are stored in unencrypted browser
-`localStorage`. Browser extensions and other people using the device may be
-able to read it. The
+Project names and notes, workshop route, alternative and practice choices,
+progress, evidence notes, assessment answers, and builder drafts are stored in
+unencrypted browser `localStorage`. Browser extensions and other people using
+the device may be able to read it. The
 application has no database, user account, analytics, tracking cookie, or
 server-side submission form. Browser storage is separate on each public
 address, so clearing it on one address does not clear another.
@@ -108,11 +122,13 @@ lib/
   content/                Stages, prompts, checkpoints, and sources
   storage.ts              Local persistence and browser exports
 public/
-  audits/                     Repository, release, and round-trip evidence
+  audits/                     Repository, release, origin, and round-trip evidence
+  reading-notes/              Source-version and system-comparison appendices
   releases/                   Versioned source archive and checksum
   schemas/                    Immutable annotation specification schemas
-  worked-examples/            Runnable MedMNIST pack and annotation fixture
-  frame-annotator-*.png       Hashed worked-example source image
+  worked-examples/            MedMNIST, annotation, and model-container packs
+  worked-examples/annotation-synthetic-frame.svg
+                              Original no-patient-data annotation scene
   research-with-ai-social.png
 docs/
   MICCAI_SUBMISSION.md    Submission packaging checklist

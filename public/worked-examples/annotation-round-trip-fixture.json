@@ -1,5 +1,5 @@
 {
-  "fixture_version": "1.0.0",
+  "fixture_version": "1.1.0",
   "records": [
     {
       "annotation_id": "ann_example_0000",
@@ -41,7 +41,7 @@
       "provenance": {
         "annotator_id": "synthetic_annotator_a",
         "protocol_version": "1.0.0",
-        "source_hash": "sha256:87c105e2c0fed14477179052dc08d953441cc7cb483fa5680ec490b23a8cc97c",
+        "source_hash": "sha256:a13ab3684833e3bb14c87ff5eed4486c724ee794552dfaf55aa63a61caab7344",
         "frame_index_or_time": {
           "frame_index": 0,
           "index_base": 0
@@ -52,8 +52,8 @@
           "box_encoding": "xywh",
           "point_encoding": "xy",
           "annotation_frame_dimensions_px": [480, 360],
-          "source_asset_dimensions_px": [1600, 900],
-          "source_viewport_xywh_px": [300, 40, 480, 360]
+          "source_asset_dimensions_px": [800, 600],
+          "source_viewport_xywh_px": [0, 0, 800, 600]
         },
         "origin": "manual",
         "created_at": "2026-07-26T12:00:00.000Z",
@@ -107,7 +107,7 @@
       "provenance": {
         "annotator_id": "synthetic_annotator_a",
         "protocol_version": "1.0.0",
-        "source_hash": "sha256:87c105e2c0fed14477179052dc08d953441cc7cb483fa5680ec490b23a8cc97c",
+        "source_hash": "sha256:a13ab3684833e3bb14c87ff5eed4486c724ee794552dfaf55aa63a61caab7344",
         "frame_index_or_time": {
           "frame_index": 1,
           "index_base": 0
@@ -118,8 +118,8 @@
           "box_encoding": "xywh",
           "point_encoding": "xy",
           "annotation_frame_dimensions_px": [480, 360],
-          "source_asset_dimensions_px": [1600, 900],
-          "source_viewport_xywh_px": [300, 40, 480, 360]
+          "source_asset_dimensions_px": [800, 600],
+          "source_viewport_xywh_px": [0, 0, 800, 600]
         },
         "origin": "manual",
         "created_at": "2026-07-26T12:00:01.000Z",

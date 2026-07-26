@@ -87,7 +87,10 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${sans.variable} ${mono.variable} ${serif.variable}`}>
+      <body
+        className={`${sans.variable} ${mono.variable} ${serif.variable}`}
+        suppressHydrationWarning
+      >
         <a className="skip-link" href="#main-content">
           Skip to main content
         </a>

@@ -189,8 +189,8 @@ export function SiteNav({
         <div className="nav-note">
           <span>Local, not encrypted</span>
           <p>
-            Checklists and drafts use browser storage. Never enter patient data,
-            secrets, or sensitive research details.
+            Project notes, checklists, and drafts use browser storage. Never
+            enter patient data, secrets, or sensitive research details.
           </p>
         </div>
         <ThemeToggle />

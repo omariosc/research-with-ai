@@ -408,7 +408,7 @@ Sources:
       title: "Build the site and prove the demo",
       duration: "9 min guided",
       summary:
-        "Ask a coding agent to implement from checked artefacts. Treat source documents and repositories as untrusted data, and distinguish live, recorded, illustrative, and static results.",
+        "Ask a coding agent to implement from checked artefacts. Treat source documents and repositories as untrusted data, and distinguish live, recorded, illustrative, and static results. The optional portable model service lab extends this into a small, testable inference API.",
       action:
         "Inspect read-only first. Run a pinned clean clone only in a disposable sandbox with no secrets, restricted network access, and explicit time, memory, disk, and process limits.",
       output: "reproducibility.md",
@@ -427,6 +427,10 @@ For the demo, document whether it is live, recorded, illustrative, or static, pl
       videoCue:
         "Open the demo from a clean build, show its provenance panel, then disable it and use the fallback.",
       sources: [
+        {
+          title: "Optional portable model service lab",
+          url: "/worked-examples/model-container-service/README.md",
+        },
         {
           title: "Citation File Format",
           url: "https://citation-file-format.github.io/",
@@ -576,6 +580,51 @@ For the demo, document whether it is live, recorded, illustrative, or static, pl
       title: "Cloudflare Pages custom domains",
       url: "https://developers.cloudflare.com/pages/configuration/custom-domains/",
       note: "Deployment guidance for connecting a project site to a custom domain.",
+    },
+    {
+      title: "FastAPI in Containers",
+      url: "https://fastapi.tiangolo.com/deployment/docker/",
+      note: "Official guidance for packaging and running a FastAPI application in a container.",
+    },
+    {
+      title: "Docker multi-platform builds",
+      url: "https://docs.docker.com/build/building/multi-platform/",
+      note: "Official guidance for building and testing images for more than one CPU architecture.",
+    },
+    {
+      title: "Docker port publishing",
+      url: "https://docs.docker.com/engine/network/port-publishing/",
+      note: "Explains how host bindings affect who can reach a container service.",
+    },
+    {
+      title: "Docker Engine security",
+      url: "https://docs.docker.com/engine/security/",
+      note: "An overview of daemon, host, image, and runtime security boundaries.",
+    },
+    {
+      title: "Docker resource constraints",
+      url: "https://docs.docker.com/engine/containers/resource_constraints/",
+      note: "Official controls for limiting the memory and CPU available to a container.",
+    },
+    {
+      title: "NVIDIA Jetson container validation",
+      url: "https://docs.nvidia.com/jetson/archives/r36.3/DeveloperGuide/SD/TestPlanValidation.html",
+      note: "Official Jetson checks for Docker, the NVIDIA runtime, and GPU-enabled containers.",
+    },
+    {
+      title: "NVIDIA Container Toolkit install guide",
+      url: "https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html",
+      note: "Official runtime setup for exposing supported NVIDIA GPUs to containers.",
+    },
+    {
+      title: "Raspberry Pi OS documentation",
+      url: "https://www.raspberrypi.com/documentation/computers/os.html",
+      note: "Official guidance for installing and configuring Raspberry Pi OS, including 64-bit systems.",
+    },
+    {
+      title: "Install Docker Engine on Debian",
+      url: "https://docs.docker.com/engine/install/debian/",
+      note: "The supported Docker Engine installation route for Debian on amd64, armhf, and arm64.",
     },
   ],
 };

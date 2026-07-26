@@ -143,7 +143,7 @@ export type Workshop = {
 };
 
 export type StoredWorkshopProgress = {
-  schemaVersion: 3;
+  schemaVersion: 4;
   completed: string[];
   approved: string[];
   activeStep: string;
@@ -152,6 +152,21 @@ export type StoredWorkshopProgress = {
   decisions: Record<string, "ready" | "revise" | "stop">;
   pathChoices: Record<string, string>;
   practiceChecks: Record<string, string[]>;
+  bonusChecks: string[];
   assessmentAnswers: Record<string, string>;
   updatedAt: string;
+};
+
+export type WorkshopProject = {
+  id: string;
+  name: string;
+  notes: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type StoredWorkshopWorkspace = {
+  schemaVersion: 1;
+  activeProjectId: string;
+  projects: WorkshopProject[];
 };

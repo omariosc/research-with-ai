@@ -1,13 +1,19 @@
 "use client";
-
-import Image from "next/image";
 import {
   useEffect,
   useMemo,
   useState,
   type MouseEvent,
 } from "react";
-import { copyText, downloadText, STORAGE_PREFIX } from "@/lib/storage";
+import {
+  BUILDER_SCHEMA_VERSION,
+  DEFAULT_PROJECT_ID,
+  STORAGE_PREFIX,
+  builderKey,
+  copyText,
+  downloadText,
+  legacyBuilderKey,
+} from "@/lib/storage";
 import { publicUrlIssue, redactSensitiveUrl } from "@/lib/url-safety";
 import {
   TUTORIAL_VERSION,
@@ -70,8 +76,6 @@ function BuilderActions({
   );
 }
 
-const BUILDER_SCHEMA_VERSION = 2 as const;
-
 function preserveStorageValue<T>(value: T) {
   return value;
 }
@@ -79,12 +83,13 @@ function preserveStorageValue<T>(value: T) {
 function restoreStringForm<T extends Record<string, string>>(
   stored: unknown,
   defaults: T,
+  expectedVersion: number = BUILDER_SCHEMA_VERSION,
 ) {
   if (
     !stored ||
     typeof stored !== "object" ||
     !("schemaVersion" in stored) ||
-    stored.schemaVersion !== BUILDER_SCHEMA_VERSION ||
+    stored.schemaVersion !== expectedVersion ||
     !("value" in stored) ||
     !stored.value ||
     typeof stored.value !== "object"
@@ -124,13 +129,15 @@ function migrateLegacyStringForm<T extends Record<string, string>>(
 
 function usePersistentForm<T extends Record<string, string>>(
   key: string,
+  projectId: string,
   defaults: T,
   legacyFields: ReadonlyArray<keyof T>,
   prepareForStorage: (value: T) => T = preserveStorageValue,
 ) {
   const [value, setValue] = useState(defaults);
   const [loaded, setLoaded] = useState(false);
-  const storageKey = `${STORAGE_PREFIX}:builder:v${BUILDER_SCHEMA_VERSION}:${key}`;
+  const storageKey = builderKey(key, projectId);
+  const versionTwoStorageKey = legacyBuilderKey(key);
   const legacyStorageKey = `${STORAGE_PREFIX}:builder:${key}`;
 
   useEffect(() => {
@@ -144,15 +151,31 @@ function usePersistentForm<T extends Record<string, string>>(
           return;
         }
       }
-      const legacyRaw = window.localStorage.getItem(legacyStorageKey);
-      if (legacyRaw) {
-        const migrated = migrateLegacyStringForm(
-          JSON.parse(legacyRaw),
-          defaults,
-          legacyFields,
-        );
-        if (migrated) {
-          queueMicrotask(() => setValue(prepareForStorage(migrated)));
+      if (projectId === DEFAULT_PROJECT_ID) {
+        const versionTwoRaw =
+          window.localStorage.getItem(versionTwoStorageKey);
+        if (versionTwoRaw) {
+          const restored = restoreStringForm(
+            JSON.parse(versionTwoRaw),
+            defaults,
+            2,
+          );
+          if (restored) {
+            queueMicrotask(() => setValue(prepareForStorage(restored)));
+            queueMicrotask(() => setLoaded(true));
+            return;
+          }
+        }
+        const legacyRaw = window.localStorage.getItem(legacyStorageKey);
+        if (legacyRaw) {
+          const migrated = migrateLegacyStringForm(
+            JSON.parse(legacyRaw),
+            defaults,
+            legacyFields,
+          );
+          if (migrated) {
+            queueMicrotask(() => setValue(prepareForStorage(migrated)));
+          }
         }
       }
     } catch {
@@ -164,7 +187,9 @@ function usePersistentForm<T extends Record<string, string>>(
     legacyFields,
     legacyStorageKey,
     prepareForStorage,
+    projectId,
     storageKey,
+    versionTwoStorageKey,
   ]);
 
   useEffect(() => {
@@ -177,11 +202,10 @@ function usePersistentForm<T extends Record<string, string>>(
           value: prepareForStorage(value),
         }),
       );
-      window.localStorage.removeItem(legacyStorageKey);
     } catch {
       // The form remains usable when local storage is unavailable or full.
     }
-  }, [legacyStorageKey, loaded, prepareForStorage, storageKey, value]);
+  }, [loaded, prepareForStorage, storageKey, value]);
 
   return [value, setValue] as const;
 }
@@ -208,9 +232,10 @@ const agenticLegacyFields: ReadonlyArray<keyof typeof agenticDefaults> = [
   "approval",
 ];
 
-export function AgenticPlanBuilder() {
+export function AgenticPlanBuilder({ projectId }: { projectId: string }) {
   const [form, setForm] = usePersistentForm(
     "agentic",
+    projectId,
     agenticDefaults,
     agenticLegacyFields,
   );
@@ -422,9 +447,10 @@ function preparePaperForStorage(form: typeof paperDefaults) {
   };
 }
 
-export function PaperSiteBuilder() {
+export function PaperSiteBuilder({ projectId }: { projectId: string }) {
   const [form, setForm] = usePersistentForm(
     "paper",
+    projectId,
     paperDefaults,
     paperLegacyFields,
     preparePaperForStorage,
@@ -724,9 +750,14 @@ const annotationTaskTypes = new Set([
   "temporal_interval",
 ]);
 
-export function AnnotationSpecBuilder() {
+export function AnnotationSpecBuilder({
+  projectId,
+}: {
+  projectId: string;
+}) {
   const [form, setForm] = usePersistentForm(
     "annotation",
+    projectId,
     annotationDefaults,
     annotationLegacyFields,
   );
@@ -909,7 +940,7 @@ export function AnnotationSpecBuilder() {
   const output = useMemo(
     () => `tutorial_version: ${yamlQuote(TUTORIAL_VERSION)}
 tutorial_canonical_url: ${yamlQuote(WORKSHOP_RELEASES["annotation-tools"].canonicalUrl)}
-schema_version: "1.2.0"
+schema_version: "1.3.0"
 project:
   name: ${yamlQuote(form.project)}
 data:
@@ -991,7 +1022,7 @@ exports:
   - "dataset_manifest"
   - "task_specific_training_format"
 validation:
-  json_schema: "annotation-spec-1.2.0.schema.json"
+  json_schema: "annotation-spec-1.3.0.schema.json"
   round_trip_required: true
   protocol_locked_before_reliability_sample: true`,
     [annotatorCount, form, uniqueLabels, uniqueTasks],
@@ -1150,9 +1181,9 @@ validation:
             </ul>
             <a
               download
-              href="/schemas/annotation-spec-1.2.0.schema.json"
+              href="/schemas/annotation-spec-1.3.0.schema.json"
             >
-              Download the v1.2 JSON Schema
+              Download the v1.3 JSON Schema
             </a>
           </div>
         </div>
@@ -1399,9 +1430,9 @@ export function AnnotationDemo() {
       frame_id: "demo_frame_0000",
       frame_index: 0,
       frame_dimensions_px: [480, 360],
-      source_asset_dimensions_px: [1600, 900],
-      source_viewport_xywh_px: [300, 40, 480, 360],
-      render_transform: "crop source viewport, then scale uniformly to 4:3",
+      source_asset_dimensions_px: [800, 600],
+      source_viewport_xywh_px: [0, 0, 800, 600],
+      render_transform: "scale the complete 4:3 source uniformly",
       phase,
       instrument_1: {
         visibility,
@@ -1441,12 +1472,12 @@ export function AnnotationDemo() {
           box_encoding: "xywh",
           point_encoding: "xy",
           annotation_frame_dimensions_px: [480, 360],
-          source_asset_dimensions_px: [1600, 900],
-          source_viewport_xywh_px: [300, 40, 480, 360],
+          source_asset_dimensions_px: [800, 600],
+          source_viewport_xywh_px: [0, 0, 800, 600],
         },
         origin: "manual",
         source_hash:
-          "sha256:87c105e2c0fed14477179052dc08d953441cc7cb483fa5680ec490b23a8cc97c",
+          "sha256:a13ab3684833e3bb14c87ff5eed4486c724ee794552dfaf55aa63a61caab7344",
         created_at: createdAt,
         updated_at: updatedAt,
         review_state: "draft",
@@ -1529,8 +1560,8 @@ export function AnnotationDemo() {
             aria-disabled={visibility === "out_of_frame"}
             aria-label={
               visibility === "out_of_frame"
-                ? "Surgical training scene. Instrument is marked out of frame, so geometry placement is unavailable."
-                : `Surgical training scene. Active tool: ${tool}. Use the pointer or the exact-coordinate controls to place the annotation.`
+                ? "Synthetic peg-transfer training scene. Instrument is marked out of frame, so geometry placement is unavailable."
+                : `Synthetic peg-transfer training scene. Active tool: ${tool}. Use the pointer or the exact-coordinate controls to place the annotation.`
             }
             className={`demo-frame tool-${tool}`}
             onKeyDown={(event) => {
@@ -1543,13 +1574,11 @@ export function AnnotationDemo() {
             role="button"
             tabIndex={0}
           >
-            <Image
-              alt="Unannotated surgical training frame cropped from the frame-annotator interface"
-              fill
-              priority={false}
-              sizes="(max-width: 900px) 100vw, 70vw"
-              src="/frame-annotator-safety-interface.png"
-              unoptimized
+            <img
+              alt="Original synthetic peg-transfer board with two simplified instruments and no clinical data"
+              height="600"
+              src="/worked-examples/annotation-synthetic-frame.svg"
+              width="800"
             />
             {visibility !== "out_of_frame" ? (
               <>

@@ -54,8 +54,8 @@ test("training export keeps the box but declares omitted records and fields", as
       record.provenance.coordinate_convention_and_units;
     assert.equal(coordinates.unit, "percent_of_annotation_frame");
     assert.deepEqual(coordinates.annotation_frame_dimensions_px, [480, 360]);
-    assert.deepEqual(coordinates.source_asset_dimensions_px, [1600, 900]);
-    assert.deepEqual(coordinates.source_viewport_xywh_px, [300, 40, 480, 360]);
+    assert.deepEqual(coordinates.source_asset_dimensions_px, [800, 600]);
+    assert.deepEqual(coordinates.source_viewport_xywh_px, [0, 0, 800, 600]);
   }
   assert.equal(exported.files.length, 1);
   assert.equal(exported.omitted.length, 1);

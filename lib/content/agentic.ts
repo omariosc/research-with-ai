@@ -202,7 +202,7 @@ Project context:
       id: "hypothesis",
       title: "Prespecify the reproduction or new study",
       summary:
-        "Choose one scientific branch before viewing held-out results. Reproduction needs a reported claim and discrepancy rule. A new study needs a human-selected hypothesis, counter-hypothesis, and falsifier.",
+        "Agentic systems can expand and critique a hypothesis space, but a ranked idea is not evidence. Choose one scientific branch before viewing held-out results, and keep novelty, selection, and falsification decisions with the researcher.",
       action:
         "Declare Branch A or B, then timestamp its metric, comparison, tolerance or falsifier, and exclusion rule before testing.",
       output: "analysis_prespecification.md",
@@ -219,6 +219,16 @@ Project context:
         {
           title: "AI co-scientist",
           url: "https://www.nature.com/articles/s41586-026-10644-y",
+        },
+        {
+          title: "The AI Scientist",
+          url: "https://www.nature.com/articles/s41586-026-10265-5",
+          note: "Peer-reviewed evidence on computational research automation, including its failure modes and human selection steps.",
+        },
+        {
+          title: "Towards a Medical AI Scientist",
+          url: "https://arxiv.org/abs/2603.28589",
+          note: "A 2026 preprint on domain-specific automation for computational medical AI research.",
         },
         {
           title: "The Virtual Lab",
@@ -368,7 +378,7 @@ Project context:
     eyebrow: "First-hand metric verification",
     title: "One table row, traced from paper to released predictions",
     context:
-      "A coding agent and human reviewer traced the BreastMNIST ResNet-18 28-pixel result in MedMNIST v2 Table 3 through the paper, dataset, prediction archive, metric definition, and historical training code. A separate script then checked the source bytes and recalculated the released test predictions.",
+      "A coding agent accelerated the trace of the BreastMNIST ResNet-18 28-pixel result through the paper, dataset, prediction archive, metric definition, and historical training code. A human reviewer chose the claim boundary and checked each source, checksum, and recalculation.",
     expected:
       "Recover the two reported cells at the paper's precision, while keeping gaps in training and artefact provenance visible.",
     observed: [
@@ -573,6 +583,41 @@ Project context:
     },
   ],
   sourceLibrary: [
+    {
+      title: "Co-Scientist, Nature version of record",
+      url: "https://doi.org/10.1038/s41586-026-10644-y",
+      note: "Peer-reviewed evidence for multi-agent hypothesis generation and experimental planning. Scientists set goals, steer reviews, select candidates, and own laboratory validation; the full code is not public.",
+    },
+    {
+      title: "Google Research introduction to Co-Scientist",
+      url: "https://research.google/blog/accelerating-scientific-breakthroughs-with-an-ai-co-scientist/",
+      note: "An accessible official overview of the agent roles and scientist interaction. Use the Nature paper for scientific claims and figure licensing.",
+    },
+    {
+      title: "The AI Scientist, Nature version of record",
+      url: "https://doi.org/10.1038/s41586-026-10265-5",
+      note: "Peer-reviewed consolidation of template-based v1 and template-free v2. One of three selected manuscripts exceeded a workshop review threshold, but it was withdrawn before meta-review and none met the authors' main-conference bar.",
+    },
+    {
+      title: "The AI Scientist consolidated preprint",
+      url: "https://arxiv.org/abs/2606.15497",
+      note: "The longer preprint corresponding to the 2026 Nature article. It is distinct from arXiv:2408.06292, which describes the earlier template-based system.",
+    },
+    {
+      title: "The AI Scientist v1",
+      url: "https://arxiv.org/abs/2408.06292",
+      note: "The original template-based system for small computational machine-learning studies. Its conference-quality and low-cost claims relied mainly on automated review and tightly bounded experiments.",
+    },
+    {
+      title: "The AI Scientist v2",
+      url: "https://arxiv.org/abs/2504.08066",
+      note: "A template-free workflow using staged agentic tree search, code execution, figure review, and paper drafting. Humans selected promising ideas and the best complete runs.",
+    },
+    {
+      title: "Towards a Medical AI Scientist",
+      url: "https://arxiv.org/abs/2603.28589",
+      note: "A 2026 preprint for computational medical AI research with reproduction, innovation, and exploration modes. Its clinician and engineer roles are agents; it does not validate autonomous patient research or clinical care.",
+    },
     {
       title: "Claude Science",
       url: "https://www.anthropic.com/news/claude-science-ai-workbench",

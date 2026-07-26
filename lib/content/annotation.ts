@@ -51,7 +51,7 @@ export const annotationTools: Workshop = {
       "Freeze a manual baseline and calibration set before measuring or enabling model assistance.",
     ],
     boundary:
-      "This is a code audit of a teaching prototype plus one synthetic serialization check. The review CSV preserves the fixture, but the YOLO example preserves only one box subset. Neither result provides evidence of annotation accuracy, usability, patient safety, or deployment readiness.",
+      "This is a code audit of a teaching prototype plus one synthetic serialization check. The review CSV preserves the fixture, but the YOLO example preserves only one box subset. The repository supports descriptions of features and public commit dates, but it does not independently establish where the first prototype began, how quickly it was used, or whether it produced a particular dataset. Those details belong in a clearly labelled first-hand account. Neither result provides evidence of annotation accuracy, usability, patient safety, or deployment readiness.",
     sources: [
       {
         title: "frame-annotator repository at the audited commit",
@@ -543,6 +543,21 @@ Expert notes:
     },
   ],
   sourceLibrary: [
+    {
+      title: "LASK dataset, version 1.0",
+      url: "https://doi.org/10.5281/zenodo.20752651",
+      note: "The versioned Zenodo record for 37 trials with dense time-aligned kinematics and sparse manual visual annotations. The record is evidence for the released data, not for the private history of the annotation tool.",
+    },
+    {
+      title: "frame-annotator initial public commit",
+      url: "https://github.com/omariosc/frame-annotator/commit/deb7d43a2b6ff93ac1ac5a33c2f00028d7833823",
+      note: "The first public repository checkpoint, documenting configurable clip and range labelling, keyboard shortcuts, and clip-level and frame-level export.",
+    },
+    {
+      title: "surgical-annotator integration commit",
+      url: "https://github.com/omariosc/frame-annotator/commit/461615a71beabeaa0ed67120a883cf4ce900d7b1",
+      note: "The later public checkpoint that brought masks, shaft lines, keypoints, phase labels, and batch annotation into the same repository.",
+    },
     {
       title: "frame-annotator and surgical-annotator at the audited commit",
       url: "https://github.com/omariosc/frame-annotator/tree/3e94ed03c1487331b8c041ca755421686b41d031",

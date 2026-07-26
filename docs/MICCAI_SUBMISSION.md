@@ -48,6 +48,10 @@ communication, annotation tools, human oversight
 - [ ] Test every route in a clean desktop and mobile browser
 - [ ] Confirm route, alternative, and practice state survives reload and resets
       only when requested
+- [ ] Create two named projects and confirm notes, progress, assessments, and
+      builder drafts remain separate
+- [ ] Confirm resetting one project leaves its name and notes intact and does
+      not change another project
 - [ ] Confirm a suggested route is not recorded as the learner's choice and no
       delivery path is preselected
 - [ ] Confirm every cited alternative appears in the full source library
@@ -61,6 +65,12 @@ communication, annotation tools, human oversight
       description
 - [ ] Run the annotation export round trip and state what the review CSV does
       not preserve
+- [ ] Run the model-service Python tests and Docker acceptance route, then
+      inspect the ZIP and checksum
+- [ ] Confirm the annotation origin story distinguishes the author account,
+      public commit history, and LASK dataset record
+- [ ] Confirm no paper figure or repository screenshot is presented as an
+      original teaching graphic
 
 ## Suggested wrapper structure
 

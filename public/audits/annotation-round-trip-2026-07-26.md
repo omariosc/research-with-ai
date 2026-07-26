@@ -3,7 +3,7 @@
 Check date: 26 July 2026
 
 Fixture: `/worked-examples/annotation-round-trip-fixture.json`
-Fixture version: `1.0.0`
+Fixture version: `1.1.0`
 
 ## Question
 
@@ -19,8 +19,8 @@ The two synthetic records exercise two different states:
 - an out-of-frame instrument with a null box, null point coordinates, and no
   estimated geometry.
 
-Both records use the public teaching image hash. They contain no patient or
-study data.
+Both records use the original synthetic teaching-frame hash. They contain no
+patient or study data.
 
 ## Recorded command
 
@@ -31,7 +31,7 @@ npm run check:annotation-roundtrip
 The check reported:
 
 ```text
-2 records round-tripped without field loss; CSV 2325 bytes; SHA-256 a3c3183b4bac58cd71cc46a580ab524b7f7ca72eb3d0b57edd89cc6f797abc3d
+2 records round-tripped without field loss; CSV 2317 bytes; SHA-256 48abf2ed9c4c409acdb7924bcbf8809e2be99c2e2f017056368def3b4ae6d55e
 YOLO box: 0 0.645000 0.540000 0.250000 0.360000
 YOLO box round-trip maximum absolute error: 0
 EXPECTED LOSS: phase
@@ -47,10 +47,10 @@ checks that every out-of-frame record has a null box, null point coordinates,
 
 ## Coordinate reference and training export
 
-Coordinates are percentages of the 480 by 360 annotation frame cropped from
-the 1600 by 900 source asset at `[300, 40, 480, 360]`. The fixture records that
-reference explicitly. It does not call the complete screenshot the native
-annotation frame.
+Coordinates are percentages of the 480 by 360 annotation frame rendered from
+the complete 800 by 600 synthetic source asset at `[0, 0, 800, 600]`. The
+fixture records that reference explicitly. It does not confuse rendered and
+source dimensions.
 
 The visible `[52, 36, 25, 36]` top-left `xywh` box becomes the YOLO centre-box
 line above and returns to the same four percentages. The out-of-frame record is

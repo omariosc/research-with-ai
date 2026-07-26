@@ -13,10 +13,14 @@ used to build the site.
 
 | AI-assisted task | Record kept | Human or independent check |
 | --- | --- | --- |
-| Source discovery | Linked source library and access review | Primary sources opened; 151-link automated audit with ten blocked pages retained for manual review; claims remain open to reader verification |
+| Source discovery | Linked source library and access review | Primary sources opened; 177-link automated audit with eleven blocked pages retained for manual review; claims remain open to reader verification |
 | Tutorial drafting | Version-controlled content diff | Scope, wording, examples, and claim boundaries reviewed against the challenge call |
 | Repository audit | Pinned commit, commands, and observed outputs | Clean environment test run and direct source inspection |
 | Biomedical worked example | Paper, dataset, prediction archive, source manifest, hashes, command, and reviewed JSON output | Independent implementation of the official binary metric contract; negative tests for changed bytes and row identifiers; paper precision and code history checked directly |
+| AI scientist comparison | Dated reading-note appendix with paper versions, claims, limitations, code status, and media rights | Primary papers, repositories, and versions checked; original comparison used instead of copied figures |
+| Annotation origin story | Public commit record, LASK DOI, author account, and AI contribution ledger | Public facts and first-hand recollection labelled separately; released labels remain described as manual |
+| Project workspaces | Versioned local-storage schema and export format | Migration, sanitisation, project isolation, scoped reset, and separate builder drafts covered by automated tests |
+| Model container lab | Complete source pack, model hash, dependency locks, tests, Docker profile, and deployment record | Locked Python tests plus live health, authentication, validation, non-root, read-only, and log checks |
 | Interface implementation | Git diff and build artefacts | Lint, production build, rendered HTML and schema tests, edge tests, responsive browser checks, and comparison with the approved visual direction |
 | Visual generation | Generated social image and dated disclosure | Human selection and interface comparison |
 
@@ -28,22 +32,24 @@ Omar Choudhry.
 
 No patient data, private research records, credentials, or identifiable study
 material were intentionally supplied during development. The annotation demo
-uses an image from the author's public `frame-annotator` repository and is
-labelled as a teaching example rather than a clinical system.
+uses an original synthetic vector scene and is labelled as a teaching example
+rather than a clinical system.
 The MedMNIST case uses public CC BY 4.0 benchmark data and author-released
 predictions. Its claim is limited to prediction-artifact metric
 re-evaluation.
 
 ## Review status
 
-The v1.2.0 source, interface, links, accessibility behaviours, and examples
+The v1.3.0 source, interface, links, accessibility behaviours, and examples
 received machine-assisted and manual implementation checks on 2026-07-26.
-The Chrome pass covered route and alternative selection, persistence, practice
-checks, decision guidance, stage focus, light and dark modes, the 1200 by 718
-laptop layout, and the 390 by 844 mobile layout. Automated checks cover the
-later radio semantics, route-aware navigation, source inclusion, and
-annotation-route controls. A final Chrome refresh of the later tablet and
-field-guide changes remains open. Final author sign-off for the three MICCAI
-submissions, video recordings, transcripts, and any later claim changes
-remains a named human task. Every published revision should update this status
-rather than relying on this statement indefinitely.
+The clean Chrome pass covered all three routes, project creation and switching,
+project-specific notes and deep-dive progress, light and dark modes, the 1200
+by 718 laptop layout, the 390 by 844 mobile layout, table overflow, the
+synthetic annotation interaction, and the container lab. Clean route loads
+showed no console errors or warnings. Automated checks cover storage migration,
+project isolation and reset, route navigation, sources, schemas, annotations,
+the container pack, edge behaviour, and rendered content. Independent
+screen-reader and learner-pilot sessions remain open. Final author sign-off for
+the three MICCAI submissions, video recordings, transcripts, and any later
+claim changes remains a named human task. Every published revision should
+update this status rather than relying on this statement indefinitely.

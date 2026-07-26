@@ -1,6 +1,6 @@
 import type { WorkshopSlug } from "@/lib/types";
 
-export const TUTORIAL_VERSION = "1.2.0";
+export const TUTORIAL_VERSION = "1.3.0";
 export const TUTORIAL_VERSION_LABEL = `v${TUTORIAL_VERSION}`;
 export const TUTORIAL_RELEASE_DATE = "2026-07-26";
 export const TUTORIAL_HOMEPAGE =

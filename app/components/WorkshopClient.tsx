@@ -8,6 +8,7 @@ import {
 } from "react";
 import type {
   StoredWorkshopProgress,
+  StoredWorkshopWorkspace,
   Workshop,
   WorkshopGuidance,
   WorkshopRoute,
@@ -22,12 +23,17 @@ import {
   workshopRelease,
 } from "@/lib/version";
 import {
-  PROGRESS_SCHEMA_VERSION,
+  blankProgress,
+  clearBuilderDraft,
   clearProgress,
   copyText,
+  createWorkshopProject,
+  defaultWorkspace,
   downloadText,
   readProgress,
+  readWorkspace,
   writeProgress,
+  writeWorkspace,
 } from "@/lib/storage";
 import { routeNeighbours } from "@/lib/workshop-navigation";
 import {
@@ -46,8 +52,14 @@ import {
   Refresh,
 } from "./Icons";
 import { PrivacyNote } from "./PrivacyNote";
+import { ProjectWorkspace } from "./ProjectWorkspace";
 import { SiteNav } from "./SiteNav";
 import { SiteFooter } from "./HomeClient";
+import {
+  DEEP_DIVE_CHECK_IDS,
+  DEEP_DIVE_CHECK_ITEMS,
+  WorkshopDeepDive,
+} from "./WorkshopDeepDives";
 import {
   ContextHelp,
   StageFieldGuide,
@@ -80,28 +92,30 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
           guide.tryNow.items.map((item) => item.id),
         ]),
       ),
+      bonusIds: DEEP_DIVE_CHECK_IDS[workshop.slug],
       assessmentItemIds: workshop.assessment.map((item) => item.id),
     }),
     [guidance, workshop],
   );
-  const [progress, setProgress] = useState<StoredWorkshopProgress>({
-    schemaVersion: PROGRESS_SCHEMA_VERSION,
-    completed: [],
-    approved: [],
-    activeStep: firstStep,
-    routeId: "",
-    evidenceNotes: {},
-    decisions: {},
-    pathChoices: {},
-    practiceChecks: {},
-    assessmentAnswers: {},
-    updatedAt: new Date(0).toISOString(),
-  });
+  const [progress, setProgress] = useState<StoredWorkshopProgress>(() =>
+    blankProgress(firstStep),
+  );
+  const [workspace, setWorkspace] = useState<StoredWorkshopWorkspace>(
+    defaultWorkspace,
+  );
+  const [builderRevision, setBuilderRevision] = useState(0);
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    const stored = readProgress(workshop.slug, firstStep, progressScope);
+    const storedWorkspace = readWorkspace(workshop.slug);
+    const stored = readProgress(
+      workshop.slug,
+      firstStep,
+      progressScope,
+      storedWorkspace.activeProjectId,
+    );
     queueMicrotask(() => {
+      setWorkspace(storedWorkspace);
       setProgress(stored);
       setHydrated(true);
     });
@@ -111,10 +125,15 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
     (next: StoredWorkshopProgress) => {
       const dated = { ...next, updatedAt: new Date().toISOString() };
       setProgress(dated);
-      writeProgress(workshop.slug, dated);
+      writeProgress(workshop.slug, dated, workspace.activeProjectId);
     },
-    [workshop.slug],
+    [workspace.activeProjectId, workshop.slug],
   );
+
+  const activeProject =
+    workspace.projects.find(
+      (project) => project.id === workspace.activeProjectId,
+    ) ?? workspace.projects[0];
 
   const activeIndex = Math.max(
     0,
@@ -198,20 +217,57 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
   }
 
   function reset() {
-    if (!window.confirm("Clear this workshop's saved progress?")) return;
-    clearProgress(workshop.slug);
-    setProgress({
-      schemaVersion: PROGRESS_SCHEMA_VERSION,
-      completed: [],
-      approved: [],
-      activeStep: firstStep,
-      routeId: "",
-      evidenceNotes: {},
-      decisions: {},
-      pathChoices: {},
-      practiceChecks: {},
-      assessmentAnswers: {},
-      updatedAt: new Date(0).toISOString(),
+    if (
+      !window.confirm(
+        `Reset the checklist, decisions, assessment, and builder drafts for "${activeProject.name}"? The project name and notes will be kept.`,
+      )
+    ) {
+      return;
+    }
+    clearProgress(workshop.slug, activeProject.id);
+    clearBuilderDraft(workshop.slug, activeProject.id);
+    setProgress(blankProgress(firstStep));
+    setBuilderRevision((value) => value + 1);
+  }
+
+  function persistWorkspace(next: StoredWorkshopWorkspace) {
+    setWorkspace(next);
+    writeWorkspace(workshop.slug, next);
+  }
+
+  function selectProject(projectId: string) {
+    if (!workspace.projects.some((project) => project.id === projectId)) return;
+    const next = { ...workspace, activeProjectId: projectId };
+    persistWorkspace(next);
+    setProgress(
+      readProgress(workshop.slug, firstStep, progressScope, projectId),
+    );
+    setBuilderRevision(0);
+  }
+
+  function createProject(name: string) {
+    const project = createWorkshopProject(name);
+    const next = {
+      ...workspace,
+      activeProjectId: project.id,
+      projects: [...workspace.projects, project],
+    };
+    persistWorkspace(next);
+    setProgress(blankProgress(firstStep));
+    setBuilderRevision(0);
+  }
+
+  function updateActiveProject(
+    update: (project: typeof activeProject) => typeof activeProject,
+  ) {
+    const now = new Date().toISOString();
+    persistWorkspace({
+      ...workspace,
+      projects: workspace.projects.map((project) =>
+        project.id === activeProject.id
+          ? { ...update(project), updatedAt: now }
+          : project,
+      ),
     });
   }
 
@@ -222,10 +278,17 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
     );
     const text = `# ${workshop.title}: working record
 
+Project: ${activeProject.name}
+Project ID: ${activeProject.id}
+
 Generated: ${new Date().toISOString()}
 Tutorial version: ${TUTORIAL_VERSION_LABEL}
 Canonical tutorial: ${release.canonicalUrl}
 Selected route: ${selectedRoute?.title ?? "not selected"}
+
+## Project notes
+
+${activeProject.notes.trim() || "No project notes recorded."}
 
 ${workshop.steps
   .map(
@@ -289,6 +352,15 @@ ${sources.map((source) => `- [${source.title}](${source.url})`).join("\n")}
   )
   .join("\n")}
 
+## Deep-dive checklist
+
+${DEEP_DIVE_CHECK_ITEMS[workshop.slug]
+  .map(
+    (item) =>
+      `- [${progress.bonusChecks.includes(item.id) ? "x" : " "}] ${item.label}`,
+  )
+  .join("\n")}
+
 ## Applied check
 
 ${workshop.assessment
@@ -305,7 +377,16 @@ ${workshop.assessment
 
 This export records a teaching checklist, not proof that the scientific checks were done. Keep the actual sources, test outputs, approvals, and decision records with the project.
 `;
-    downloadText(`${workshop.slug}-working-record.md`, text);
+    const safeProjectName =
+      activeProject.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "")
+        .slice(0, 50) || "project";
+    downloadText(
+      `${workshop.slug}-${safeProjectName}-working-record.md`,
+      text,
+    );
   }
 
   return (
@@ -329,7 +410,7 @@ This export records a teaching checklist, not proof that the scientific checks w
             </button>
             <button onClick={reset} type="button">
               <Refresh size={16} />
-              Reset
+              Reset project
             </button>
           </div>
         </header>
@@ -347,6 +428,19 @@ This export records a teaching checklist, not proof that the scientific checks w
           </aside>
         </section>
 
+        <ProjectWorkspace
+          activeProject={activeProject}
+          onCreate={createProject}
+          onRename={(name) =>
+            updateActiveProject((project) => ({ ...project, name }))
+          }
+          onSelect={selectProject}
+          onUpdateNotes={(notes) =>
+            updateActiveProject((project) => ({ ...project, notes }))
+          }
+          workspace={workspace}
+        />
+
         <WorkshopPrimer
           guidance={guidance}
           onChooseRoute={chooseRoute}
@@ -356,6 +450,18 @@ This export records a teaching checklist, not proof that the scientific checks w
           workshop={workshop}
         />
         <CaseStudy workshop={workshop} />
+        {workshop.slug !== "interactive-paper" ? (
+          <WorkshopDeepDive
+            checked={progress.bonusChecks}
+            onToggle={(id) =>
+              save({
+                ...progress,
+                bonusChecks: toggleItem(progress.bonusChecks, id),
+              })
+            }
+            slug={workshop.slug}
+          />
+        ) : null}
 
         <section className="workbench" aria-label={`${workshop.title} checklist`}>
           <div className="workbench-progress">
@@ -533,13 +639,35 @@ This export records a teaching checklist, not proof that the scientific checks w
           </div>
         </section>
 
-        {workshop.slug === "agentic-research" ? <AgenticPlanBuilder /> : null}
-        {workshop.slug === "interactive-paper" ? <PaperSiteBuilder /> : null}
-        {workshop.slug === "annotation-tools" ? (
+        {workshop.slug === "agentic-research" ? (
+          <AgenticPlanBuilder
+            key={`${activeProject.id}:${builderRevision}`}
+            projectId={activeProject.id}
+          />
+        ) : null}
+        {workshop.slug === "interactive-paper" ? (
           <>
-            <AnnotationDemo />
-            <AnnotationSpecBuilder />
+            <PaperSiteBuilder
+              key={`${activeProject.id}:${builderRevision}`}
+              projectId={activeProject.id}
+            />
+            <WorkshopDeepDive
+              checked={progress.bonusChecks}
+              onToggle={(id) =>
+                save({
+                  ...progress,
+                  bonusChecks: toggleItem(progress.bonusChecks, id),
+                })
+              }
+              slug={workshop.slug}
+            />
           </>
+        ) : null}
+        {workshop.slug === "annotation-tools" ? (
+          <div key={`${activeProject.id}:${builderRevision}`}>
+            <AnnotationDemo />
+            <AnnotationSpecBuilder projectId={activeProject.id} />
+          </div>
         ) : null}
 
         <WorkshopAssessment

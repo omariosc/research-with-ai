@@ -61,6 +61,21 @@ export default function AboutPage() {
               three decimals. It does not claim model retraining,
               whole-paper reproduction, or clinical validity.
             </p>
+            <p>
+              The agentic-systems comparison links to the primary papers and
+              keeps system-generated ranking, expert review, wet-lab evidence,
+              and peer review separate. The annotation origin note separates
+              Omar&apos;s first-hand Hamlyn account from public commits and the
+              versioned LASK record. Neither appendix turns an author account
+              or an agent&apos;s judgement into independent evidence.
+            </p>
+            <p>
+              The model-container lab uses a transparent synthetic model. Its
+              automated and live Docker checks establish service behaviour,
+              input rejection, and a local runtime boundary. They do not
+              establish model accuracy, clinical validity, availability, or
+              security against every threat.
+            </p>
           </div>
         </section>
 
@@ -71,9 +86,9 @@ export default function AboutPage() {
           </div>
           <div>
             <p>
-              Progress, evidence notes, assessment choices, and builder drafts
-              use unencrypted browser local storage on the current web address
-              with the prefix{" "}
+              Project names and notes, progress, evidence notes, assessment
+              choices, and builder drafts use unencrypted browser local storage
+              on the current web address with the prefix{" "}
               <code>research-with-ai:v1</code>. The theme choice uses{" "}
               <code>research-with-ai:theme</code>. Browser extensions, device
               users, backups, or browser-profile tools may be able to read

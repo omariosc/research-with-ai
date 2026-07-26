@@ -3,7 +3,14 @@ const routes = [
   "/interactive-paper",
   "/annotation-tools",
 ];
-const conservativeLimit = 3600;
+const submissionLimit = 4000;
+
+function withoutReferences(html) {
+  return html.replace(
+    /<section\b[^>]*class="[^"]*\bsource-library\b[^"]*"[^>]*>[\s\S]*?<\/section>/gi,
+    " ",
+  );
+}
 
 function visibleText(html) {
   return html
@@ -47,12 +54,16 @@ for (const route of routes) {
   if (!response.ok) {
     throw new Error(`${route} rendered with HTTP ${response.status}`);
   }
-  const count = countWords(visibleText(await response.text()));
-  process.stdout.write(`${route}: ${count} visible words\n`);
-  if (count > conservativeLimit) {
+  const html = await response.text();
+  const totalCount = countWords(visibleText(html));
+  const submissionCount = countWords(visibleText(withoutReferences(html)));
+  process.stdout.write(
+    `${route}: ${submissionCount} tutorial words excluding references; ${totalCount} total visible words\n`,
+  );
+  if (submissionCount >= submissionLimit) {
     failed = true;
     process.stderr.write(
-      `${route} exceeds the conservative ${conservativeLimit}-word release limit.\n`,
+      `${route} does not meet the below-${submissionLimit}-word submission limit excluding references.\n`,
     );
   }
 }

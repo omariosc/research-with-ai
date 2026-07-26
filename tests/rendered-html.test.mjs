@@ -69,7 +69,7 @@ test("server-renders the platform overview and all three routes", async () => {
   assert.match(html, /href="https:\/\/researchwithai\.omarchoudhry\.co\.uk\/worked-examples\/medmnist-breast"/);
   assert.match(html, /Local, not encrypted/);
   assert.match(html, /aria-label="Switch to dark mode"/);
-  assert.match(html, /v1\.2\.0/);
+  assert.match(html, /v1\.3\.0/);
   assert.match(html, /Skip to main content/);
   assert.match(html, /research-with-ai:theme/);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site/);
@@ -87,7 +87,14 @@ test("renders the ten-stage agentic research workshop", async () => {
   assert.match(html, /Package, disclose, and release/);
   assert.match(html, /research_contract\.md/);
   assert.match(html, /Human checkpoint/);
-  assert.match(html, /Tutorial release: v1\.2\.0/);
+  assert.match(html, /Tutorial release: v1\.3\.0/);
+  assert.match(html, /Your research workspace/);
+  assert.match(html, /My first project/);
+  assert.match(html, /What makes the workflow agentic\?/);
+  assert.match(html, /Google Co-Scientist/);
+  assert.match(html, /Medical AI Scientist/);
+  assert.match(html, /arXiv:2606\.15497/);
+  assert.match(html, /Original reading-note appendix/);
   assert.match(html, /Know the route and the standard/);
   assert.match(
     html,
@@ -152,16 +159,26 @@ test("renders the website brief and annotation interactions", async () => {
   assert.match(paper, /Fast public companion/);
   assert.match(paper, /Hosted structured interview/);
   assert.match(paper, /Reader task/);
+  assert.match(paper, /Turn a model into a portable service/);
+  assert.match(paper, /Raspberry Pi 3, 4, or 5/);
+  assert.match(paper, /NVIDIA Jetson/);
+  assert.match(paper, /model-container-service\.zip/);
+  assert.match(paper, /Port forwarding is not the deployment plan/);
   assert.match(annotation, /Developing Custom Annotation Tools Using AI/);
   assert.match(annotation, /A tiny annotation loop/);
+  assert.match(annotation, /From a fast beta to the LASK workflow/);
+  assert.match(annotation, /Open LASK v1\.0 on Zenodo/);
+  assert.match(annotation, /The Hamlyn question/);
+  assert.match(annotation, /Author account/);
+  assert.match(annotation, /annotation-synthetic-frame\.svg/);
   assert.match(annotation, /annotation-spec\.yaml/);
   assert.match(annotation, /surgical-annotator workflow/);
-  assert.match(annotation, /tutorial_version: &quot;1\.2\.0&quot;/);
-  assert.match(annotation, /schema_version: &quot;1\.2\.0&quot;/);
+  assert.match(annotation, /tutorial_version: &quot;1\.3\.0&quot;/);
+  assert.match(annotation, /schema_version: &quot;1\.3\.0&quot;/);
   assert.match(annotation, /origin: &quot;manual&quot;/);
   assert.match(
     annotation,
-    /href="\/schemas\/annotation-spec-1\.2\.0\.schema\.json"/,
+    /href="\/schemas\/annotation-spec-1\.3\.0\.schema\.json"/,
   );
   assert.match(annotation, /frame_dimensions_px/);
   assert.match(annotation, /480/);
@@ -208,19 +225,21 @@ test("renders the version history and canonical workshop links", async () => {
   assert.match(html, /Version history \| Research with AI/);
   assert.match(html, /Current tutorials, clearly versioned\./);
   assert.match(html, /Current content release/);
+  assert.match(html, /v1\.3\.0/);
   assert.match(html, /v1\.2\.0/);
   assert.match(html, /v1\.1\.0/);
   assert.match(html, /v1\.0\.0/);
   assert.match(html, /agenticresearch\.omarchoudhry\.co\.uk/);
   assert.match(html, /interactivepaper\.omarchoudhry\.co\.uk/);
   assert.match(html, /annotate\.omarchoudhry\.co\.uk/);
+  assert.match(html, /research-with-ai-v1\.3\.0-source\.zip/);
   assert.match(html, /research-with-ai-v1\.2\.0-source\.zip/);
   assert.match(html, /a304472/);
   assert.match(html, /research-with-ai-v1\.1\.0-source\.zip/);
   assert.match(html, /bd3c4a2/);
 });
 
-test("publishes the reviewed source snapshot with its checksum", async () => {
+test("keeps the historical v1.2 source snapshot pinned", async () => {
   const archiveUrl = new URL(
     "../public/releases/research-with-ai-v1.2.0-source.zip",
     import.meta.url,
@@ -340,11 +359,11 @@ test("removes starter preview code and dependency", async () => {
   );
 });
 
-test("ships a versioned annotation specification schema", async () => {
+test("ships the current versioned annotation specification schema", async () => {
   const schema = JSON.parse(
     await readFile(
       new URL(
-        "../public/schemas/annotation-spec-1.2.0.schema.json",
+        "../public/schemas/annotation-spec-1.3.0.schema.json",
         import.meta.url,
       ),
       "utf8",
@@ -352,8 +371,8 @@ test("ships a versioned annotation specification schema", async () => {
   );
 
   assert.equal(schema.$schema, "https://json-schema.org/draft/2020-12/schema");
-  assert.equal(schema.properties.tutorial_version.const, "1.2.0");
-  assert.equal(schema.properties.schema_version.const, "1.2.0");
+  assert.equal(schema.properties.tutorial_version.const, "1.3.0");
+  assert.equal(schema.properties.schema_version.const, "1.3.0");
   assert.equal(schema.properties.data.properties.raw_data_immutable.const, true);
   assert.deepEqual(
     schema.properties.data.properties.deidentification.properties.status.enum,
@@ -397,13 +416,31 @@ test("keeps the legacy v1.1.0 annotation schema pinned", async () => {
   assert.equal(schema.properties.schema_version.const, "1.1.0");
 });
 
-test("pins the exact source asset used by the annotation demo", async () => {
+test("keeps the legacy v1.2.0 annotation schema pinned", async () => {
+  const schema = JSON.parse(
+    await readFile(
+      new URL(
+        "../public/schemas/annotation-spec-1.2.0.schema.json",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
+
+  assert.equal(schema.properties.tutorial_version.const, "1.2.0");
+  assert.equal(schema.properties.schema_version.const, "1.2.0");
+});
+
+test("pins the original synthetic asset used by the annotation demo", async () => {
   const asset = await readFile(
-    new URL("../public/frame-annotator-safety-interface.png", import.meta.url),
+    new URL(
+      "../public/worked-examples/annotation-synthetic-frame.svg",
+      import.meta.url,
+    ),
   );
   assert.equal(
     createHash("sha256").update(asset).digest("hex"),
-    "87c105e2c0fed14477179052dc08d953441cc7cb483fa5680ec490b23a8cc97c",
+    "a13ab3684833e3bb14c87ff5eed4486c724ee794552dfaf55aa63a61caab7344",
   );
 });
 
@@ -412,7 +449,7 @@ test("generated annotation YAML parses and validates against its schema", async 
     render("/annotation-tools"),
     readFile(
       new URL(
-        "../public/schemas/annotation-spec-1.2.0.schema.json",
+        "../public/schemas/annotation-spec-1.3.0.schema.json",
         import.meta.url,
       ),
       "utf8",
@@ -425,8 +462,8 @@ test("generated annotation YAML parses and validates against its schema", async 
   assert.ok(match, "default annotation YAML should be rendered");
   const spec = parseYaml(decodeHtml(match[1]));
   const schema = JSON.parse(schemaText);
-  assert.equal(spec.tutorial_version, "1.2.0");
-  assert.equal(spec.schema_version, "1.2.0");
+  assert.equal(spec.tutorial_version, "1.3.0");
+  assert.equal(spec.schema_version, "1.3.0");
   const ajv = new Ajv2020({ allErrors: true, strict: true });
   addFormats(ajv);
   const validate = ajv.compile(schema);

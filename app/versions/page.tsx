@@ -85,6 +85,61 @@ export default function VersionsPage() {
             </time>
           </div>
           <div>
+            <h3>Project workspaces and evidence deep dives</h3>
+            <ul>
+              <li>
+                Named local projects with separate checklists, decisions,
+                assessments, builder drafts, and exportable notes
+              </li>
+              <li>
+                A source-led comparison of Google Co-Scientist, the AI
+                Scientist lineage, and Medical AI Scientist
+              </li>
+              <li>
+                A clearly labelled first-hand annotation-tool story linked to
+                the public frame-annotator history and LASK v1.0 on Zenodo
+              </li>
+              <li>
+                A runnable synthetic FastAPI and Docker service with locked
+                dependencies, failure tests, least-privilege runtime controls,
+                and PC, Raspberry Pi, and Jetson deployment guidance
+              </li>
+              <li>
+                Downloadable reading notes, evidence records, deployment
+                template, and complete model-service source pack
+              </li>
+            </ul>
+            <p>
+              The shared homepage remains available at{" "}
+              <a href={TUTORIAL_HOMEPAGE}>
+                researchwithai.omarchoudhry.co.uk
+              </a>
+              .
+            </p>
+            <p>
+              Download the{" "}
+              <a
+                download
+                href="/releases/research-with-ai-v1.3.0-source.zip"
+              >
+                reviewed v1.3.0 source snapshot
+              </a>{" "}
+              from commit <code>V1_3_FEATURE_COMMIT</code>, with its{" "}
+              <a href="/releases/research-with-ai-v1.3.0-source.sha256">
+                SHA-256 record
+              </a>
+              .
+            </p>
+          </div>
+        </section>
+
+        <section className="release-notes release-notes-previous">
+          <div>
+            <p>Previous release</p>
+            <h2>v1.2.0</h2>
+            <time dateTime="2026-07-26">Released 2026-07-26</time>
+          </div>
+          <div>
             <h3>Guided workflow upgrade</h3>
             <ul>
               <li>
@@ -111,13 +166,6 @@ export default function VersionsPage() {
               </li>
             </ul>
             <p>
-              The shared homepage remains available at{" "}
-              <a href={TUTORIAL_HOMEPAGE}>
-                researchwithai.omarchoudhry.co.uk
-              </a>
-              .
-            </p>
-            <p>
               Download the{" "}
               <a
                 download
@@ -136,7 +184,7 @@ export default function VersionsPage() {
 
         <section className="release-notes release-notes-previous">
           <div>
-            <p>Previous release</p>
+            <p>Earlier release</p>
             <h2>v1.1.0</h2>
             <time dateTime="2026-07-26">Released 2026-07-26</time>
           </div>

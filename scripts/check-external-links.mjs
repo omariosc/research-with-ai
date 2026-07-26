@@ -6,14 +6,35 @@ const roots = [
   "lib",
   "docs",
   "public/audits",
+  "public/reading-notes",
+  "public/schemas",
   "public/worked-examples",
   "README.md",
   "AI_USE.md",
   "CITATION.cff",
   "THIRD_PARTY_NOTICES.md",
 ];
-const textExtensions = new Set([".cff", ".json", ".md", ".py", ".toml", ".ts", ".tsx"]);
+const textExtensions = new Set([
+  ".cff",
+  ".json",
+  ".md",
+  ".py",
+  ".toml",
+  ".ts",
+  ".tsx",
+  ".yaml",
+  ".yml",
+]);
 const manualStatuses = new Set([401, 403, 405, 429]);
+const internalHosts = new Set([
+  "localhost",
+  "127.0.0.1",
+  "[::1]",
+  "agenticresearch.omarchoudhry.co.uk",
+  "annotate.omarchoudhry.co.uk",
+  "interactivepaper.omarchoudhry.co.uk",
+  "researchwithai.omarchoudhry.co.uk",
+]);
 const failures = [];
 const manual = [];
 const passed = [];
@@ -40,6 +61,7 @@ for (const file of files) {
   const text = await readFile(file, "utf8");
   for (const match of text.matchAll(/https?:\/\/[^\s"'<>`)]+/g)) {
     const url = match[0].replace(/[.,;:\]}]+$/, "");
+    if (internalHosts.has(new URL(url).hostname)) continue;
     const line = text.slice(0, match.index).split("\n").length;
     const references = locations.get(url) ?? [];
     references.push(`${file}:${line}`);
@@ -56,7 +78,7 @@ async function inspect(url) {
       method: "HEAD",
       redirect: "follow",
       signal: controller.signal,
-      headers: { "user-agent": "Research-with-AI-link-check/1.2" },
+      headers: { "user-agent": "Research-with-AI-link-check/1.3" },
     });
     if (response.status === 404 || response.status === 405) {
       await response.body?.cancel();
@@ -66,7 +88,7 @@ async function inspect(url) {
         signal: controller.signal,
         headers: {
           range: "bytes=0-0",
-          "user-agent": "Research-with-AI-link-check/1.2",
+          "user-agent": "Research-with-AI-link-check/1.3",
         },
       });
     }
