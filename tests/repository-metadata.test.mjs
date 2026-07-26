@@ -103,6 +103,7 @@ test("repository documentation has no broken relative file links", async () => {
     "CODE_OF_CONDUCT.md",
     "SECURITY.md",
     "docs/images/README.md",
+    "docs/releases/v1.3.0.md",
   ];
 
   for (const path of markdownFiles) {
