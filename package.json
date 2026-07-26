@@ -9,7 +9,7 @@
     "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext dev",
     "build": "node scripts/check-public-assets.mjs && WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext build",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
-    "test": "npm run build && node --test tests/*.test.mjs && node scripts/count-tutorial-words.mjs",
+    "test": "npm run build && node --experimental-strip-types --test tests/*.test.mjs && node scripts/count-tutorial-words.mjs",
     "check:words": "npm run build && node scripts/count-tutorial-words.mjs",
     "check:links": "node scripts/check-external-links.mjs",
     "check:annotation-roundtrip": "node scripts/annotation-round-trip.mjs",
