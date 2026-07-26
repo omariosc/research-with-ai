@@ -5,27 +5,34 @@ Official call: <https://miccai-sb.github.io/challenge>
 Check the official call and OpenReview entry again on the day of submission in
 case dates or fields change.
 
-## Proposed submission
+## Three independent submissions
 
-**Title:** Research with AI: Three Practical, Human-Controlled Workflows
+Prepare one package for each canonical tutorial. Do not rely on the shared
+homepage to supply required context.
 
-**One-line summary:** Three interactive tutorials show researchers how to use
-AI across a reproducible research workflow, a paper website, and a custom
-annotation tool while preserving evidence, provenance, and human approval.
+1. **Agentic AI in Research:** a bounded, evidence-led route from question to
+   checked computational release.
+2. **Building a Website for Your Research Using AI:** a claim-traceable route
+   from paper and repository to an accessible interactive companion.
+3. **Developing Custom Annotation Tools Using AI:** a protocol-first route to a
+   tested local tool and provenance-aware dataset.
 
 **Keywords:** agentic AI, research workflow, reproducibility, research
 communication, annotation tools, human oversight
 
-## Package
+## Package for every submission
 
-- [ ] Public landing page and three stable workshop URLs
-- [ ] Repository snapshot with version tag and `CITATION.cff`
-- [ ] Short PDF wrapper containing title, authors, abstract, URLs, licence,
+- [ ] Standalone canonical root URL with the correct title and social metadata
+- [ ] Public repository snapshot with a signed version tag and citation record
+- [ ] Short PDF wrapper containing title, author, abstract, URL, licence,
       intended audience, learning outcomes, and access instructions
-- [ ] Three full tutorial recordings with captions and transcripts
+- [ ] Tutorial recording no longer than 20 minutes, with captions and transcript
 - [ ] One-minute overview video for finalist use
+- [ ] Downloadable static tutorial and worked artefact pack
 - [ ] CC BY 4.0 notice for original tutorial content
-- [ ] AI-use disclosure
+- [ ] Exact AI-use disclosure and named human sign-off
+- [ ] Accessibility statement and known limitations
+- [ ] Version, release notes, citation, and feedback route
 
 ## Evidence review
 
@@ -40,22 +47,32 @@ communication, annotation tools, human oversight
 - [ ] Test every route in a clean desktop and mobile browser
 - [ ] Download and inspect every generated Markdown or YAML file
 - [ ] Confirm keyboard use, colour contrast, image alternatives, and captions
+- [ ] Record a release-time word count below 4,000 words, excluding references
+- [ ] Verify all publisher or vendor links that block automated checks manually
+- [ ] Confirm the worked case states what was observed and what it does not prove
+- [ ] Run the locked BreastMNIST verifier and preserve its reviewed JSON output
+- [ ] Confirm the reused MedMNIST figure attribution, hash, alt text, and long
+      description
+- [ ] Run the annotation export round trip and state what the review CSV does
+      not preserve
 
-## Suggested PDF structure
+## Suggested wrapper structure
 
 1. Motivation and intended learners
 2. Learning outcomes
-3. Educational design and human-control pattern
-4. The three interactive workshops
-5. First-hand worked examples
-6. Evidence, accessibility, privacy, and licensing
-7. Availability, repository, videos, and citation
-8. Limitations and planned evaluation
+3. First-hand case and artefacts
+4. Educational design, activity, and applied assessment
+5. Evidence, accessibility, privacy, and licensing
+6. Availability, repository, video, and citation
+7. Limitations and planned evaluation
 
-## Evaluation to add
+## Evaluation
 
-Recruit a small group of Masters students, PhD researchers, and one experienced
-research software practitioner. Give each participant one realistic task and
-measure completion, errors caught, confidence before and after, and which
-checkpoints changed their planned behaviour. Report the protocol and negative
-feedback as part of the educational contribution.
+Run at least one cold-read pilot per tutorial with a target learner. Use a
+parallel pre-task and post-task case. Record critical errors detected, unsafe
+actions avoided, rubric score, completion time, transfer to a new case, and
+where the learner became stuck. Confidence and satisfaction are secondary
+measures. Report negative feedback, missing observations, the exact tutorial
+version, and what changed after the pilot. Use the reproducible task, stop
+rules, scoring rubric, and session record in
+[`LEARNER_PILOT.md`](./LEARNER_PILOT.md).

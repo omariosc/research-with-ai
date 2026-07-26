@@ -15,6 +15,37 @@ const WORKSHOP_ROOTS = new Map([
   ["annotate.omarchoudhry.co.uk", "/annotation-tools"],
 ]);
 
+const FORWARDED_REQUEST_HEADERS = new Set([
+  "accept",
+  "accept-encoding",
+  "accept-language",
+  "cache-control",
+  "if-modified-since",
+  "if-none-match",
+  "next-router-prefetch",
+  "next-router-state-tree",
+  "next-url",
+  "purpose",
+  "range",
+  "rsc",
+  "user-agent",
+]);
+
+export function buildUpstreamUrl(
+  configuredOrigin: string,
+  incoming: URL,
+  upstreamPath: string,
+) {
+  const origin = new URL(configuredOrigin);
+  const upstreamUrl = new URL(origin);
+  upstreamUrl.pathname = upstreamPath;
+  upstreamUrl.search = incoming.search;
+  if (upstreamUrl.origin !== origin.origin) {
+    throw new Error("Resolved upstream escaped the configured origin.");
+  }
+  return { origin, upstreamUrl };
+}
+
 function appendVary(headers: Headers, value: string) {
   const current = headers.get("vary");
   const values = new Set(
@@ -38,25 +69,35 @@ const worker = {
       });
     }
 
-    const origin = new URL(env.SITE_ORIGIN);
+    if (request.method !== "GET" && request.method !== "HEAD") {
+      return new Response("Method not allowed.", {
+        status: 405,
+        headers: {
+          allow: "GET, HEAD",
+          "content-type": "text/plain; charset=utf-8",
+        },
+      });
+    }
+
     const upstreamPath =
       incoming.pathname === "/"
         ? (WORKSHOP_ROOTS.get(incoming.hostname) ?? "/")
         : incoming.pathname;
-    const upstreamUrl = new URL(
-      `${upstreamPath}${incoming.search}`,
-      origin,
+    const { origin, upstreamUrl } = buildUpstreamUrl(
+      env.SITE_ORIGIN,
+      incoming,
+      upstreamPath,
     );
-    const upstreamHeaders = new Headers(request.headers);
-    upstreamHeaders.delete("host");
+    const upstreamHeaders = new Headers();
+    for (const [name, value] of request.headers) {
+      if (FORWARDED_REQUEST_HEADERS.has(name.toLowerCase())) {
+        upstreamHeaders.set(name, value);
+      }
+    }
     upstreamHeaders.set("x-forwarded-host", incoming.hostname);
     upstreamHeaders.set("x-forwarded-proto", "https");
 
     const upstreamRequest = new Request(upstreamUrl, {
-      body:
-        request.method === "GET" || request.method === "HEAD"
-          ? undefined
-          : request.body,
       headers: upstreamHeaders,
       method: request.method,
       redirect: "manual",
@@ -64,6 +105,25 @@ const worker = {
     const upstreamResponse = await fetch(upstreamRequest);
     const responseHeaders = new Headers(upstreamResponse.headers);
     appendVary(responseHeaders, "X-Forwarded-Host");
+    responseHeaders.delete("set-cookie");
+    responseHeaders.delete("nel");
+    responseHeaders.delete("report-to");
+    responseHeaders.delete("reporting-endpoints");
+    responseHeaders.set(
+      "content-security-policy",
+      "default-src 'self'; base-uri 'self'; connect-src 'self'; font-src 'self' data:; form-action 'self'; frame-ancestors 'none'; img-src 'self' data: blob:; object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; upgrade-insecure-requests",
+    );
+    responseHeaders.set(
+      "permissions-policy",
+      "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
+    );
+    responseHeaders.set("referrer-policy", "no-referrer");
+    responseHeaders.set(
+      "strict-transport-security",
+      "max-age=31536000; includeSubDomains",
+    );
+    responseHeaders.set("x-content-type-options", "nosniff");
+    responseHeaders.set("x-frame-options", "DENY");
 
     const location = responseHeaders.get("location");
     if (location) {

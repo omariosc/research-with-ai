@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { PrivacyNote } from "@/app/components/PrivacyNote";
 import { SiteFooter } from "@/app/components/HomeClient";
 import { ArrowRight } from "@/app/components/Icons";
@@ -14,7 +13,7 @@ import {
 export const metadata: Metadata = {
   title: "Version history",
   description:
-    "Release history and stable canonical links for the Research with AI tutorials.",
+    "Release history and current canonical links for the Research with AI tutorials.",
   alternates: {
     canonical: `${TUTORIAL_HOMEPAGE}/versions`,
   },
@@ -26,11 +25,11 @@ export default function VersionsPage() {
   return (
     <div className="site-frame">
       <SiteNav active="versions" />
-      <main className="versions-main">
+      <main className="versions-main" id="main-content">
         <header className="versions-hero">
           <div>
             <p>Release history</p>
-            <h1>Stable tutorials, clearly versioned.</h1>
+            <h1>Current tutorials, clearly versioned.</h1>
           </div>
           <aside>
             <span>Current content release</span>
@@ -46,8 +45,9 @@ export default function VersionsPage() {
           <p>
             Each workshop has its own canonical address and can be cited,
             reviewed, and submitted independently. The shared release number
-            identifies the exact tutorial text, prompts, checkpoints, and
-            exported templates.
+            identifies the current content release. Canonical pages can change
+            in later releases, so keep the dated submission package when an
+            exact snapshot is required.
           </p>
         </section>
 
@@ -85,13 +85,22 @@ export default function VersionsPage() {
             </time>
           </div>
           <div>
-            <h3>Initial public tutorial release</h3>
+            <h3>Evidence and learning upgrade</h3>
             <ul>
-              <li>Three complete ten-stage research workshops</li>
-              <li>Human evidence gates and locally saved progress</li>
-              <li>Copyable prompts and version-marked exports</li>
-              <li>Interactive planning and annotation demonstrations</li>
-              <li>Primary source libraries and independent canonical links</li>
+              <li>
+                Audience, prerequisites, outcomes, and a timed orientation route
+              </li>
+              <li>
+                A runnable BreastMNIST evidence pack with pinned inputs,
+                independent metrics, rights, and claim states
+              </li>
+              <li>
+                Pinned repository and annotation cases with explicit claim
+                boundaries
+              </li>
+              <li>Evidence notes and Ready, Revise, or Stop decisions</li>
+              <li>Applied scenarios with immediate explanatory feedback</li>
+              <li>Stronger safety, accessibility, provenance, and honest timing</li>
             </ul>
             <p>
               The shared homepage remains available at{" "}
@@ -103,10 +112,26 @@ export default function VersionsPage() {
           </div>
         </section>
 
-        <Link className="versions-back" href="/">
+        <section className="release-notes release-notes-previous">
+          <div>
+            <p>Previous release</p>
+            <h2>v1.0.0</h2>
+            <time dateTime="2026-07-26">Released 2026-07-26</time>
+          </div>
+          <div>
+            <h3>Initial public tutorial release</h3>
+            <p>
+              Three ten-stage checklists, copyable prompts, local progress,
+              interactive builders, primary source libraries, and independent
+              canonical links.
+            </p>
+          </div>
+        </section>
+
+        <a className="versions-back" href={TUTORIAL_HOMEPAGE}>
           Return to all workshops
           <ArrowRight size={18} />
-        </Link>
+        </a>
         <SiteFooter />
       </main>
       <PrivacyNote />

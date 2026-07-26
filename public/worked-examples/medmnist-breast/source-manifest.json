@@ -1,0 +1,125 @@
+{
+  "manifest_version": "1.0.0",
+  "retrieved_on": "2026-07-26",
+  "accountable_reviewer": "Omar Choudhry",
+  "sources": [
+    {
+      "id": "paper",
+      "type": "paper",
+      "title": "MedMNIST v2 - A large-scale lightweight benchmark for 2D and 3D biomedical image classification",
+      "canonical_url": "https://doi.org/10.1038/s41597-022-01721-8",
+      "locator": "Table 3, ResNet-18 (28), BreastMNIST",
+      "retrieved_pdf_url": "https://www.nature.com/articles/s41597-022-01721-8.pdf",
+      "retrieved_pdf_sha256": "db5c95abc67e433c41e72980cb59d266b4cdcaf14c8c1f5bb6e4b15b8e8b2de9",
+      "rights": "CC BY 4.0",
+      "use": "Linked, attributed, and paraphrased; Figure 1 is reused with attribution."
+    },
+    {
+      "id": "busi-source-paper",
+      "type": "paper",
+      "title": "Dataset of breast ultrasound images",
+      "canonical_url": "https://doi.org/10.1016/j.dib.2019.104863",
+      "locator": "Source dataset cited for BreastMNIST by MedMNIST v2",
+      "rights": "Article CC BY 4.0; original BUSI file rights not independently audited",
+      "use": "Linked as the source data article cited by MedMNIST v2; no original BUSI file is redistributed or independently audited."
+    },
+    {
+      "id": "dataset",
+      "type": "dataset",
+      "title": "MedMNIST v2: A Large-Scale Lightweight Benchmark for 2D and 3D Biomedical Image Classification",
+      "canonical_url": "https://doi.org/10.5281/zenodo.5208230",
+      "version": "2.0",
+      "file": "breastmnist.npz",
+      "size_bytes": 559580,
+      "md5": "750601b1f35ba3300ea97c75c52ff8f6",
+      "sha256": "3a22d2a4625e7dd8903f0f59030e81a3d0c222bece2e5e10927456cb50efdec1",
+      "rights": "CC BY 4.0",
+      "use": "Downloaded temporarily by the verifier; test labels only are read."
+    },
+    {
+      "id": "predictions",
+      "type": "dataset",
+      "title": "Model weights and predictions for reproducible benchmarking experiments in MedMNIST v2",
+      "canonical_url": "https://doi.org/10.5281/zenodo.7782114",
+      "version": "v1",
+      "archive": "predictions.zip",
+      "zenodo_listed_archive_size_bytes": 2007797878,
+      "zenodo_listed_archive_md5": "1a2563e89d3d36d0f29d7ca31e8a41c2",
+      "selected_files": [
+        {
+          "file": "breastmnist_test_[AUC]0.898_[ACC]0.872@resnet18_28_1.csv",
+          "sha256": "e440e58b346fa0ca7f716a32214cc21777d9e414b205e79b37c78d3d4991478c"
+        },
+        {
+          "file": "breastmnist_test_[AUC]0.917_[ACC]0.872@resnet18_28_2.csv",
+          "sha256": "6d2aa475a6c7dfa183bb6eec50dc199f20ce2812bac6ed583da8a502a0c8d3ec"
+        },
+        {
+          "file": "breastmnist_test_[AUC]0.889_[ACC]0.846@resnet18_28_3.csv",
+          "sha256": "a3dae28dd2f8d766167166ff49e578ff9d68843eb51e97385cb6150406d5dd70"
+        }
+      ],
+      "rights": "CC BY 4.0",
+      "use": "The verifier reads three selected files with byte-range requests and checks each SHA-256 before parsing. It does not download and hash the complete archive."
+    },
+    {
+      "id": "medmnist-code",
+      "type": "software",
+      "title": "MedMNIST official API",
+      "canonical_url": "https://github.com/MedMNIST/MedMNIST/tree/805b74237fb5bd2db376fd94e50646b6a8905d9d",
+      "commit": "805b74237fb5bd2db376fd94e50646b6a8905d9d",
+      "rights": "Apache-2.0",
+      "use": "Pinned as the official API and dataset-documentation reference; the independent verifier does not import it."
+    },
+    {
+      "id": "medmnist-paper-era-evaluator",
+      "type": "software",
+      "title": "MedMNIST paper-era evaluator",
+      "canonical_url": "https://github.com/MedMNIST/MedMNIST/blob/16e3ead23ceb3e1c5f7b9b04032c30cea7a4b1d8/medmnist/evaluator.py#L135-L175",
+      "commit": "16e3ead23ceb3e1c5f7b9b04032c30cea7a4b1d8",
+      "rights": "Apache-2.0",
+      "use": "The paper-era implementation selects the final score column for binary AUC and applies score greater than 0.5 for accuracy; the independent verifier reproduces that contract."
+    },
+    {
+      "id": "experiments-before-fix",
+      "type": "software",
+      "title": "MedMNIST experiments",
+      "canonical_url": "https://github.com/MedMNIST/experiments/tree/12e9f40ad214f6f076b1672cf29fab9d2e7216cc",
+      "commit": "12e9f40ad214f6f076b1672cf29fab9d2e7216cc",
+      "rights": "Apache-2.0",
+      "use": "Direct parent of the best-model fix, inspected read-only; no code copied."
+    },
+    {
+      "id": "experiments-fix",
+      "type": "software",
+      "title": "Update best model save",
+      "canonical_url": "https://github.com/MedMNIST/experiments/commit/8b0f553f95ea6b5f5517e49c539952cb21c79d89",
+      "commit": "8b0f553f95ea6b5f5517e49c539952cb21c79d89",
+      "rights": "Apache-2.0",
+      "use": "Linked as evidence for the later deepcopy fix."
+    }
+  ],
+  "local_assets": [
+    {
+      "file": "medmnist-figure-1.jpg",
+      "source": "paper",
+      "source_url": "https://cdn.ncbi.nlm.nih.gov/pmc/blobs/3ac8/9852451/45d10a61d7e2/41597_2022_1721_Fig1_HTML.jpg",
+      "sha256": "490bafbc9a24fec64a825b4e18cfc0544e3b897140097116175cefa482edca65",
+      "change": "The same-sized PMC JPEG is reused without further visual editing and displayed responsively with a separately authored long description."
+    },
+    {
+      "file": "verify.py",
+      "source": "Research with AI",
+      "rights": "MIT",
+      "use": "Independent metric calculation and input validation."
+    },
+    {
+      "file": "reproduction-report.json",
+      "source": "Research with AI",
+      "rights": "CC BY 4.0",
+      "use": "Reviewed output record."
+    }
+  ],
+  "sensitivity": "Public biomedical benchmark only; no patient-identifiable or private data.",
+  "claim_boundary": "Prediction-artifact metric re-evaluation only. No training reproduction or clinical validation."
+}

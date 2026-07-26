@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { readProgress } from "@/lib/storage";
 import type { Workshop, WorkshopSlug } from "@/lib/types";
 import {
+  TUTORIAL_HOMEPAGE,
   TUTORIAL_RELEASE_DATE,
   TUTORIAL_VERSION_LABEL,
 } from "@/lib/version";
@@ -57,7 +58,7 @@ export function HomeClient({ workshops }: { workshops: Workshop[] }) {
   return (
     <div className="site-frame">
       <SiteNav active="home" />
-      <main className="home-main">
+      <main className="home-main" id="main-content">
         <section className="home-hero">
           <div className="home-hero-copy">
             <h1>
@@ -86,8 +87,8 @@ export function HomeClient({ workshops }: { workshops: Workshop[] }) {
             <p>Start where the work is</p>
             <h2>Three complete routes</h2>
             <span>
-              Each workshop saves progress locally and ends with an editable
-              plan you can export.
+              Each workshop saves progress locally on this web address and
+              ends with an editable plan you can export.
             </span>
           </div>
           <div className="workshop-index">
@@ -193,14 +194,16 @@ export function HomeClient({ workshops }: { workshops: Workshop[] }) {
         <section className="home-about">
           <div>
             <p>Built from real work</p>
-            <h2>One platform, three first-hand examples</h2>
+            <h2>The examples are inspectable, not hypothetical</h2>
           </div>
           <div>
             <p>
-              The research workflow draws on paper reproduction and HPC tooling.
-              The website route builds on the paper-to-site literature while
-              adding rights, traceability, accessibility, and reproducibility
-              checks. The annotation route uses{" "}
+              The research and website routes share a{" "}
+              <a href={`${TUTORIAL_HOMEPAGE}/worked-examples/medmnist-breast`}>
+                BreastMNIST evidence pack
+              </a>{" "}
+              that recalculates released predictions, records a real repository
+              finding, and keeps the limits visible. The annotation route uses{" "}
               <a
                 href="https://github.com/omariosc/frame-annotator"
                 rel="noreferrer"
@@ -208,7 +211,7 @@ export function HomeClient({ workshops }: { workshops: Workshop[] }) {
               >
                 frame-annotator
               </a>{" "}
-              as an honest case study, including what still needs hardening.
+              as a second honest case, including what still needs hardening.
             </p>
             <p>
               AI helped research, structure, implement, and test this material.
@@ -234,7 +237,7 @@ export function SiteFooter() {
         </span>
       </div>
       <div>
-        <Link href="/versions">Versions</Link>
+        <a href={`${TUTORIAL_HOMEPAGE}/versions`}>Versions</a>
         <a href="https://omarchoudhry.co.uk">Portfolio</a>
         <a href="https://github.com/omariosc">GitHub</a>
         <a href="https://miccai-sb.github.io/challenge">MICCAI MEC</a>

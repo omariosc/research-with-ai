@@ -5,8 +5,9 @@ import { WorkshopClient } from "./components/WorkshopClient";
 import { agenticResearch } from "@/lib/content/agentic";
 import { interactivePaper } from "@/lib/content/paper";
 import { annotationTools } from "@/lib/content/annotation";
+import { workshopMetadata } from "@/lib/metadata";
 import type { Workshop } from "@/lib/types";
-import { TUTORIAL_HOMEPAGE, workshopRelease } from "@/lib/version";
+import { TUTORIAL_HOMEPAGE } from "@/lib/version";
 
 const workshopByHost: Record<string, Workshop> = {
   "agenticresearch.omarchoudhry.co.uk": agenticResearch,
@@ -34,13 +35,7 @@ export async function generateMetadata(): Promise<Metadata> {
     };
   }
 
-  return {
-    title: workshop.title,
-    description: workshop.description,
-    alternates: {
-      canonical: workshopRelease(workshop.slug).canonicalUrl,
-    },
-  };
+  return workshopMetadata(workshop);
 }
 
 export default async function Home() {

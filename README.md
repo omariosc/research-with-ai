@@ -10,18 +10,24 @@ The project is one responsive application with three focused entry points:
 - [Building a Website for Your Research Using AI](https://interactivepaper.omarchoudhry.co.uk)
 - [Developing Custom Annotation Tools Using AI](https://annotate.omarchoudhry.co.uk)
 
-Each route contains a ten-stage checklist, copyable prompts, a human approval
-gate, primary sources, an editable planning tool, and a Markdown export. The
-annotation route also includes a small interactive labelling demo based on
-[frame-annotator](https://github.com/omariosc/frame-annotator).
+Each route contains explicit outcomes and prerequisites, a ten-stage
+checklist, a pinned first-hand case, evidence-backed checkpoints, applied
+scenarios, copyable prompts, primary sources, an editable planning tool, and a
+Markdown export. The annotation route also includes a small interactive
+labelling demo informed by the
+[frame-annotator repository](https://github.com/omariosc/frame-annotator).
+The agentic and website routes share a
+[worked BreastMNIST evidence page](https://researchwithai.omarchoudhry.co.uk/worked-examples/medmnist-breast)
+with a runnable metric check, pinned inputs, a repository finding, figure
+attribution, and explicit limits on what was reproduced.
 
-The current content release is **v1.0.0**, released on 2026-07-26. The
+The current content release is **v1.1.0**, released on 2026-07-26. The
 [version history](https://researchwithai.omarchoudhry.co.uk/versions) records
-the stable canonical address for each independently submitted tutorial.
+the current canonical address for each independently submitted tutorial.
 
 ## What this project contributes
 
-This is not a catalogue of AI products. It teaches three complete workflows:
+This is not a catalogue of AI products. It teaches three bounded workflows:
 
 1. Move from field mapping and paper questions to a bounded reproduction,
    validated experiments, HPC jobs, figures, writing, and release.
@@ -39,6 +45,7 @@ Prerequisites:
 
 - Node.js 22.13 or newer
 - npm
+- Optional: `uv` and Python 3.12 for the external MedMNIST verification
 
 ```bash
 npm install
@@ -49,15 +56,27 @@ Open `http://localhost:3000`. The production build and checks are:
 
 ```bash
 npm run lint
+npm run typecheck
 npm test
-npm audit --omit=dev
+npm run check:links
+npm run check:annotation-roundtrip
+npm run check:medmnist
+npm audit --audit-level=high
 ```
+
+`check:medmnist` retrieves a 559,580-byte public dataset file and three small
+members of a larger Zenodo archive by byte-range request. It validates every
+selected input before calculation. The normal application test suite remains
+offline.
 
 ## Privacy and persistence
 
-Workshop progress and builder drafts are stored in browser `localStorage`. The
+Workshop progress, evidence notes, assessment answers, and builder drafts are
+stored in unencrypted browser `localStorage`. Browser extensions and other
+people using the device may be able to read it. The
 application has no database, user account, analytics, tracking cookie, or
-server-side submission form. Clearing site data clears the saved work.
+server-side submission form. Browser storage is separate on each public
+address, so clearing it on one address does not clear another.
 
 The light and dark theme control follows the operating-system preference until
 the reader makes an explicit choice. That choice is stored locally in the
@@ -74,16 +93,21 @@ app/
   agentic-research/       Agentic research workshop
   interactive-paper/     Paper-to-website workshop
   annotation-tools/      Annotation-tool workshop
+  worked-examples/        Rendered biomedical evidence page
   versions/              Content release history and canonical links
   components/            Shared workshop UI and interactive builders
 lib/
   content/                Stages, prompts, checkpoints, and sources
   storage.ts              Local persistence and browser exports
 public/
-  frame-annotator-*.jpg   Worked-example screenshots
+  audits/                     Repository, release, and round-trip evidence
+  schemas/                    Immutable annotation specification schemas
+  worked-examples/            Runnable MedMNIST pack and annotation fixture
+  frame-annotator-*.png       Hashed worked-example source image
   research-with-ai-social.png
 docs/
   MICCAI_SUBMISSION.md    Submission packaging checklist
+  LEARNER_PILOT.md        Target-learner task and scoring protocol
   VIDEO_RECORDING.md      Recording plans for all three tutorials
 edge-proxy/               Four Cloudflare Custom Domain entry points
 ```
@@ -106,6 +130,9 @@ for media rights, caption fidelity, claim tracing, accessibility, and clean
 reproduction. The annotation workshop uses the author's
 [frame-annotator](https://github.com/omariosc/frame-annotator) as a first-hand
 case study rather than presenting generated code as a finished clinical tool.
+The shared MedMNIST case independently recalculates metrics from released
+prediction artefacts. It deliberately does not claim model retraining,
+whole-paper reproduction, or clinical validation.
 
 Sources appear next to the stage they support and again in each workshop's
 source library. Prefer the linked primary paper, standard, repository, or
@@ -119,4 +146,6 @@ Original tutorial text and diagrams are licensed under
 and linked resources retain their own licences.
 
 See [AI_USE.md](AI_USE.md) for the development disclosure and
-[CITATION.cff](CITATION.cff) for citation metadata.
+[CITATION.cff](CITATION.cff) for citation metadata. Copied or programmatically
+retrieved third-party material is itemised in
+[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).

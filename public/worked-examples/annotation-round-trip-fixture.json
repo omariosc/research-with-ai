@@ -1,0 +1,137 @@
+{
+  "fixture_version": "1.0.0",
+  "records": [
+    {
+      "annotation_id": "ann_example_0000",
+      "revision_id": "rev_001",
+      "frame_id": "demo_frame_0000",
+      "frame_index": 0,
+      "phase": "transfer",
+      "instrument": {
+        "id": "instrument_1",
+        "visibility": "visible",
+        "box_xywh_percent": [52, 36, 25, 36],
+        "keypoints": [
+          {
+            "id": "joint",
+            "xy_percent": [66, 48],
+            "visibility": "visible",
+            "estimated": false
+          },
+          {
+            "id": "ee_tip",
+            "xy_percent": [74, 64],
+            "visibility": "visible",
+            "estimated": false
+          },
+          {
+            "id": "ee_left",
+            "xy_percent": [70, 60],
+            "visibility": "occluded",
+            "estimated": true
+          },
+          {
+            "id": "ee_right",
+            "xy_percent": [78, 60],
+            "visibility": "visible",
+            "estimated": false
+          }
+        ]
+      },
+      "provenance": {
+        "annotator_id": "synthetic_annotator_a",
+        "protocol_version": "1.0.0",
+        "source_hash": "sha256:87c105e2c0fed14477179052dc08d953441cc7cb483fa5680ec490b23a8cc97c",
+        "frame_index_or_time": {
+          "frame_index": 0,
+          "index_base": 0
+        },
+        "coordinate_convention_and_units": {
+          "origin": "top_left",
+          "unit": "percent_of_annotation_frame",
+          "box_encoding": "xywh",
+          "point_encoding": "xy",
+          "annotation_frame_dimensions_px": [480, 360],
+          "source_asset_dimensions_px": [1600, 900],
+          "source_viewport_xywh_px": [300, 40, 480, 360]
+        },
+        "origin": "manual",
+        "created_at": "2026-07-26T12:00:00.000Z",
+        "updated_at": "2026-07-26T12:00:00.000Z",
+        "review_state": "draft",
+        "ai_assistance": {
+          "suggestion_exposed": false,
+          "model_id": null,
+          "suggestion_id": null,
+          "decision": null
+        }
+      }
+    },
+    {
+      "annotation_id": "ann_example_0001",
+      "revision_id": "rev_001",
+      "frame_id": "demo_frame_0001",
+      "frame_index": 1,
+      "phase": "transfer",
+      "instrument": {
+        "id": "instrument_1",
+        "visibility": "out_of_frame",
+        "box_xywh_percent": null,
+        "keypoints": [
+          {
+            "id": "joint",
+            "xy_percent": null,
+            "visibility": "out_of_frame",
+            "estimated": false
+          },
+          {
+            "id": "ee_tip",
+            "xy_percent": null,
+            "visibility": "out_of_frame",
+            "estimated": false
+          },
+          {
+            "id": "ee_left",
+            "xy_percent": null,
+            "visibility": "out_of_frame",
+            "estimated": false
+          },
+          {
+            "id": "ee_right",
+            "xy_percent": null,
+            "visibility": "out_of_frame",
+            "estimated": false
+          }
+        ]
+      },
+      "provenance": {
+        "annotator_id": "synthetic_annotator_a",
+        "protocol_version": "1.0.0",
+        "source_hash": "sha256:87c105e2c0fed14477179052dc08d953441cc7cb483fa5680ec490b23a8cc97c",
+        "frame_index_or_time": {
+          "frame_index": 1,
+          "index_base": 0
+        },
+        "coordinate_convention_and_units": {
+          "origin": "top_left",
+          "unit": "percent_of_annotation_frame",
+          "box_encoding": "xywh",
+          "point_encoding": "xy",
+          "annotation_frame_dimensions_px": [480, 360],
+          "source_asset_dimensions_px": [1600, 900],
+          "source_viewport_xywh_px": [300, 40, 480, 360]
+        },
+        "origin": "manual",
+        "created_at": "2026-07-26T12:00:01.000Z",
+        "updated_at": "2026-07-26T12:00:01.000Z",
+        "review_state": "draft",
+        "ai_assistance": {
+          "suggestion_exposed": false,
+          "model_id": null,
+          "suggestion_id": null,
+          "decision": null
+        }
+      }
+    }
+  ]
+}

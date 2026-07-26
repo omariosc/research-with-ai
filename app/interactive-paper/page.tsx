@@ -1,15 +1,8 @@
-import type { Metadata } from "next";
 import { WorkshopClient } from "@/app/components/WorkshopClient";
 import { interactivePaper } from "@/lib/content/paper";
+import { workshopMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Building a Website for Your Research Using AI",
-  description:
-    "Turn a paper and repository into a truthful, accessible, reproducible research website.",
-  alternates: {
-    canonical: "https://interactivepaper.omarchoudhry.co.uk",
-  },
-};
+export const metadata = workshopMetadata(interactivePaper);
 
 export default function InteractivePaperPage() {
   return <WorkshopClient workshop={interactivePaper} />;

@@ -1,0 +1,12 @@
+[project]
+name = "medmnist-breast-verification"
+version = "1.0.0"
+description = "Independent metric re-evaluation for three released BreastMNIST prediction files"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "numpy==2.3.2",
+  "remotezip==0.12.3",
+]
+
+[tool.uv]
+package = false

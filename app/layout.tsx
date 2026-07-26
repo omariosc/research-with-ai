@@ -88,6 +88,9 @@ export default function RootLayout({
         />
       </head>
       <body className={`${sans.variable} ${mono.variable} ${serif.variable}`}>
+        <a className="skip-link" href="#main-content">
+          Skip to main content
+        </a>
         {children}
       </body>
     </html>

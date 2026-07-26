@@ -4,9 +4,36 @@ import type {
 } from "@/lib/types";
 
 export const STORAGE_PREFIX = "research-with-ai:v1";
+export const PROGRESS_SCHEMA_VERSION = 2 as const;
 
 export function progressKey(slug: WorkshopSlug) {
   return `${STORAGE_PREFIX}:progress:${slug}`;
+}
+
+function stringRecord(value: unknown) {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+  return Object.fromEntries(
+    Object.entries(value).filter((entry): entry is [string, string] =>
+      typeof entry[1] === "string",
+    ),
+  );
+}
+
+function decisionRecord(value: unknown): StoredWorkshopProgress["decisions"] {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+  return Object.fromEntries(
+    Object.entries(value).filter(
+      (
+        entry,
+      ): entry is [
+        string,
+        StoredWorkshopProgress["decisions"][string],
+      ] =>
+        entry[1] === "ready" ||
+        entry[1] === "revise" ||
+        entry[1] === "stop",
+    ),
+  );
 }
 
 export function readProgress(
@@ -14,9 +41,13 @@ export function readProgress(
   firstStep: string,
 ): StoredWorkshopProgress {
   const fallback: StoredWorkshopProgress = {
+    schemaVersion: PROGRESS_SCHEMA_VERSION,
     completed: [],
     approved: [],
     activeStep: firstStep,
+    evidenceNotes: {},
+    decisions: {},
+    assessmentAnswers: {},
     updatedAt: new Date(0).toISOString(),
   };
 
@@ -26,11 +57,35 @@ export function readProgress(
     const raw = window.localStorage.getItem(progressKey(slug));
     if (!raw) return fallback;
     const parsed = JSON.parse(raw) as Partial<StoredWorkshopProgress>;
+    const evidenceNotes = stringRecord(parsed.evidenceNotes);
+    const decisions = decisionRecord(parsed.decisions);
+    const candidateApproved = Array.isArray(parsed.approved)
+      ? parsed.approved.filter(
+          (value): value is string => typeof value === "string",
+        )
+      : [];
+    const approved = candidateApproved.filter(
+      (id) =>
+        typeof evidenceNotes[id] === "string" &&
+        evidenceNotes[id].trim().length >= 20 &&
+        Boolean(decisions[id]),
+    );
+    const completed = (
+      Array.isArray(parsed.completed)
+        ? parsed.completed.filter(
+            (value): value is string => typeof value === "string",
+          )
+        : []
+    ).filter((id) => approved.includes(id) && decisions[id] === "ready");
     return {
-      completed: Array.isArray(parsed.completed) ? parsed.completed : [],
-      approved: Array.isArray(parsed.approved) ? parsed.approved : [],
+      schemaVersion: PROGRESS_SCHEMA_VERSION,
+      completed,
+      approved,
       activeStep:
         typeof parsed.activeStep === "string" ? parsed.activeStep : firstStep,
+      evidenceNotes,
+      decisions,
+      assessmentAnswers: stringRecord(parsed.assessmentAnswers),
       updatedAt:
         typeof parsed.updatedAt === "string"
           ? parsed.updatedAt
@@ -46,7 +101,17 @@ export function writeProgress(
   progress: StoredWorkshopProgress,
 ) {
   if (typeof window === "undefined") return;
-  window.localStorage.setItem(progressKey(slug), JSON.stringify(progress));
+  try {
+    window.localStorage.setItem(
+      progressKey(slug),
+      JSON.stringify({
+        ...progress,
+        schemaVersion: PROGRESS_SCHEMA_VERSION,
+      }),
+    );
+  } catch {
+    return;
+  }
   window.dispatchEvent(
     new CustomEvent("research-with-ai-progress", { detail: { slug } }),
   );
@@ -54,7 +119,11 @@ export function writeProgress(
 
 export function clearProgress(slug: WorkshopSlug) {
   if (typeof window === "undefined") return;
-  window.localStorage.removeItem(progressKey(slug));
+  try {
+    window.localStorage.removeItem(progressKey(slug));
+  } catch {
+    // The caller can still clear in-memory state when storage is blocked.
+  }
   window.dispatchEvent(
     new CustomEvent("research-with-ai-progress", { detail: { slug } }),
   );

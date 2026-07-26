@@ -1,11 +1,13 @@
 cff-version: 1.2.0
-message: "If you use this tutorial, please cite it using the metadata below."
-title: "Research with AI: Three Practical Workshops"
+message: "If you use the software platform or its tutorials, please cite this record. The license field applies to the software; original tutorial content is separately licensed under CC BY 4.0."
+title: "Research with AI Tutorial Platform"
 type: software
+abstract: "Software platform for three practical Research with AI workshops. The application code is MIT licensed, while original tutorial prose and diagrams are distributed separately under CC BY 4.0."
 authors:
   - family-names: Choudhry
     given-names: Omar
-version: 1.0.0
+    affiliation: University of Leeds
+version: 1.1.0
 date-released: 2026-07-26
 url: "https://researchwithai.omarchoudhry.co.uk"
 license: MIT

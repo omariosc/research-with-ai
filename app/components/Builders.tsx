@@ -4,11 +4,11 @@ import Image from "next/image";
 import {
   useEffect,
   useMemo,
-  useRef,
   useState,
   type MouseEvent,
 } from "react";
 import { copyText, downloadText, STORAGE_PREFIX } from "@/lib/storage";
+import { publicUrlIssue, redactSensitiveUrl } from "@/lib/url-safety";
 import {
   TUTORIAL_VERSION,
   TUTORIAL_VERSION_LABEL,
@@ -20,57 +20,168 @@ type CopyState = "idle" | "copied";
 
 function BuilderActions({
   copyState,
+  disabled = false,
   filename,
   output,
   onCopy,
 }: {
   copyState: CopyState;
+  disabled?: boolean;
   filename: string;
   output: string;
   onCopy: () => void;
 }) {
+  const format = filename.endsWith(".yaml")
+    ? "YAML"
+    : filename.endsWith(".json")
+      ? "JSON"
+      : "Markdown";
   return (
     <div className="builder-actions">
-      <button className="button button-secondary" onClick={onCopy} type="button">
+      <button
+        className="button button-secondary"
+        disabled={disabled}
+        onClick={onCopy}
+        type="button"
+      >
         {copyState === "copied" ? <Check size={17} /> : <Copy size={17} />}
         {copyState === "copied" ? "Copied" : "Copy plan"}
       </button>
       <button
         className="button button-primary"
-        onClick={() => downloadText(filename, output)}
+        disabled={disabled}
+        onClick={() =>
+          downloadText(
+            filename,
+            output,
+            filename.endsWith(".yaml")
+              ? "application/yaml;charset=utf-8"
+              : filename.endsWith(".json")
+                ? "application/json;charset=utf-8"
+                : "text/markdown;charset=utf-8",
+          )
+        }
         type="button"
       >
         <Download size={17} />
-        Download Markdown
+        Download {format}
       </button>
     </div>
   );
 }
 
-function usePersistentForm<T>(key: string, defaults: T) {
+const BUILDER_SCHEMA_VERSION = 2 as const;
+
+function preserveStorageValue<T>(value: T) {
+  return value;
+}
+
+function restoreStringForm<T extends Record<string, string>>(
+  stored: unknown,
+  defaults: T,
+) {
+  if (
+    !stored ||
+    typeof stored !== "object" ||
+    !("schemaVersion" in stored) ||
+    stored.schemaVersion !== BUILDER_SCHEMA_VERSION ||
+    !("value" in stored) ||
+    !stored.value ||
+    typeof stored.value !== "object"
+  ) {
+    return null;
+  }
+
+  const candidate = stored.value as Record<string, unknown>;
+  const restored = { ...defaults };
+  for (const key of Object.keys(defaults) as Array<keyof T>) {
+    const value = candidate[String(key)];
+    if (value === undefined) continue;
+    if (typeof value !== "string") return null;
+    restored[key] = value as T[keyof T];
+  }
+  return restored;
+}
+
+function migrateLegacyStringForm<T extends Record<string, string>>(
+  stored: unknown,
+  defaults: T,
+  fields: ReadonlyArray<keyof T>,
+) {
+  if (!stored || typeof stored !== "object" || Array.isArray(stored)) return null;
+
+  const candidate = stored as Record<string, unknown>;
+  const migrated = { ...defaults };
+  let restoredField = false;
+  for (const key of fields) {
+    const value = candidate[String(key)];
+    if (typeof value !== "string") continue;
+    migrated[key] = value as T[keyof T];
+    restoredField = true;
+  }
+  return restoredField ? migrated : null;
+}
+
+function usePersistentForm<T extends Record<string, string>>(
+  key: string,
+  defaults: T,
+  legacyFields: ReadonlyArray<keyof T>,
+  prepareForStorage: (value: T) => T = preserveStorageValue,
+) {
   const [value, setValue] = useState(defaults);
   const [loaded, setLoaded] = useState(false);
+  const storageKey = `${STORAGE_PREFIX}:builder:v${BUILDER_SCHEMA_VERSION}:${key}`;
+  const legacyStorageKey = `${STORAGE_PREFIX}:builder:${key}`;
 
   useEffect(() => {
     try {
-      const raw = window.localStorage.getItem(`${STORAGE_PREFIX}:builder:${key}`);
+      const raw = window.localStorage.getItem(storageKey);
       if (raw) {
-        const stored = JSON.parse(raw) as Partial<T>;
-        queueMicrotask(() => setValue({ ...defaults, ...stored }));
+        const restored = restoreStringForm(JSON.parse(raw), defaults);
+        if (restored) {
+          queueMicrotask(() => setValue(prepareForStorage(restored)));
+          queueMicrotask(() => setLoaded(true));
+          return;
+        }
+      }
+      const legacyRaw = window.localStorage.getItem(legacyStorageKey);
+      if (legacyRaw) {
+        const migrated = migrateLegacyStringForm(
+          JSON.parse(legacyRaw),
+          defaults,
+          legacyFields,
+        );
+        if (migrated) {
+          queueMicrotask(() => setValue(prepareForStorage(migrated)));
+        }
       }
     } catch {
       // The form remains usable if browser storage is unavailable.
     }
     queueMicrotask(() => setLoaded(true));
-  }, [defaults, key]);
+  }, [
+    defaults,
+    legacyFields,
+    legacyStorageKey,
+    prepareForStorage,
+    storageKey,
+  ]);
 
   useEffect(() => {
     if (!loaded) return;
-    window.localStorage.setItem(
-      `${STORAGE_PREFIX}:builder:${key}`,
-      JSON.stringify(value),
-    );
-  }, [key, loaded, value]);
+    try {
+      window.localStorage.setItem(
+        storageKey,
+        JSON.stringify({
+          schemaVersion: BUILDER_SCHEMA_VERSION,
+          value: prepareForStorage(value),
+        }),
+      );
+      window.localStorage.removeItem(legacyStorageKey);
+    } catch {
+      // The form remains usable when local storage is unavailable or full.
+    }
+  }, [legacyStorageKey, loaded, prepareForStorage, storageKey, value]);
 
   return [value, setValue] as const;
 }
@@ -87,16 +198,50 @@ const agenticDefaults = {
   approval:
     "External upload, package install, HPC submission, Git push, and public release",
 };
+const agenticLegacyFields: ReadonlyArray<keyof typeof agenticDefaults> = [
+  "project",
+  "question",
+  "owner",
+  "data",
+  "compute",
+  "target",
+  "approval",
+];
 
 export function AgenticPlanBuilder() {
-  const [form, setForm] = usePersistentForm("agentic", agenticDefaults);
+  const [form, setForm] = usePersistentForm(
+    "agentic",
+    agenticDefaults,
+    agenticLegacyFields,
+  );
   const [copyState, setCopyState] = useState<CopyState>("idle");
+  const governanceStop =
+    form.data === "identifiable or confidential" || form.data === "unknown";
+  const approvalItems = form.approval
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  const planErrors = [
+    ...(!form.project.trim() ? ["Give the project a name."] : []),
+    ...(!form.question.trim() ? ["State the research question."] : []),
+    ...(!form.owner.trim() ? ["Name the accountable researcher."] : []),
+    ...(!form.target.trim()
+      ? ["Define an exact reproduction or study target."]
+      : []),
+    ...(approvalItems.length === 0
+      ? ["Name at least one action that requires human approval."]
+      : []),
+  ];
 
   const output = useMemo(
     () => `# Research contract: ${form.project}
 
 > Tutorial release: ${TUTORIAL_VERSION_LABEL}
 > Canonical tutorial: ${WORKSHOP_RELEASES["agentic-research"].canonicalUrl}
+
+## Status
+
+${governanceStop ? "STOP. Do not upload, inspect, or process the data with an AI tool until the named institutional data owner confirms the classification, approved environment, permitted providers, and retention rules." : "Planning may continue within the approved data boundary. Every external upload or execution action still requires the controls below."}
 
 ## Scientific target
 
@@ -116,8 +261,7 @@ export function AgenticPlanBuilder() {
 
 ## Approval-required actions
 
-${form.approval
-  .split(",")
+${approvalItems
   .map((item) => `- [ ] ${item.trim()}`)
   .join("\n")}
 
@@ -140,7 +284,7 @@ Stop if required data rights are unclear, the requested action exceeds the appro
 ## AI-use record
 
 Record the tool, dated version, task, data shared, files or commands affected, human checks, and known limitations. Never record credentials or patient identifiers.`,
-    [form],
+    [approvalItems, form, governanceStop],
   );
 
   async function handleCopy() {
@@ -196,6 +340,16 @@ Record the tool, dated version, task, data shared, files or commands affected, h
               value={form.compute}
             />
           </div>
+          {governanceStop ? (
+            <div className="builder-stop" role="alert">
+              <strong>Governance stop</strong>
+              <p>
+                Do not paste or upload this data. Ask the named institutional
+                owner to classify it and approve the processing environment
+                before an agent receives any record, path, frame, or metadata.
+              </p>
+            </div>
+          ) : null}
           <TextArea
             label="Exact reproduction target"
             onChange={(value) => setForm({ ...form, target: value })}
@@ -206,6 +360,21 @@ Record the tool, dated version, task, data shared, files or commands affected, h
             onChange={(value) => setForm({ ...form, approval: value })}
             value={form.approval}
           />
+          {planErrors.length > 0 ? (
+            <div className="builder-stop" role="alert">
+              <strong>Contract needs attention</strong>
+              <ul>
+                {planErrors.map((error) => (
+                  <li key={error}>{error}</li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <div className="builder-valid" role="status">
+              Required planning fields are present. The accountable researcher
+              must still review the scientific and governance choices.
+            </div>
+          )}
         </form>
         <div className="builder-output">
           <div className="output-header">
@@ -215,6 +384,7 @@ Record the tool, dated version, task, data shared, files or commands affected, h
           <pre>{output}</pre>
           <BuilderActions
             copyState={copyState}
+            disabled={planErrors.length > 0}
             filename="research_contract.md"
             onCopy={handleCopy}
             output={output}
@@ -226,18 +396,62 @@ Record the tool, dated version, task, data shared, files or commands affected, h
 }
 
 const paperDefaults = {
-  paper: "A clear title for the research paper",
-  paperUrl: "https://doi.org/...",
-  repoUrl: "https://github.com/owner/repository",
+  paper: "",
+  paperUrl: "",
+  repoStatus: "public",
+  repoUrl: "",
   audience: "A new Masters or PhD student in the field",
   goal: "Explain one result and let readers verify how it was produced",
-  rights: "Open licence confirmed for the paper and reused media",
-  demo: "Run a small, deterministic example from the pinned repository",
+  rights: "",
+  demo:
+    "Run a small, repeatable example from the public research artefacts, or explain why none is possible",
 };
+const paperLegacyFields: ReadonlyArray<keyof typeof paperDefaults> = [
+  "paper",
+  "paperUrl",
+  "repoUrl",
+  "audience",
+  "goal",
+  "demo",
+];
+function preparePaperForStorage(form: typeof paperDefaults) {
+  return {
+    ...form,
+    paperUrl: redactSensitiveUrl(form.paperUrl),
+    repoUrl: redactSensitiveUrl(form.repoUrl),
+  };
+}
 
 export function PaperSiteBuilder() {
-  const [form, setForm] = usePersistentForm("paper", paperDefaults);
+  const [form, setForm] = usePersistentForm(
+    "paper",
+    paperDefaults,
+    paperLegacyFields,
+    preparePaperForStorage,
+  );
   const [copyState, setCopyState] = useState<CopyState>("idle");
+  const paperUrlError = publicUrlIssue(form.paperUrl, "paper");
+  const repoUrlError =
+    form.repoStatus === "public"
+      ? publicUrlIssue(form.repoUrl, "repository")
+      : null;
+  const repositorySummary =
+    form.repoStatus === "public"
+      ? form.repoUrl
+      : "No public repository is available; record this absence in the source manifest.";
+  const briefErrors = [
+    ...(!form.paper.trim() ? ["Enter the paper title."] : []),
+    ...(paperUrlError ? [paperUrlError] : []),
+    ...(repoUrlError ? [repoUrlError] : []),
+    ...(!form.audience.trim() ? ["Describe the intended reader."] : []),
+    ...(!form.goal.trim() ? ["State a testable reader outcome."] : []),
+    ...(!form.rights.trim()
+      ? ["Record the current rights status. Use unknown if it is unresolved."]
+      : []),
+    ...(!form.demo.trim()
+      ? ["Define a small example, or state why no runnable demo is possible."]
+      : []),
+  ];
   const output = useMemo(
     () => `# Research website brief
 
@@ -248,14 +462,14 @@ export function PaperSiteBuilder() {
 
 - **Paper:** ${form.paper}
 - **Paper source:** ${form.paperUrl}
-- **Repository:** ${form.repoUrl}
+- **Repository:** ${repositorySummary}
 - **Audience:** ${form.audience}
 - **Reader outcome:** ${form.goal}
 
 ## Rights and provenance
 
 - ${form.rights}
-- [ ] Record the paper licence and repository licence separately
+- [ ] Record the paper licence and the repository licence when one is available
 - [ ] Preserve every reused figure and table caption
 - [ ] Link each media item to its original page, figure, or table
 - [ ] Label generated explanations and redrawn diagrams
@@ -265,18 +479,18 @@ export function PaperSiteBuilder() {
 1. Plain-language question and contribution
 2. Method walkthrough tied to the paper
 3. Original figures and tables with intact captions
-4. Claim-evidence links to paper, code, data, and executed result
+4. ${form.repoStatus === "public" ? "Claim-evidence links to paper, code, data, and executed result" : "Claim-evidence links to the paper, accessible data or method description, and an explicit no-code boundary"}
 5. Reproducible demo: ${form.demo}
 6. Limitations, failure cases, and unresolved questions
 7. Citation, licence, accessibility, and AI-use information
 
 ## Build contract
 
-- [ ] Pin paper version and repository commit
+- [ ] Pin the paper version${form.repoStatus === "public" ? " and repository commit" : ""}
 - [ ] Create a source manifest before generating copy
 - [ ] Keep headings, controls, equations, and captions as semantic HTML
 - [ ] Add useful alt text without inventing evidence
-- [ ] Run the documented example in a clean environment
+- [ ] Run the documented example in a clean environment, or record why none is possible
 - [ ] Test keyboard navigation, mobile layout, colour contrast, and links
 - [ ] Use privacy-preserving analytics or no analytics
 - [ ] Preview locally before deployment
@@ -284,14 +498,14 @@ export function PaperSiteBuilder() {
 
 ## Video shot list
 
-1. Start with the paper and repository
+1. Start with the paper${form.repoStatus === "public" ? " and repository" : " and record that no public repository is available"}
 2. Build the source manifest
 3. Generate the first structured page
-4. Trace one claim to a figure, code line, and run
+4. ${form.repoStatus === "public" ? "Trace one claim to a figure, code line, and run" : "Trace one claim to its paper location, source evidence, and no-code boundary"}
 5. Catch one extraction or citation error
 6. Test locally and on mobile
 7. Deploy the reviewed version`,
-    [form],
+    [form, repositorySummary],
   );
 
   async function handleCopy() {
@@ -309,18 +523,40 @@ export function PaperSiteBuilder() {
       <div className="builder-grid">
         <form className="builder-form" onSubmit={(event) => event.preventDefault()}>
           <Field
-            label="Paper title"
+            label="Paper title (required)"
             onChange={(value) => setForm({ ...form, paper: value })}
             value={form.paper}
           />
           <div className="field-row">
             <Field
-              label="Paper URL or DOI"
+              label="Paper URL (required)"
               onChange={(value) => setForm({ ...form, paperUrl: value })}
               value={form.paperUrl}
             />
+            <Select
+              label="Repository availability"
+              onChange={(value) =>
+                setForm({
+                  ...form,
+                  repoStatus: value,
+                  repoUrl: value === "public" ? form.repoUrl : "",
+                })
+              }
+              options={[
+                ["public", "Public repository"],
+                ["none", "No public repository"],
+              ]}
+              value={form.repoStatus}
+            />
+          </div>
+          <div className="field-row field-row-single">
             <Field
-              label="Repository URL"
+              disabled={form.repoStatus !== "public"}
+              label={
+                form.repoStatus === "public"
+                  ? "Repository URL (required)"
+                  : "Repository URL (not applicable)"
+              }
               onChange={(value) => setForm({ ...form, repoUrl: value })}
               value={form.repoUrl}
             />
@@ -345,6 +581,21 @@ export function PaperSiteBuilder() {
             onChange={(value) => setForm({ ...form, demo: value })}
             value={form.demo}
           />
+          {briefErrors.length > 0 ? (
+            <div className="builder-stop" role="alert">
+              <strong>Brief needs attention</strong>
+              <ul>
+                {briefErrors.map((error) => (
+                  <li key={error}>{error}</li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <div className="builder-valid" role="status">
+              Required fields are present. Check the source versions, licences,
+              and evidence map before treating the brief as reviewed.
+            </div>
+          )}
         </form>
         <div className="paper-builder-side">
           <PaperPreview form={form} />
@@ -356,6 +607,7 @@ export function PaperSiteBuilder() {
             <pre>{output}</pre>
             <BuilderActions
               copyState={copyState}
+              disabled={briefErrors.length > 0}
               filename="website_brief.md"
               onCopy={handleCopy}
               output={output}
@@ -378,8 +630,8 @@ function PaperPreview({ form }: { form: typeof paperDefaults }) {
       </div>
       <div className="paper-preview-body">
         <p className="paper-preview-label">Research companion</p>
-        <h3>{form.paper}</h3>
-        <p>{form.goal}</p>
+        <h3>{form.paper.trim() || "Paper title"}</h3>
+        <p>{form.goal.trim() || "Reader outcome will appear here."}</p>
         <div className="paper-claim">
           <span className="paper-figure" aria-hidden="true">
             <i />
@@ -389,13 +641,19 @@ function PaperPreview({ form }: { form: typeof paperDefaults }) {
           </span>
           <div>
             <strong>Claim 01</strong>
-            <p>Connected to the paper, code, data, and reproduced result.</p>
+            <p>
+              {form.repoStatus === "public"
+                ? "Connected to the paper, code, data, and an evidence-labelled result."
+                : "Connected to the paper, available evidence, and an explicit no-code boundary."}
+            </p>
           </div>
         </div>
         <div className="paper-preview-links">
           <span>Paper</span>
-          <span>Code</span>
-          <span>Run log</span>
+          {form.repoStatus === "public" ? <span>Code</span> : null}
+          <span>
+            {form.repoStatus === "public" ? "Run log" : "Evidence record"}
+          </span>
         </div>
       </div>
     </article>
@@ -405,70 +663,338 @@ function PaperPreview({ form }: { form: typeof paperDefaults }) {
 const annotationDefaults = {
   project: "Surgical instrument and phase annotation",
   dataType: "video",
-  labels: "instrument mask, shaft line, keypoints, phase, visibility",
+  deidentificationStatus: "not_reviewed",
+  deidentificationReviewer: "",
+  deidentificationReference: "",
+  labels:
+    "instrument box, instrument mask, shaft line, keypoints, phase, visibility",
+  tasks: `instrument_box | bounding_box | instrument_box | zero_or_one_per_instrument | percent_of_native_frame_top_left_xywh | | not_visible,not_applicable | not_applicable
+instrument_mask | polygon_mask | instrument_mask | zero_or_one_per_instrument | percent_of_native_frame_top_left_xy | | not_visible,not_applicable | not_applicable
+shaft_axis | polyline | shaft_line | zero_or_one_per_instrument | percent_of_native_frame_top_left_xy | | not_visible,not_applicable | not_applicable
+landmarks | keypoints | keypoints | fixed_named_points_per_visible_instrument | percent_of_native_frame_top_left_xy | joint,ee_tip,ee_left,ee_right | occluded,out_of_frame,not_applicable | not_applicable
+phase_timeline | temporal_interval | phase | exactly_one_phase_per_frame | frame_index_zero_based | approach,grasp,transfer,release | unknown,not_applicable | inclusive_start_exclusive_end
+visibility_state | classification | visibility | exactly_one_per_instrument | categorical | visible,partly_visible,out_of_frame,occluded | unknown,not_applicable | not_applicable`,
   annotators: "2",
   review: "Independent annotation followed by disagreement review",
   deployment: "both",
   assist:
     "Model suggestions are optional and every accepted, edited, or rejected suggestion is logged",
 };
+const annotationLegacyFields: ReadonlyArray<keyof typeof annotationDefaults> = [
+  "project",
+  "dataType",
+  "labels",
+  "annotators",
+  "review",
+  "deployment",
+  "assist",
+];
+
+function yamlQuote(value: string) {
+  return JSON.stringify(value.trim());
+}
+
+function labelId(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "");
+}
+
+function normaliseList(value: string) {
+  const raw = value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  const normalised = raw.map(labelId);
+  return {
+    invalid: raw.filter((_, index) => !normalised[index]),
+    values: normalised.filter(Boolean),
+  };
+}
+
+const annotationTaskTypes = new Set([
+  "bounding_box",
+  "classification",
+  "keypoints",
+  "polygon_mask",
+  "polyline",
+  "scalar",
+  "temporal_interval",
+]);
 
 export function AnnotationSpecBuilder() {
-  const [form, setForm] = usePersistentForm("annotation", annotationDefaults);
+  const [form, setForm] = usePersistentForm(
+    "annotation",
+    annotationDefaults,
+    annotationLegacyFields,
+  );
   const [copyState, setCopyState] = useState<CopyState>("idle");
+  const rawLabels = form.labels
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean);
+  const labelEntries = rawLabels.map((name) => ({ id: labelId(name), name }));
+  const validLabelEntries = labelEntries.filter((item) => item.id);
+  const uniqueLabels = Array.from(
+    new Map(validLabelEntries.map((item) => [item.id, item])).values(),
+  );
+  const labelIds = new Set(uniqueLabels.map((item) => item.id));
+  const taskLines = form.tasks
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean);
+  const taskEntries = taskLines.map((line, index) => {
+    const parts = line.split("|").map((item) => item.trim());
+    const [
+      rawId = "",
+      type = "",
+      rawTargets = "",
+      cardinality = "",
+      geometryAndUnits = "",
+      rawAllowedValues = "",
+      rawMissingValues = "",
+      intervalBoundaries = "",
+    ] = parts;
+    const targets = normaliseList(rawTargets);
+    const allowedValues = normaliseList(rawAllowedValues);
+    const missingValues = normaliseList(rawMissingValues);
+    return {
+      id: labelId(rawId),
+      type,
+      targets: targets.values,
+      invalidTargets: targets.invalid,
+      cardinality,
+      geometryAndUnits,
+      allowedValues: allowedValues.values,
+      invalidAllowedValues: allowedValues.invalid,
+      missingValues: missingValues.values,
+      invalidMissingValues: missingValues.invalid,
+      intervalBoundaries,
+      line: index + 1,
+      fieldCount: parts.length,
+    };
+  });
+  const uniqueTasks = Array.from(
+    new Map(taskEntries.map((item) => [item.id, item])).values(),
+  ).filter((item) => item.id);
+  const annotatorCount = Number(form.annotators);
+  const deidentificationNeedsRecord =
+    form.deidentificationStatus !== "not_reviewed";
+  const governanceStop = ["not_reviewed", "failed"].includes(
+    form.deidentificationStatus,
+  );
+  const specErrors = [
+    ...(!form.project.trim() ? ["Give the project a name."] : []),
+    ...(rawLabels.length === 0 ? ["Add at least one label."] : []),
+    ...(labelEntries.some((item) => !item.id)
+      ? ["Every label must contain at least one letter or number."]
+      : []),
+    ...(uniqueLabels.length !== validLabelEntries.length
+      ? ["Label IDs must be unique after normalisation."]
+      : []),
+    ...(taskLines.length === 0 ? ["Add at least one task definition."] : []),
+    ...taskEntries.flatMap((task) => {
+      const errors: string[] = [];
+      if (task.fieldCount !== 8) {
+        errors.push(
+          `Task line ${task.line} must contain eight fields separated by |.`,
+        );
+      }
+      if (!task.id) errors.push(`Task line ${task.line} needs a stable ID.`);
+      if (!annotationTaskTypes.has(task.type)) {
+        errors.push(`Task line ${task.line} has an unsupported task type.`);
+      }
+      if (task.targets.length === 0) {
+        errors.push(`Task line ${task.line} needs a target label ID.`);
+      }
+      if (task.invalidTargets.length > 0) {
+        errors.push(
+          `Task line ${task.line} has target tokens with no letters or numbers.`,
+        );
+      }
+      if (new Set(task.targets).size !== task.targets.length) {
+        errors.push(`Task line ${task.line} repeats a target label ID.`);
+      }
+      const unknownTargets = task.targets.filter((id) => !labelIds.has(id));
+      if (unknownTargets.length > 0) {
+        errors.push(
+          `Task line ${task.line} references unknown label IDs: ${unknownTargets.join(", ")}.`,
+        );
+      }
+      if (!task.cardinality) {
+        errors.push(`Task line ${task.line} needs a cardinality rule.`);
+      }
+      if (!task.geometryAndUnits) {
+        errors.push(`Task line ${task.line} needs geometry or units.`);
+      }
+      if (
+        ["classification", "keypoints", "temporal_interval"].includes(
+          task.type,
+        ) &&
+        task.allowedValues.length === 0
+      ) {
+        errors.push(
+          `Task line ${task.line} needs allowed values for its categorical output.`,
+        );
+      }
+      if (task.invalidAllowedValues.length > 0) {
+        errors.push(
+          `Task line ${task.line} has allowed-value tokens with no letters or numbers.`,
+        );
+      }
+      if (new Set(task.allowedValues).size !== task.allowedValues.length) {
+        errors.push(`Task line ${task.line} repeats an allowed value.`);
+      }
+      if (task.missingValues.length === 0) {
+        errors.push(`Task line ${task.line} needs a missing-value vocabulary.`);
+      }
+      if (task.invalidMissingValues.length > 0) {
+        errors.push(
+          `Task line ${task.line} has missing-value tokens with no letters or numbers.`,
+        );
+      }
+      if (new Set(task.missingValues).size !== task.missingValues.length) {
+        errors.push(`Task line ${task.line} repeats a missing value.`);
+      }
+      const overlappingValues = task.allowedValues.filter((value) =>
+        task.missingValues.includes(value),
+      );
+      if (overlappingValues.length > 0) {
+        errors.push(
+          `Task line ${task.line} uses values as both allowed and missing: ${overlappingValues.join(", ")}.`,
+        );
+      }
+      if (!task.intervalBoundaries) {
+        errors.push(`Task line ${task.line} needs an interval-boundary rule.`);
+      }
+      if (
+        task.type === "temporal_interval" &&
+        ![
+          "inclusive_start_exclusive_end",
+          "inclusive_both",
+          "exclusive_both",
+        ].includes(task.intervalBoundaries)
+      ) {
+        errors.push(
+          `Task line ${task.line} needs an explicit temporal boundary convention.`,
+        );
+      }
+      return errors;
+    }),
+    ...(uniqueTasks.length !== taskEntries.length
+      ? ["Task IDs must be unique after normalisation."]
+      : []),
+    ...(!form.review.trim()
+      ? ["Describe review and adjudication before exporting."]
+      : []),
+    ...(!form.assist.trim()
+      ? ["State an AI-assistance policy, even if assistance is disabled."]
+      : []),
+    ...(deidentificationNeedsRecord &&
+    !form.deidentificationReviewer.trim()
+      ? ["Name the person who made the de-identification decision."]
+      : []),
+    ...(deidentificationNeedsRecord &&
+    !form.deidentificationReference.trim()
+      ? ["Add the approval, waiver, or failed-review reference."]
+      : []),
+    ...(!Number.isInteger(annotatorCount) ||
+    annotatorCount < 1 ||
+    annotatorCount > 20
+      ? ["Annotators per item must be a whole number from 1 to 20."]
+      : []),
+  ];
   const output = useMemo(
-    () => `# Annotation project: ${form.project}
-
-tutorial_version: ${TUTORIAL_VERSION}
-tutorial_canonical_url: ${WORKSHOP_RELEASES["annotation-tools"].canonicalUrl}
-schema_version: 1.0.0
+    () => `tutorial_version: ${yamlQuote(TUTORIAL_VERSION)}
+tutorial_canonical_url: ${yamlQuote(WORKSHOP_RELEASES["annotation-tools"].canonicalUrl)}
+schema_version: "1.1.0"
+project:
+  name: ${yamlQuote(form.project)}
 data:
-  type: ${form.dataType}
-  source_manifest: data_manifest.csv
+  type: ${yamlQuote(form.dataType)}
+  source_manifest: "source-manifest.csv"
   raw_data_immutable: true
-  deidentification_reviewed: false
+  deidentification:
+    status: ${yamlQuote(form.deidentificationStatus)}
+    reviewer: ${
+      form.deidentificationReviewer.trim()
+        ? yamlQuote(form.deidentificationReviewer)
+        : "null"
+    }
+    decision_reference: ${
+      form.deidentificationReference.trim()
+        ? yamlQuote(form.deidentificationReference)
+        : "null"
+    }
 labels:
-${form.labels
-  .split(",")
-  .map((item) => `  - ${item.trim().replaceAll(" ", "_")}`)
+${uniqueLabels
+  .map((item) => `  ${yamlQuote(item.id)}:
+    name: ${yamlQuote(item.name)}`)
+  .join("\n")}
+tasks:
+${uniqueTasks
+  .map(
+    (task) => `  ${yamlQuote(task.id)}:
+    type: ${yamlQuote(task.type)}
+    target_label_ids:${
+      task.targets.length
+        ? `\n${task.targets.map((id) => `      - ${yamlQuote(id)}`).join("\n")}`
+        : " []"
+    }
+    cardinality: ${yamlQuote(task.cardinality)}
+    geometry_and_units: ${yamlQuote(task.geometryAndUnits)}
+    allowed_values:${
+      task.allowedValues.length
+        ? `\n${task.allowedValues
+            .map((value) => `      - ${yamlQuote(value)}`)
+            .join("\n")}`
+        : " []"
+    }
+    missing_values:${
+      task.missingValues.length
+        ? `\n${task.missingValues
+            .map((value) => `      - ${yamlQuote(value)}`)
+            .join("\n")}`
+        : " []"
+    }
+    interval_boundaries: ${yamlQuote(task.intervalBoundaries)}`,
+  )
   .join("\n")}
 workflow:
-  annotators_per_item: ${form.annotators}
-  review: ${form.review}
-  deployment: ${form.deployment}
-  autosave: atomic_per_item
+  annotators_per_item: ${Number.isInteger(annotatorCount) ? annotatorCount : 0}
+  review: ${yamlQuote(form.review)}
+  deployment: ${yamlQuote(form.deployment)}
+  autosave: "atomic_per_item"
 ai_assistance:
-  policy: ${form.assist}
+  policy: ${yamlQuote(form.assist)}
+  default_origin: "manual"
   record_model: true
-  record_checkpoint: true
-  record_prompt: true
+  record_checkpoint_hash: true
+  record_suggestion_id_when_exposed: true
   record_accept_edit_reject: true
 provenance:
+  annotation_id: required
+  revision_id: required
   annotator_id: required
   protocol_version: required
   source_hash: required
+  frame_index_or_time: required
+  coordinate_convention_and_units: required
   created_at: required
   updated_at: required
   review_state: required
 exports:
-  - canonical_json
-  - review_csv
-  - dataset_manifest
-  - task_specific_training_format
-
-## Verification checklist
-
-- [ ] Protocol includes positive, negative, ambiguous, and excluded examples
-- [ ] Ontology is versioned outside application code
-- [ ] Raw data remain read-only
-- [ ] Saving is atomic and recoverable
-- [ ] Keyboard-only path works
-- [ ] Two annotators can be compared without seeing each other's labels
-- [ ] Agreement metric matches the label type
-- [ ] AI suggestions preserve model and correction provenance
-- [ ] Server mode has authentication, TLS, backups, and access logs
-- [ ] Export round-trip and schema migration are tested`,
-    [form],
+  - "canonical_json"
+  - "review_csv"
+  - "dataset_manifest"
+  - "task_specific_training_format"
+validation:
+  json_schema: "annotation-spec-1.1.0.schema.json"
+  round_trip_required: true
+  protocol_locked_before_reliability_sample: true`,
+    [annotatorCount, form, uniqueLabels, uniqueTasks],
   );
 
   async function handleCopy() {
@@ -508,10 +1034,62 @@ exports:
               value={form.annotators}
             />
           </div>
+          <Select
+            label="De-identification review status"
+            onChange={(value) =>
+              setForm({
+                ...form,
+                deidentificationStatus: value,
+                deidentificationReviewer: "",
+                deidentificationReference: "",
+              })
+            }
+            options={[
+              ["not_reviewed", "Not reviewed"],
+              ["approved", "Approved"],
+              ["not_applicable", "Not applicable"],
+              ["failed", "Reviewed and failed"],
+            ]}
+            value={form.deidentificationStatus}
+          />
+          <div className="field-row">
+            <Field
+              disabled={!deidentificationNeedsRecord}
+              label="Named reviewer or data owner"
+              onChange={(value) =>
+                setForm({ ...form, deidentificationReviewer: value })
+              }
+              value={form.deidentificationReviewer}
+            />
+            <Field
+              disabled={!deidentificationNeedsRecord}
+              label="Decision or approval reference"
+              onChange={(value) =>
+                setForm({ ...form, deidentificationReference: value })
+              }
+              value={form.deidentificationReference}
+            />
+          </div>
+          {governanceStop ? (
+            <div className="builder-stop" role="alert">
+              <strong>Data-use stop</strong>
+              <p>
+                This specification may be planned, but do not load, upload, or
+                annotate sensitive source data until the named data owner records
+                an approved decision and processing environment.
+              </p>
+            </div>
+          ) : null}
           <TextArea
             label="Label types"
             onChange={(value) => setForm({ ...form, labels: value })}
             value={form.labels}
+          />
+          <TextArea
+            label="Tasks, one per line: ID | type | target label IDs | cardinality | geometry or units | allowed values | missing values | interval boundaries"
+            onChange={(value) => setForm({ ...form, tasks: value })}
+            rows={8}
+            value={form.tasks}
           />
           <TextArea
             label="Review and adjudication"
@@ -533,19 +1111,50 @@ exports:
             onChange={(value) => setForm({ ...form, assist: value })}
             value={form.assist}
           />
+          {specErrors.length > 0 ? (
+            <div className="builder-stop" role="alert">
+              <strong>Specification needs attention</strong>
+              <ul>
+                {specErrors.map((error) => (
+                  <li key={error}>{error}</li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <div className="builder-valid" role="status">
+              Required fields are structurally valid. Expert definitions,
+              governance, and the external JSON Schema still need review.
+            </div>
+          )}
         </form>
         <div className="builder-output">
           <div className="output-header">
-            <span>annotation_spec.yaml</span>
+            <span>annotation-spec.yaml</span>
             <span>local draft</span>
           </div>
           <pre>{output}</pre>
           <BuilderActions
             copyState={copyState}
-            filename="annotation_spec.md"
+            disabled={specErrors.length > 0}
+            filename="annotation-spec.yaml"
             onCopy={handleCopy}
             output={output}
           />
+          <div className="output-checklist">
+            <strong>Keep beside the YAML</strong>
+            <ul>
+              <li>Signed protocol with include, exclude, and uncertain cases</li>
+              <li>JSON Schema and synthetic validation fixtures</li>
+              <li>Independent calibration and reliability plan</li>
+              <li>Native export, review, and conversion-loss schemas</li>
+            </ul>
+            <a
+              download
+              href="/schemas/annotation-spec-1.1.0.schema.json"
+            >
+              Download the v1.1 JSON Schema
+            </a>
+          </div>
         </div>
       </div>
     </BuilderFrame>
@@ -576,10 +1185,12 @@ function BuilderFrame({
 }
 
 function Field({
+  disabled = false,
   label,
   onChange,
   value,
 }: {
+  disabled?: boolean;
   label: string;
   onChange: (value: string) => void;
   value: string;
@@ -587,7 +1198,11 @@ function Field({
   return (
     <label className="field">
       <span>{label}</span>
-      <input onChange={(event) => onChange(event.target.value)} value={value} />
+      <input
+        disabled={disabled}
+        onChange={(event) => onChange(event.target.value)}
+        value={value}
+      />
     </label>
   );
 }
@@ -595,10 +1210,12 @@ function Field({
 function TextArea({
   label,
   onChange,
+  rows = 3,
   value,
 }: {
   label: string;
   onChange: (value: string) => void;
+  rows?: number;
   value: string;
 }) {
   return (
@@ -606,7 +1223,7 @@ function TextArea({
       <span>{label}</span>
       <textarea
         onChange={(event) => onChange(event.target.value)}
-        rows={3}
+        rows={rows}
         value={value}
       />
     </label>
@@ -614,11 +1231,13 @@ function TextArea({
 }
 
 function Select({
+  disabled = false,
   label,
   onChange,
   options,
   value,
 }: {
+  disabled?: boolean;
   label: string;
   onChange: (value: string) => void;
   options: string[][];
@@ -627,7 +1246,11 @@ function Select({
   return (
     <label className="field">
       <span>{label}</span>
-      <select onChange={(event) => onChange(event.target.value)} value={value}>
+      <select
+        disabled={disabled}
+        onChange={(event) => onChange(event.target.value)}
+        value={value}
+      >
         {options.map(([optionValue, name]) => (
           <option key={optionValue} value={optionValue}>
             {name}
@@ -638,20 +1261,116 @@ function Select({
   );
 }
 
-type DemoPoint = { id: number; x: number; y: number };
+function NumberField({
+  label,
+  onChange,
+  value,
+}: {
+  label: string;
+  onChange: (value: number) => void;
+  value: number;
+}) {
+  return (
+    <label className="field">
+      <span>{label}</span>
+      <input
+        max={100}
+        min={0}
+        onChange={(event) =>
+          onChange(Math.max(0, Math.min(100, Number(event.target.value))))
+        }
+        step={1}
+        type="number"
+        value={value}
+      />
+    </label>
+  );
+}
+
+type DemoPoint = {
+  id: "joint" | "ee_tip" | "ee_left" | "ee_right";
+  x: number;
+  y: number;
+  visibility: "visible" | "occluded" | "out_of_frame" | "not_applicable";
+};
 
 export function AnnotationDemo() {
-  const frameRef = useRef<HTMLDivElement>(null);
+  const createdAt = "2026-07-26T12:00:00.000Z";
   const [tool, setTool] = useState<"box" | "keypoint">("box");
   const [box, setBox] = useState({ x: 52, y: 36, width: 25, height: 36 });
   const [points, setPoints] = useState<DemoPoint[]>([
-    { id: 1, x: 66, y: 48 },
-    { id: 2, x: 74, y: 64 },
+    { id: "joint", x: 66, y: 48, visibility: "visible" },
+    { id: "ee_tip", x: 74, y: 64, visibility: "visible" },
+    { id: "ee_left", x: 70, y: 60, visibility: "visible" },
+    { id: "ee_right", x: 78, y: 60, visibility: "visible" },
   ]);
-  const [phase, setPhase] = useState("Transfer");
-  const [visibility, setVisibility] = useState("Visible");
+  const [selectedPointId, setSelectedPointId] =
+    useState<DemoPoint["id"]>("joint");
+  const [phase, setPhase] = useState("transfer");
+  const [visibility, setVisibility] = useState("visible");
+  const [coordinateX, setCoordinateX] = useState(62);
+  const [coordinateY, setCoordinateY] = useState(55);
+  const [demoStatus, setDemoStatus] = useState(
+    "Teaching preview ready. No annotation has been saved.",
+  );
+  const [revision, setRevision] = useState(1);
+  const [updatedAt, setUpdatedAt] = useState(createdAt);
+
+  function markRecordChanged(status: string) {
+    setRevision((value) => value + 1);
+    setUpdatedAt(new Date().toISOString());
+    setDemoStatus(status);
+  }
+
+  function placeSelectedKeypoint(x: number, y: number) {
+    if (visibility === "out_of_frame") {
+      setDemoStatus(
+        "Geometry is absent while the instrument is out of frame. Change visibility before placing a keypoint.",
+      );
+      return;
+    }
+    setPoints((current) =>
+      current.map((point) =>
+        point.id === selectedPointId
+          ? {
+              ...point,
+              x,
+              y,
+              visibility:
+                point.visibility === "out_of_frame" ||
+                point.visibility === "not_applicable"
+                  ? "visible"
+                  : point.visibility,
+            }
+          : point,
+      ),
+    );
+    markRecordChanged(
+      `${selectedPointId} moved to ${x.toFixed(0)} percent across and ${y.toFixed(0)} percent down. JSON updated.`,
+    );
+  }
+
+  function changeSelectedPointVisibility(value: string) {
+    const pointVisibility = value as DemoPoint["visibility"];
+    setPoints((current) =>
+      current.map((point) =>
+        point.id === selectedPointId
+          ? { ...point, visibility: pointVisibility }
+          : point,
+      ),
+    );
+    markRecordChanged(
+      `${selectedPointId} status changed to ${pointVisibility}. JSON updated.`,
+    );
+  }
 
   function addAt(x: number, y: number) {
+    if (visibility === "out_of_frame") {
+      setDemoStatus(
+        "Geometry is absent while the instrument is out of frame. Change visibility before placing it.",
+      );
+      return;
+    }
     if (tool === "box") {
       setBox({
         x: Math.max(2, Math.min(73, x - 12.5)),
@@ -659,12 +1378,12 @@ export function AnnotationDemo() {
         width: 25,
         height: 36,
       });
+      markRecordChanged(
+        `Box moved to ${x.toFixed(0)} percent across and ${y.toFixed(0)} percent down. JSON updated.`,
+      );
       return;
     }
-    setPoints((current) => [
-      ...current.slice(-3),
-      { id: Date.now(), x, y },
-    ]);
+    placeSelectedKeypoint(x, y);
   }
 
   function handleFrameClick(event: MouseEvent<HTMLDivElement>) {
@@ -677,22 +1396,66 @@ export function AnnotationDemo() {
 
   const json = JSON.stringify(
     {
-      frame_id: "demo_frame_0040",
-      protocol_version: "1.0.0",
+      frame_id: "demo_frame_0000",
+      frame_index: 0,
+      frame_dimensions_px: [480, 360],
+      source_asset_dimensions_px: [1600, 900],
+      source_viewport_xywh_px: [300, 40, 480, 360],
+      render_transform: "crop source viewport, then scale uniformly to 4:3",
       phase,
       instrument_1: {
-        visibility: visibility.toLowerCase().replaceAll(" ", "_"),
-        box: [box.x, box.y, box.width, box.height].map((value) =>
-          Number(value.toFixed(1)),
-        ),
-        keypoints: points.map(({ x, y }) => [
-          Number(x.toFixed(1)),
-          Number(y.toFixed(1)),
-        ]),
+        visibility,
+        box:
+          visibility === "out_of_frame"
+            ? null
+            : [box.x, box.y, box.width, box.height].map((value) =>
+                Number(value.toFixed(1)),
+              ),
+        keypoints: points.map(({ id, visibility: pointVisibility, x, y }) => ({
+          id,
+          xy:
+            visibility === "out_of_frame" ||
+            pointVisibility === "out_of_frame" ||
+            pointVisibility === "not_applicable"
+              ? null
+              : [Number(x.toFixed(1)), Number(y.toFixed(1))],
+          visibility:
+            visibility === "out_of_frame" ? "out_of_frame" : pointVisibility,
+          estimated:
+            visibility !== "out_of_frame" &&
+            pointVisibility === "occluded",
+        })),
       },
       provenance: {
-        source: "frame-annotator teaching demo",
-        suggestion_status: "human_edited",
+        annotation_id: "ann_demo_0000",
+        revision_id: `rev_${String(revision).padStart(3, "0")}`,
+        annotator_id: "demo_annotator",
+        protocol_version: "1.0.0",
+        frame_index_or_time: {
+          frame_index: 0,
+          index_base: 0,
+        },
+        coordinate_convention_and_units: {
+          origin: "top_left",
+          unit: "percent_of_annotation_frame",
+          box_encoding: "xywh",
+          point_encoding: "xy",
+          annotation_frame_dimensions_px: [480, 360],
+          source_asset_dimensions_px: [1600, 900],
+          source_viewport_xywh_px: [300, 40, 480, 360],
+        },
+        origin: "manual",
+        source_hash:
+          "sha256:87c105e2c0fed14477179052dc08d953441cc7cb483fa5680ec490b23a8cc97c",
+        created_at: createdAt,
+        updated_at: updatedAt,
+        review_state: "draft",
+        ai_assistance: {
+          suggestion_exposed: false,
+          model_id: null,
+          suggestion_id: null,
+          decision: null,
+        },
       },
     },
     null,
@@ -707,7 +1470,8 @@ export function AnnotationDemo() {
         <span>
           Choose a tool, click the frame, change the phase or visibility, and
           inspect the plain JSON record. This is a teaching mock built from the
-          frame-annotator interface, not a clinical labelling system.
+          repository&apos;s surgical-annotator workflow, not a clinical
+          labelling system.
         </span>
       </div>
       <div className="demo-workbench">
@@ -716,7 +1480,10 @@ export function AnnotationDemo() {
             <button
               aria-pressed={tool === "box"}
               className={tool === "box" ? "is-active" : ""}
-              onClick={() => setTool("box")}
+              onClick={() => {
+                setTool("box");
+                setDemoStatus("Bounding-box tool selected.");
+              }}
               type="button"
             >
               Bounding box
@@ -724,7 +1491,10 @@ export function AnnotationDemo() {
             <button
               aria-pressed={tool === "keypoint"}
               className={tool === "keypoint" ? "is-active" : ""}
-              onClick={() => setTool("keypoint")}
+              onClick={() => {
+                setTool("keypoint");
+                setDemoStatus("Keypoint tool selected.");
+              }}
               type="button"
             >
               Keypoint
@@ -733,9 +1503,20 @@ export function AnnotationDemo() {
               onClick={() => {
                 setBox({ x: 52, y: 36, width: 25, height: 36 });
                 setPoints([
-                  { id: 1, x: 66, y: 48 },
-                  { id: 2, x: 74, y: 64 },
+                  { id: "joint", x: 66, y: 48, visibility: "visible" },
+                  { id: "ee_tip", x: 74, y: 64, visibility: "visible" },
+                  { id: "ee_left", x: 70, y: 60, visibility: "visible" },
+                  { id: "ee_right", x: 78, y: 60, visibility: "visible" },
                 ]);
+                setSelectedPointId("joint");
+                setTool("box");
+                setPhase("transfer");
+                setVisibility("visible");
+                setCoordinateX(62);
+                setCoordinateY(55);
+                setRevision(1);
+                setUpdatedAt(createdAt);
+                setDemoStatus("Teaching preview reset to its initial record.");
               }}
               type="button"
             >
@@ -744,78 +1525,203 @@ export function AnnotationDemo() {
             </button>
           </div>
           <div
-            aria-label={`Annotation frame. Active tool: ${tool}. Click to move or add an annotation.`}
+            aria-describedby="demo-frame-hint"
+            aria-disabled={visibility === "out_of_frame"}
+            aria-label={
+              visibility === "out_of_frame"
+                ? "Surgical training scene. Instrument is marked out of frame, so geometry placement is unavailable."
+                : `Surgical training scene. Active tool: ${tool}. Use the pointer or the exact-coordinate controls to place the annotation.`
+            }
             className={`demo-frame tool-${tool}`}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                addAt(coordinateX, coordinateY);
+              }
+            }}
             onClick={handleFrameClick}
-            ref={frameRef}
-            role="img"
+            role="button"
+            tabIndex={0}
           >
             <Image
-              alt="Peg-transfer training scene in the frame-annotator interface"
+              alt="Unannotated surgical training frame cropped from the frame-annotator interface"
               fill
               priority={false}
               sizes="(max-width: 900px) 100vw, 70vw"
-              src="/frame-annotator-interface.jpg"
+              src="/frame-annotator-safety-interface.png"
               unoptimized
             />
-            <span
-              className="demo-box"
-              style={{
-                height: `${box.height}%`,
-                left: `${box.x}%`,
-                top: `${box.y}%`,
-                width: `${box.width}%`,
-              }}
-            >
-              <small>instrument 1</small>
-            </span>
-            {points.map((point, index) => (
-              <span
-                className="demo-point"
-                key={point.id}
-                style={{ left: `${point.x}%`, top: `${point.y}%` }}
-              >
-                {index + 1}
+            {visibility !== "out_of_frame" ? (
+              <>
+                <span
+                  className="demo-box"
+                  style={{
+                    height: `${box.height}%`,
+                    left: `${box.x}%`,
+                    top: `${box.y}%`,
+                    width: `${box.width}%`,
+                  }}
+                >
+                  <small>instrument 1</small>
+                </span>
+                {points.map((point, index) =>
+                  point.visibility === "out_of_frame" ||
+                  point.visibility === "not_applicable" ? null : (
+                    <span
+                      className={`demo-point ${
+                        point.visibility === "occluded" ? "is-occluded" : ""
+                      }`}
+                      key={point.id}
+                      style={{ left: `${point.x}%`, top: `${point.y}%` }}
+                      title={`${point.id}: ${point.visibility}`}
+                    >
+                      {index + 1}
+                    </span>
+                  ),
+                )}
+              </>
+            ) : (
+              <span className="demo-absent">
+                Instrument marked out of frame
               </span>
-            ))}
+            )}
           </div>
-          <div className="demo-hint">
-            Click the image to {tool === "box" ? "place the box" : "add a keypoint"}.
-            Keyboard users can use the sample controls in the panel.
+          <div className="demo-hint" id="demo-frame-hint">
+            {visibility === "out_of_frame" ? (
+              <>
+                Geometry is absent. Change instrument visibility before placing
+                a box or named keypoint.
+              </>
+            ) : (
+              <>
+                Click the image to{" "}
+                {tool === "box"
+                  ? "place the box"
+                  : `place ${selectedPointId}`}. Keyboard users can set exact
+                coordinates, then press Enter or Space on the frame or use the
+                panel controls.
+              </>
+            )}
           </div>
         </div>
         <aside className="demo-inspector" aria-label="Annotation inspector">
           <h3>Frame record</h3>
           <Select
             label="Phase"
-            onChange={setPhase}
+            onChange={(value) => {
+              setPhase(value);
+              markRecordChanged(`Phase changed to ${value}. JSON updated.`);
+            }}
             options={[
-              ["Approach", "Approach"],
-              ["Grasp", "Grasp"],
-              ["Transfer", "Transfer"],
-              ["Release", "Release"],
+              ["approach", "Approach"],
+              ["grasp", "Grasp"],
+              ["transfer", "Transfer"],
+              ["release", "Release"],
             ]}
             value={phase}
           />
           <Select
             label="Visibility"
-            onChange={setVisibility}
+            onChange={(value) => {
+              setVisibility(value);
+              if (value === "occluded") {
+                setPoints((current) =>
+                  current.map((point) => ({
+                    ...point,
+                    visibility: "occluded",
+                  })),
+                );
+              }
+              markRecordChanged(
+                value === "out_of_frame"
+                  ? "Visibility changed to out of frame. Geometry is now recorded as absent."
+                  : `Visibility changed to ${value}. JSON updated.`,
+              );
+            }}
             options={[
-              ["Visible", "Visible"],
-              ["Partly visible", "Partly visible"],
-              ["Out of frame", "Out of frame"],
-              ["Occluded", "Occluded"],
+              ["visible", "Visible"],
+              ["partly_visible", "Partly visible"],
+              ["out_of_frame", "Out of frame"],
+              ["occluded", "Occluded"],
             ]}
             value={visibility}
           />
+          <div className="field-row">
+            <Select
+              disabled={visibility === "out_of_frame"}
+              label="Named keypoint"
+              onChange={(value) =>
+                setSelectedPointId(value as DemoPoint["id"])
+              }
+              options={[
+                ["joint", "Joint"],
+                ["ee_tip", "End-effector tip"],
+                ["ee_left", "End-effector left"],
+                ["ee_right", "End-effector right"],
+              ]}
+              value={selectedPointId}
+            />
+            <Select
+              disabled={visibility === "out_of_frame"}
+              label={`${selectedPointId} status`}
+              onChange={changeSelectedPointVisibility}
+              options={[
+                ["visible", "Visible"],
+                ["occluded", "Occluded, estimated"],
+                ["out_of_frame", "Out of frame"],
+                ["not_applicable", "Not applicable"],
+              ]}
+              value={
+                points.find((point) => point.id === selectedPointId)
+                  ?.visibility ?? "visible"
+              }
+            />
+          </div>
           <div className="sample-control-row">
-            <button onClick={() => addAt(58, 42)} type="button">
+            <button
+              disabled={visibility === "out_of_frame"}
+              onClick={() => {
+                setBox({ x: 45.5, y: 24, width: 25, height: 36 });
+                markRecordChanged(
+                  "Sample box placed at 58 percent across and 42 percent down. JSON updated.",
+                );
+              }}
+              type="button"
+            >
               Place sample box
             </button>
-            <button onClick={() => setPoints((items) => [...items, { id: Date.now(), x: 62, y: 55 }])} type="button">
-              Add sample point
+            <button
+              disabled={visibility === "out_of_frame"}
+              onClick={() => {
+                placeSelectedKeypoint(62, 55);
+              }}
+              type="button"
+            >
+              Place selected named point
             </button>
           </div>
+          <div className="coordinate-controls">
+            <NumberField
+              label="X position (%)"
+              onChange={setCoordinateX}
+              value={coordinateX}
+            />
+            <NumberField
+              label="Y position (%)"
+              onChange={setCoordinateY}
+              value={coordinateY}
+            />
+            <button
+              disabled={visibility === "out_of_frame"}
+              onClick={() => addAt(coordinateX, coordinateY)}
+              type="button"
+            >
+              Apply exact position
+            </button>
+          </div>
+          <p className="sr-only" role="status" aria-live="polite">
+            {demoStatus}
+          </p>
           <pre>{json}</pre>
           <p className="demo-provenance">
             The useful part is not the rectangle. It is the protocol version,

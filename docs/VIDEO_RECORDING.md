@@ -15,23 +15,33 @@ with a file the viewer can keep.
   decision as four distinct moments.
 - Record a clean run only after rehearsing the full workflow once.
 - Add captions and a transcript. Describe important visual changes aloud.
+- State what is live and what is a labelled cut. Preserve the original log for
+  long searches, installs, or scheduled jobs.
+- Pause on one decision before revealing the answer so the viewer can attempt
+  it first.
+- End with the case boundary, applied check, and downloadable record.
 
 ## Video 1: Agentic AI in Research
 
 Target length: 12 to 18 minutes.
 
 1. Open a paper and state the narrow reproduction question.
-2. Complete the research contract builder and export `research_contract.md`.
-3. Use deep research to create a claim-evidence map, then open two primary
+2. State the audience and outcomes, then open the BreastMNIST worked evidence
+   page.
+3. Complete the research contract builder and export `research_contract.md`.
+4. Use deep research to create a claim-evidence map, then open two primary
    sources to check it.
-4. Ask questions against the paper and distinguish quoted evidence from
+5. Ask questions against the paper and distinguish quoted evidence from
    interpretation.
-5. Let a coding agent inspect the repository before proposing any change.
-6. Run the smallest clean-environment smoke test.
-7. Show a bounded HPC job file, approval point, status check, and output path.
-8. Compare one regenerated metric or figure with the reported result.
-9. Turn verified bullets into a paper section and reject one unsupported claim.
-10. Export the workshop record and show the AI-use disclosure.
+6. Let a coding agent inspect the MedMNIST experiments repository before
+   proposing any change.
+7. Show the historical `best_model` alias and later `deepcopy` fix, while
+   stating that the prediction-generating revision is unknown.
+8. Run the locked verifier, including the negative checksum and row-ID tests.
+9. Let the agent propose competing hypotheses, then have the researcher select
+   and timestamp one hypothesis, counter-hypothesis, and falsifier.
+10. Show a bounded HPC job file or an honest workstation fallback.
+11. Attempt one applied scenario, export the record, and show the disclosure.
 
 ## Video 2: Build a Research Website with AI
 
@@ -39,31 +49,38 @@ Target length: 10 to 15 minutes.
 
 1. Start with the paper, repository, intended reader, and reuse rights.
 2. Complete the website brief and export `website_brief.md`.
-3. Build a source manifest for sections, figures, tables, captions, and code.
-4. Show how Paper2All motivates the conversion step.
-5. Generate a first structured page from the manifest.
-6. Trace one claim from page text to paper location, repository commit, and
-   executed result.
-7. Catch one extraction, caption, or citation error and correct it.
-8. Test keyboard navigation, mobile layout, links, and image alternatives.
-9. Preview locally, then deploy the reviewed commit.
+3. Show why a PDF or repository is untrusted input before executing anything.
+4. Build a source manifest for sections, figures, tables, captions, and code.
+5. Show how Paper2All motivates the conversion step, then explain the extra
+   evidence and rights gates used here.
+6. Generate the BreastMNIST companion from the reviewed result and manifest.
+7. Switch between paper precision and full precision, then trace the two cells
+   to the paper, released predictions, repository history, and executed result.
+8. Inspect Figure 1 attribution, checksum, alt text, long description, and
+   claim limit.
+9. Test keyboard navigation, mobile layout, links, downloads, and image
+   alternatives.
+10. Attempt one applied scenario, then deploy the reviewed commit.
 
 ## Video 3: Build a Custom Annotation Tool with AI
 
 Target length: 12 to 18 minutes.
 
 1. Show the original frames and write the annotation protocol before coding.
-2. Complete the specification builder and export `annotation_spec.yaml`.
-3. Ask an agent to inspect `frame-annotator` and identify reusable pieces and
-   fixed assumptions.
-4. Generate a minimal keyboard-first local workflow using synthetic fixtures.
-5. Use the embedded demo to label phase, box, and point data.
-6. Demonstrate atomic save, resume, undo, validation, and export.
-7. Run locally with network access disabled.
-8. Explain the extra controls needed for secure remote hosting.
-9. Add assisted suggestions only after the manual path works, and show that the
+2. Distinguish the repository's frame-annotator and surgical-annotator
+   tools.
+3. Show the pinned audit, including passing core tests and uncovered surgical
+   assumptions.
+4. Complete the specification builder and export valid `annotation-spec.yaml`.
+5. Generate a minimal keyboard-first local workflow using synthetic fixtures.
+6. Use the embedded demo to label phase, box, and point data.
+7. Export the two-record fixture to review CSV, reimport it, and state which
+   canonical fields the chosen export would lose.
+8. Run locally with network access disabled.
+9. Add assisted suggestions only after calibration and the manual baseline.
+10. Show that the
    annotator must accept or reject each suggestion.
-10. Review agreement, missingness, provenance, and dataset versioning.
+11. Attempt an agreement scenario and show the clustered analysis decision.
 
 ## One-minute finalist cut
 

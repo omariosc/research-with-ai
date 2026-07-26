@@ -1,0 +1,76 @@
+{
+  "record_version": "1.1.0",
+  "recorded_on": "2026-07-26",
+  "paper_claim": {
+    "source": "MedMNIST v2, Table 3",
+    "method": "ResNet-18 with 28 by 28 inputs",
+    "dataset": "BreastMNIST",
+    "benchmark_text_says_trials": "Mean of at least three trials for each method on each dataset",
+    "semantic_class_mapping": {
+      "negative": "malignant",
+      "positive": "normal or benign"
+    },
+    "reported_auc": 0.901,
+    "reported_acc": 0.863
+  },
+  "dataset_label_mapping": {
+    "source": "Pinned MedMNIST API info.py",
+    "0": "malignant",
+    "1": "normal or benign"
+  },
+  "verification": {
+    "verification_type": "prediction-artifact metric re-evaluation",
+    "metric_contract": {
+      "auc": "Average-rank AUC from the label-1 probability",
+      "acc": "Accuracy from label-1 probability greater than 0.5"
+    },
+    "test_examples": 156,
+    "test_label_counts": {
+      "0": 42,
+      "1": 114
+    },
+    "runs": [
+      {
+        "run": 1,
+        "file": "breastmnist_test_[AUC]0.898_[ACC]0.872@resnet18_28_1.csv",
+        "sha256": "e440e58b346fa0ca7f716a32214cc21777d9e414b205e79b37c78d3d4991478c",
+        "auc": 0.8984962406015038,
+        "acc": 0.8717948717948718
+      },
+      {
+        "run": 2,
+        "file": "breastmnist_test_[AUC]0.917_[ACC]0.872@resnet18_28_2.csv",
+        "sha256": "6d2aa475a6c7dfa183bb6eec50dc199f20ce2812bac6ed583da8a502a0c8d3ec",
+        "auc": 0.9172932330827067,
+        "acc": 0.8717948717948718
+      },
+      {
+        "run": 3,
+        "file": "breastmnist_test_[AUC]0.889_[ACC]0.846@resnet18_28_3.csv",
+        "sha256": "a3dae28dd2f8d766167166ff49e578ff9d68843eb51e97385cb6150406d5dd70",
+        "auc": 0.8886800334168755,
+        "acc": 0.8461538461538461
+      }
+    ],
+    "mean": {
+      "auc": 0.901489835700362,
+      "acc": 0.8632478632478633
+    },
+    "paper_reported": {
+      "auc": 0.901,
+      "acc": 0.863
+    },
+    "rounded_match": {
+      "auc": true,
+      "acc": true
+    }
+  },
+  "repository_finding": {
+    "inspected_revision": "12e9f40ad214f6f076b1672cf29fab9d2e7216cc",
+    "finding": "The training script assigned best_model to the live model object, so later optimisation could change the object intended to preserve the best validation epoch.",
+    "fix_revision": "8b0f553f95ea6b5f5517e49c539952cb21c79d89",
+    "fix": "The later revision changed both assignments to deepcopy(model).",
+    "unresolved": "The released prediction files do not identify their generating code revision, so this review cannot establish whether the defect affected them."
+  },
+  "claim_boundary": "We re-evaluated three author-released test prediction files against the official test labels. We did not retrain the model, reproduce the whole paper, establish patient-independent splitting, or perform clinical validation of a diagnostic system."
+}

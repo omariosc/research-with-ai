@@ -7,29 +7,236 @@ export const annotationTools: Workshop = {
   title: "Developing Custom Annotation Tools Using AI",
   navTitle: "Annotation tools",
   description:
-    "Turn an expert annotation protocol into a tested local tool and a traceable dataset. The worked example builds on frame-annotator without treating generated code or model suggestions as ground truth.",
+    "Turn an expert annotation protocol into a tested local tool and a traceable dataset. The first-hand case audits frame-annotator for clip and timeline classification and surgical-annotator for masks, keypoints, and multi-task geometry.",
   promise:
     "Finish with a versioned annotation specification, an offline application plan, a review workflow, provenance-aware exports, and an evaluation protocol.",
-  duration: "10 stages · about 75 minutes",
+  duration: "10 stages · about 80 guided minutes",
+  audience:
+    "Masters and PhD researchers who need a study-specific annotation workflow and can review generated code with a domain expert or research software colleague.",
+  prerequisites: [
+    "A public, synthetic, or approved de-identified sample and a named data owner",
+    "A domain expert who can define labels, boundaries, uncertainty, and clinically meaningful errors",
+    "Basic familiarity with Git, Python environments, files, and command-line tests",
+    "Permission to run the chosen AI tools in the environment where the work will happen",
+  ],
+  outcomes: [
+    "Audit an existing annotation repository without confusing passing tests with study validity",
+    "Translate an expert protocol into stable identifiers, explicit geometry, uncertainty states, and schema rules",
+    "Specify and test a complete manual workflow that remains usable locally and offline",
+    "Introduce model suggestions only after manual calibration, with accept, edit, reject, and provenance records",
+    "Design review and evaluation that respect clustered frames, repeated annotators, and a declared manual baseline",
+  ],
+  projectTime:
+    "Adapting, testing, calibrating, governing, and evaluating a real study tool usually takes several days to several weeks.",
+  quickRoute: ["govern-data", "specification", "export-evaluate"],
+  caseStudy: {
+    eyebrow: "First-hand code audit",
+    title: "Two useful prototypes, not one validated annotation system",
+    context:
+      "At commit 3e94ed03c1487331b8c041ca755421686b41d031, the repository contains frame-annotator for clip selection and timeline classification, plus surgical-annotator for masks, keypoints, visibility, and multi-task geometry. The tutorial begins from what the code and tests actually show.",
+    expected:
+      "I expected one portable annotation application whose passing tests covered the complete surgical workflow.",
+    observed: [
+      "Thirteen core tests pass, but they do not exercise surgical-annotator, so the multi-task geometry workflow remains uncovered.",
+      "The application defaults to 0.0.0.0 with debug mode enabled rather than a safe local-only profile.",
+      "The exporter contains hard-coded Windows paths, which prevents a clean portable release.",
+      "The two applications share useful ideas but make different task assumptions and should be audited separately before refactoring.",
+      "A separate two-record synthetic fixture now exports to review CSV and reimports without field loss, including the out-of-frame null-geometry rule.",
+      "Its visible box also round-trips through a YOLO line exactly, while phase, named keypoints, visibility meaning, and provenance are declared losses.",
+    ],
+    changes: [
+      "Treat clip and timeline classification separately from masks, keypoints, and multi-task geometry.",
+      "Make 127.0.0.1 with debug disabled the default, and require an explicit reviewed profile for private hosting.",
+      "Move dataset and export paths into a manifest, then add clean-environment coverage for both applications.",
+      "Freeze a manual baseline and calibration set before measuring or enabling model assistance.",
+    ],
+    boundary:
+      "This is a code audit of a teaching prototype plus one synthetic serialization check. The review CSV preserves the fixture, but the YOLO example preserves only one box subset. Neither result provides evidence of annotation accuracy, usability, patient safety, or deployment readiness.",
+    sources: [
+      {
+        title: "frame-annotator repository at the audited commit",
+        url: "https://github.com/omariosc/frame-annotator/tree/3e94ed03c1487331b8c041ca755421686b41d031",
+      },
+      {
+        title: "Recorded audit procedure and outputs",
+        url: "/audits/frame-annotator-2026-07-26.md",
+      },
+      {
+        title: "Annotation export round-trip record",
+        url: "/audits/annotation-round-trip-2026-07-26.md",
+      },
+      {
+        title: "Download the synthetic round-trip fixture",
+        url: "/worked-examples/annotation-round-trip-fixture.json",
+      },
+      {
+        title: "Flask security considerations",
+        url: "https://flask.palletsprojects.com/en/stable/web-security/",
+      },
+    ],
+  },
+  assessment: [
+    {
+      id: "deidentification-boundary",
+      question:
+        "A team replaces patient names in filenames with study IDs. They now want to upload surgical frames to a public AI service. What should happen next?",
+      options: [
+        {
+          id: "upload-pseudonymous",
+          label: "Proceed because the filenames are pseudonymous",
+          correct: false,
+          feedback:
+            "Pseudonymisation does not make the media anonymous. Frames, overlays, audio, metadata, and linkage risk still need review.",
+        },
+        {
+          id: "governance-review",
+          label:
+            "Stop and confirm de-identification, approval, processing location, provider terms, and residual re-identification risk",
+          correct: true,
+          feedback:
+            "Correct. A named data owner must confirm that the media and the proposed processing are permitted before upload.",
+        },
+        {
+          id: "blur-after-upload",
+          label: "Upload first and ask the AI service to blur identifiers",
+          correct: false,
+          feedback:
+            "The disclosure has already occurred before any returned blur is reviewed. De-identification must happen in an approved environment first.",
+        },
+      ],
+    },
+    {
+      id: "assistance-calibration",
+      question:
+        "A segmentation model appears accurate on five easy frames. The team wants to enable suggestions for every annotator immediately. What is the defensible next step?",
+      options: [
+        {
+          id: "enable-all",
+          label: "Enable it and compare model inference time with manual time",
+          correct: false,
+          feedback:
+            "Inference time omits review and correction burden, and five convenient frames do not establish a baseline.",
+        },
+        {
+          id: "manual-baseline",
+          label:
+            "Freeze the protocol, calibrate annotators manually, record a representative manual baseline, then pilot assistance with full provenance",
+          correct: true,
+          feedback:
+            "Correct. Assistance can only be evaluated against a stable manual workflow, including correction time and accepted quality.",
+        },
+        {
+          id: "accept-high-confidence",
+          label: "Automatically accept suggestions above a confidence threshold",
+          correct: false,
+          feedback:
+            "Model confidence is not an annotation decision and may be poorly calibrated. Every accepted suggestion still needs an accountable human action.",
+        },
+      ],
+    },
+    {
+      id: "clustered-agreement",
+      question:
+        "Two annotators label 2,000 adjacent frames drawn from four videos. How should agreement be reported?",
+      options: [
+        {
+          id: "all-independent",
+          label: "Treat all 2,000 frames as independent observations",
+          correct: false,
+          feedback:
+            "Adjacent frames from the same video are correlated. Treating them as independent produces misleading precision.",
+        },
+        {
+          id: "single-score",
+          label: "Report one overall percentage agreement score",
+          correct: false,
+          feedback:
+            "One score hides task differences, prevalence, source-video clustering, and repeated measurements from each annotator.",
+        },
+        {
+          id: "cluster-aware",
+          label:
+            "Use task-appropriate metrics, preserve both originals, and estimate uncertainty at the source-video level while accounting for repeated annotators",
+          correct: true,
+          feedback:
+            "Correct. The sampling unit, clustering, repeated annotators, thresholds, and adjudication process should all be declared.",
+        },
+      ],
+    },
+  ],
+  glossary: [
+    {
+      term: "Annotation unit",
+      definition:
+        "The item receiving one decision, such as a frame, clip, phase interval, object, or case.",
+    },
+    {
+      term: "Ontology",
+      definition:
+        "The named labels and the rules that define their relationships and permitted use.",
+    },
+    {
+      term: "Pseudonymisation",
+      definition:
+        "Replacing direct identifiers with a code while keeping information that can reconnect the record to a person.",
+    },
+    {
+      term: "De-identification",
+      definition:
+        "A documented process for removing or reducing identifying information across pixels, audio, metadata, filenames, and linked records.",
+    },
+    {
+      term: "Calibration",
+      definition:
+        "A supervised practice round used to align annotators with the protocol before measured annotation begins.",
+    },
+    {
+      term: "Manual baseline",
+      definition:
+        "Predeclared annotation time and quality measured with the complete manual workflow and no model suggestions.",
+    },
+    {
+      term: "Provenance",
+      definition:
+        "The trace of who or what created, edited, accepted, rejected, reviewed, and exported an annotation.",
+    },
+    {
+      term: "Adjudication",
+      definition:
+        "A recorded decision by a named reviewer that resolves a disagreement while preserving the original annotations.",
+    },
+    {
+      term: "Clustered data",
+      definition:
+        "Related observations, such as adjacent frames from one video, that should not be analysed as independent samples.",
+    },
+    {
+      term: "Atomic write",
+      definition:
+        "Saving through a temporary file and replacement step so interruption does not leave a partially written annotation.",
+    },
+  ],
   accent: "green",
   startLabel: "Inventory the raw data",
   steps: [
     {
       id: "govern-data",
       title: "Inventory and govern the raw data",
+      duration: "8 minutes guided",
+      checkpointLabel: "Governance boundary recorded",
       summary:
-        "Establish what the media contains, where it may be processed, and whether it can leave the approved environment before designing the tool.",
+        "Establish what the media contains, how de-identification was checked, where it may be processed, and whether it can leave the approved environment before designing the tool.",
       action:
-        "Create a manifest with pseudonymous IDs, format, dimensions, frame rate, site, checksum, approval reference, retention, and permitted processing locations.",
+        "Create a manifest with pseudonymous IDs, format, dimensions, frame rate, site, checksum, approval reference, de-identification status, retention, and permitted processing locations.",
       output: "source-manifest.csv",
-      prompt: `Act as a research data steward. Using only the metadata below, draft a data inventory and list unresolved governance decisions. Do not request, inspect, or upload raw media. Separate anonymisation from pseudonymisation and flag where approval, consent, a DPIA, retention, or cloud-processing rules still need a human decision.
+      prompt: `Act as a research data steward. Using only the metadata below, draft a data inventory and list unresolved governance decisions. Do not request, inspect, or upload raw media. Separate anonymisation from pseudonymisation. Require an approved check for identifiers in pixels, overlays, audio, headers, filenames, metadata, and linkage files. Flag where approval, consent, a DPIA, retention, deletion, or cloud-processing rules still need a human decision.
 
 Metadata:
 [Paste non-identifying metadata here]`,
       checkpoint:
-        "Every source item has a stable pseudonymous ID and SHA-256 checksum. A named owner confirms processing locations, cloud use, retention, and deletion.",
+        "Every source item has a stable pseudonymous ID and SHA-256 checksum. A named owner confirms the de-identification check, residual risk, processing locations, cloud use, retention, and deletion.",
       watchFor:
-        "Pseudonymised data is still personal data. Never paste identifiable frames, filenames, credentials, or linkage keys into an unapproved service.",
+        "Pseudonymised data is still personal data. Removing names from filenames does not remove burned-in text, faces, voices, metadata, or linkage risk.",
       videoCue:
         "Start with a metadata-only manifest. Show the agent identifying a missing cloud-processing decision without seeing a single frame.",
       sources: [
@@ -50,6 +257,8 @@ Metadata:
     {
       id: "protocol",
       title: "Write the protocol before the interface",
+      duration: "10 minutes guided",
+      checkpointLabel: "Protocol applied independently",
       summary:
         "Buttons cannot resolve an undefined clinical concept. Define every label, boundary, exception, and uncertainty state before writing application code.",
       action:
@@ -83,6 +292,8 @@ Expert notes:
     {
       id: "specification",
       title: "Freeze a machine-readable specification",
+      duration: "8 minutes guided",
+      checkpointLabel: "Specification validates",
       summary:
         "Convert the approved protocol into exact IDs, types, valid values, coordinate conventions, phase rules, review settings, and export mappings.",
       action:
@@ -113,14 +324,16 @@ Expert notes:
     {
       id: "pilot",
       title: "Build a representative pilot",
+      duration: "7 minutes guided",
+      checkpointLabel: "Manual pilot approved",
       summary:
-        "A convenient sample hides the cases most likely to break the ontology or interface. Pilot ordinary, difficult, negative, and corrupted inputs.",
+        "A convenient sample hides the cases most likely to break the ontology or interface. Pilot ordinary, difficult, negative, and corrupted inputs before showing annotators any model suggestion.",
       action:
-        "Select a deterministic sample across sites, procedures, acquisition settings, durations, quality, rare labels, transitions, occlusion, and scene exit.",
+        "Select a deterministic sample across sites, procedures, acquisition settings, durations, quality, rare labels, transitions, occlusion, and scene exit, then calibrate the manual workflow.",
       output: "pilot-manifest.csv",
-      prompt: `Using this de-identified manifest, propose a deterministic pilot sample covering sites, procedures, durations, image quality, rare labels, phase boundaries, partial visibility, complete occlusion, out-of-view objects, negatives, and broken media. Use only pseudonymous IDs. Show which strata remain underrepresented.`,
+      prompt: `Using this approved de-identified manifest, propose a deterministic pilot sample covering sites, procedures, durations, image quality, rare labels, phase boundaries, partial visibility, complete occlusion, out-of-view objects, negatives, and broken media. Use only pseudonymous IDs. Show which strata remain underrepresented. Reserve a representative subset for manual annotator calibration and baseline measurement before any model suggestion is visible.`,
       checkpoint:
-        "The coverage table includes every task and planned edge case. A smaller reference subset is independently annotated and protocol changes are versioned.",
+        "The coverage table includes every task and planned edge case. Annotators complete a manual-only calibration subset, and resulting protocol changes are versioned before baseline measurement.",
       watchFor:
         "Do not tune the protocol only on clean examples from one site, operator, device, or procedure stage.",
       videoCue:
@@ -139,22 +352,24 @@ Expert notes:
     {
       id: "local-app",
       title: "Generate the local offline core",
+      duration: "10 minutes guided",
+      checkpointLabel: "Manual offline path tested",
       summary:
-        "Begin with deterministic manual annotation. Preserve frame-annotator's keyboard-first workflow and atomic files while moving study assumptions into configuration.",
+        "Begin with deterministic manual annotation. Preserve frame-annotator's clip and timeline workflow and surgical-annotator's geometry tasks while moving study assumptions into configuration.",
       action:
-        "Add manifest discovery, optional video extraction, schema validation, atomic writes, backups, undo, and safe recovery. Bind only to the local machine.",
+        "Audit the two applications separately, then add manifest discovery, schema validation, atomic writes, backups, undo, safe recovery, and a local-only default.",
       output: "src/annotation_app/",
-      prompt: `Inspect omariosc/frame-annotator and implement a configuration-driven local app from annotation-spec.yaml. Preserve its keyboard-first interface, phase timeline, masks, keypoints, visibility states, and per-frame atomic JSON. Remove fixed dataset paths, tool counts, and peg-transfer assumptions. Bind to 127.0.0.1, disable debug mode, and keep the complete manual workflow usable with network access blocked. Use synthetic fixtures in tests.`,
+      prompt: `Inspect omariosc/frame-annotator at commit 3e94ed03c1487331b8c041ca755421686b41d031. Treat frame-annotator for clip and timeline classification and surgical-annotator for masks, keypoints, visibility, and multi-task geometry as separate applications. Do not claim that the 13 passing core tests cover surgical-annotator. Propose a configuration-driven manual workflow from annotation-spec.yaml. Replace hard-coded Windows exporter paths and fixed study assumptions. Bind to 127.0.0.1, disable debug mode, and keep the complete manual workflow usable with network access blocked. Use synthetic fixtures and show every change as a reviewable diff.`,
       checkpoint:
-        "A clean machine loads the pilot and completes every manual task offline. Annotations survive refresh and forced termination without silent loss.",
+        "A clean machine loads synthetic fixtures and completes the declared manual tasks offline. Tests cover both application boundaries, and annotations survive refresh and forced termination without silent loss.",
       watchFor:
-        "A local browser interface is not automatically private if it binds to the network, enables a debugger, loads remote assets, or logs raw frames.",
+        "Passing the 13 core tests does not validate surgical-annotator. A local browser interface is not private if it binds to 0.0.0.0, enables debug mode, loads remote assets, or logs raw frames.",
       videoCue:
         "Open the same synthetic case before and after moving labels from source code into annotation-spec.yaml.",
       sources: [
         {
-          title: "frame-annotator",
-          url: "https://github.com/omariosc/frame-annotator",
+          title: "frame-annotator at the audited commit",
+          url: "https://github.com/omariosc/frame-annotator/tree/3e94ed03c1487331b8c041ca755421686b41d031",
         },
         {
           title: "Python packaging guide",
@@ -169,16 +384,18 @@ Expert notes:
     {
       id: "model-assist",
       title: "Add optional model assistance",
+      duration: "7 minutes guided",
+      checkpointLabel: "Assistance pilot justified",
       summary:
-        "Treat every model output as a proposal. Keep the manual workflow available and record what generated, changed, accepted, or rejected each suggestion.",
+        "Treat every model output as a proposal introduced after manual calibration. Keep the manual workflow available and record what generated, changed, accepted, or rejected each suggestion.",
       action:
-        "Place local segmentation or tracking behind an adapter with explicit accept, edit, and reject actions and complete per-suggestion provenance.",
+        "Freeze the manual baseline first, then place local segmentation or tracking behind an adapter with explicit accept, edit, and reject actions and complete per-suggestion provenance.",
       output: "src/model_adapters/",
-      prompt: `Add an optional local SAM2 video suggestion adapter. Never save a prediction as accepted ground truth without a human action. Record model repository, code commit, version, checkpoint SHA-256, prompt type and coordinates, inference parameters, timestamp, accept or edit or reject decision, and whether the geometry was corrected. The manual workflow must remain complete when the model is unavailable.`,
+      prompt: `After the protocol, calibration set, and manual baseline are frozen, add an optional local SAM2 video suggestion adapter. Never save a prediction as accepted ground truth without a human action. Record model repository, code commit, version, checkpoint SHA-256, prompt type and coordinates, inference parameters, timestamp, accept or edit or reject decision, correction time, and corrected geometry. The manual workflow must remain complete when the model is unavailable.`,
       checkpoint:
-        "Predictions are visually distinct, disabling the model removes no manual feature, rejected suggestions create no accepted geometry, and retained suggestions have full provenance.",
+        "Predictions are visually distinct, disabling the model removes no manual feature, rejected suggestions create no accepted geometry, and assisted quality and total review time can be compared with the frozen manual baseline.",
       watchFor:
-        "Faster inference is not faster annotation if corrections take longer. Never measure model latency alone.",
+        "Faster inference is not faster annotation if review and correction take longer. Do not tune the protocol, thresholds, or baseline after seeing assisted results.",
       videoCue:
         "Accept one good suggestion, edit one partial mask, reject one failure, and inspect the three different provenance records.",
       sources: [
@@ -199,14 +416,16 @@ Expert notes:
     {
       id: "test-package",
       title: "Test and package the offline release",
+      duration: "8 minutes guided",
+      checkpointLabel: "Installed release tested",
       summary:
         "Running from a source checkout is not a release test. Build the package, install it into an empty environment, and exercise the installed UI.",
       action:
-        "Add unit, API, schema, browser, interruption, export, and accessibility tests. Verify HTML, CSS, JavaScript, and templates are packaged.",
+        "Add unit, API, schema, browser, interruption, export, and accessibility tests for both applications. Verify HTML, CSS, JavaScript, and templates are packaged.",
       output: "tests/test_release_install.py",
-      prompt: `Build a release verification suite. Install the wheel into a new empty environment rather than editable mode. Fail if an HTML template, JavaScript file, stylesheet, or package asset is missing. Add Playwright tests for draw, edit, undo, autosave, reload, phase boundary, visibility, review, and export. Test malformed input and interrupted writes. Report accessibility checks that still require a person.`,
+      prompt: `Build a release verification suite. Treat the 13 passing core tests as the current baseline, not evidence that surgical-annotator works. Install the wheel into a new empty environment rather than editable mode. Fail if an HTML template, JavaScript file, stylesheet, or package asset is missing. Add coverage for clip selection, timeline classification, masks, keypoints, multi-task geometry, draw, edit, undo, autosave, reload, visibility, review, and portable export. Test malformed input, interrupted writes, and paths on a non-Windows system. Report accessibility checks that still require a person.`,
       checkpoint:
-        "CI passes, the wheel launches from a clean environment, export round-trips without loss, and keyboard operation works without unexplained high-severity accessibility failures.",
+        "CI covers the declared frame and surgical workflows, the wheel launches from a clean environment, export round-trips without loss on a second platform, and keyboard operation has no unexplained high-severity accessibility failure.",
       watchFor:
         "Editable installs can hide missing package assets. Tests that run only from the repository can pass while the installed application is broken.",
       videoCue:
@@ -229,12 +448,14 @@ Expert notes:
     {
       id: "hosting",
       title: "Choose local or private hosting",
+      duration: "7 minutes guided",
+      checkpointLabel: "Deployment boundary approved",
       summary:
         "Local offline use is the safe default. A shared server adds authentication, authorisation, TLS, audit logs, backups, and an operational owner.",
       action:
-        "Document separate local and private-server profiles. Threat-model the server before placing research media on it.",
+        "Replace the current 0.0.0.0 and debug defaults with a 127.0.0.1 offline profile. Threat-model a separate private-server profile before placing research media on it.",
       output: "deployment-profiles.yaml",
-      prompt: `Threat-model an optional private deployment using OWASP ASVS. Assume special-category research data. Produce controls for authentication, annotator and reviewer and administrator roles, session security, upload limits, allowed formats, TLS, audit events, backup encryption, restoration, and incident response. Use a production WSGI server and reverse proxy. Do not expose the Flask development server.`,
+      prompt: `Create two explicit deployment profiles. Local mode must bind to 127.0.0.1, disable debug mode, load no remote asset, and remain usable offline. Threat-model an optional private deployment using OWASP ASVS and assume special-category research data. Include authentication, annotator and reviewer and administrator roles, session security, upload limits, allowed formats, TLS, audit events, backup encryption, restoration, and incident response. Use a production WSGI server and reverse proxy. Do not expose the Flask development server.`,
       checkpoint:
         "Local mode stays on 127.0.0.1. Private mode has no anonymous route, debugger, or default secret; roles are tested and the team completes a backup restore drill.",
       watchFor:
@@ -259,16 +480,18 @@ Expert notes:
     {
       id: "review",
       title: "Review and adjudicate",
+      duration: "7 minutes guided",
+      checkpointLabel: "Cluster-aware review planned",
       summary:
         "Quality is a workflow. Preserve both original annotations, queue task-specific disagreements, and record every adjudication and protocol change.",
       action:
-        "Double-annotate a predeclared stratified fraction with pseudonymous annotator IDs, then run blinded review where practical.",
+        "Double-annotate a predeclared stratified fraction sampled at case or video level with pseudonymous annotator IDs, then run blinded review where practical.",
       output: "review-plan.yaml",
-      prompt: `Compare these two schema-valid annotation exports without deciding who is correct. Create a disagreement queue for boxes, keypoints, phase boundaries, and visibility states using the predeclared thresholds. Include exact item, annotation, and revision IDs. Preserve both originals and leave the final decision to the named adjudicator.`,
+      prompt: `Compare these two schema-valid annotation exports without deciding who is correct. Create a disagreement queue for boxes, keypoints, phase boundaries, and visibility states using predeclared task-specific thresholds. Include exact case, video, frame, annotation, annotator, and revision IDs. Preserve both originals and leave the final decision to the named adjudicator. State the sampling unit and do not treat adjacent frames from one video or repeated decisions from one annotator as independent.`,
       checkpoint:
-        "Each adjudication has a reviewer, decision, reason, note, and revision link. Agreement is reported by task and relevant subgroup rather than as one score.",
+        "Each adjudication has a reviewer, decision, reason, note, and revision link. Agreement and uncertainty are reported by task with clustering at source-video or case level and repeated annotators accounted for.",
       watchFor:
-        "A reviewer should not silently overwrite an original. A changed definition requires a new protocol version and a list of affected records.",
+        "A reviewer should not silently overwrite an original. Thousands of adjacent frames do not provide thousands of independent observations.",
       videoCue:
         "Compare two plausible tip locations, queue the disagreement, adjudicate it, and show that both originals remain recoverable.",
       sources: [
@@ -289,16 +512,18 @@ Expert notes:
     {
       id: "export-evaluate",
       title: "Export, trace, and evaluate",
+      duration: "8 minutes guided",
+      checkpointLabel: "Traceable evaluation reproduced",
       summary:
         "Preserve a lossless native record before derived formats. Test whether the custom tool improves accepted annotation time or quality against a declared baseline.",
       action:
-        "Export records, revisions, reviews, label maps, splits, checksums, environment, and protocol references. Reimport them and run the preregistered evaluation.",
+        "Export records, revisions, reviews, label maps, splits, checksums, environment, and protocol references. Reimport them and compare assistance with the frozen manual baseline.",
       output: "evaluation-report.md",
-      prompt: `Create a deterministic native export and evaluation report from the frozen records. Preserve originals, revisions, suggestions, and adjudications. Generate label maps, split manifests, SHA-256 checksums, and an RO-Crate metadata stub. Compare the custom tool with [baseline] using preregistered annotation time, correction time, box IoU, keypoint error, phase-boundary error, visibility agreement, and data-loss metrics. Report uncertainty, strata, missing measurements, and failures.`,
+      prompt: `Create a deterministic native export and evaluation report from the frozen records. Preserve originals, revisions, suggestions, accept or edit or reject actions, and adjudications. Generate label maps, split manifests, SHA-256 checksums, and an RO-Crate metadata stub. Compare assisted annotation with the preregistered manual baseline using total accepted annotation time, correction time, box IoU, keypoint error, phase-boundary error, visibility agreement, and data-loss metrics. Declare the unit of analysis, account for clustering by case or video and repeated annotators, and report order effects, uncertainty, strata, missing measurements, and failures.`,
       checkpoint:
-        "The native export validates and reimports identically, derived records trace to native IDs, checksums verify, and a second machine reproduces the evaluation.",
+        "The native export validates and reimports identically, derived records trace to native IDs, checksums verify, and a second machine reproduces the cluster-aware comparison with the manual baseline.",
       watchFor:
-        "Do not claim success from a polished interface, model latency, or descriptive differences alone. Report correction burden and uncertainty.",
+        "Do not claim success from a polished interface, model latency, or frame-level precision that ignores clustering. Report correction burden, missing data, and uncertainty.",
       videoCue:
         "Export one reviewed case, trace a derived YOLO label back to its native record, and reproduce one metric from a fresh directory.",
       sources: [
@@ -319,9 +544,9 @@ Expert notes:
   ],
   sourceLibrary: [
     {
-      title: "frame-annotator",
-      url: "https://github.com/omariosc/frame-annotator",
-      note: "The worked example for local clip, phase, mask, keypoint, visibility, and plain-file annotation.",
+      title: "frame-annotator and surgical-annotator at the audited commit",
+      url: "https://github.com/omariosc/frame-annotator/tree/3e94ed03c1487331b8c041ca755421686b41d031",
+      note: "The first-hand code-audit case: frame-annotator covers clip and timeline classification, while surgical-annotator covers masks, keypoints, visibility, and multi-task geometry.",
     },
     {
       title: "SAGES annotation framework",
