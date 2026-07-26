@@ -214,17 +214,19 @@ test("renders the version history and canonical workshop links", async () => {
   assert.match(html, /agenticresearch\.omarchoudhry\.co\.uk/);
   assert.match(html, /interactivepaper\.omarchoudhry\.co\.uk/);
   assert.match(html, /annotate\.omarchoudhry\.co\.uk/);
+  assert.match(html, /research-with-ai-v1\.2\.0-source\.zip/);
+  assert.match(html, /a304472/);
   assert.match(html, /research-with-ai-v1\.1\.0-source\.zip/);
   assert.match(html, /bd3c4a2/);
 });
 
 test("publishes the reviewed source snapshot with its checksum", async () => {
   const archiveUrl = new URL(
-    "../public/releases/research-with-ai-v1.1.0-source.zip",
+    "../public/releases/research-with-ai-v1.2.0-source.zip",
     import.meta.url,
   );
   const checksumUrl = new URL(
-    "../public/releases/research-with-ai-v1.1.0-source.sha256",
+    "../public/releases/research-with-ai-v1.2.0-source.sha256",
     import.meta.url,
   );
   const [archive, checksumRecord] = await Promise.all([
@@ -233,8 +235,30 @@ test("publishes the reviewed source snapshot with its checksum", async () => {
   ]);
   const digest = createHash("sha256").update(archive).digest("hex");
 
-  assert.equal(digest, "d7a95965a7421c2fad8f7ffc166115d8e10694cbc39b6fd3958d3fb18cf17636");
-  assert.match(checksumRecord, new RegExp(`^${digest}  research-with-ai-v1\\.1\\.0-source\\.zip\\n$`));
+  assert.equal(
+    digest,
+    "73af076a357bd7800f8372dd4e9e4553a0e41d9d9901085651a78dd2ffd506ff",
+  );
+  assert.match(
+    checksumRecord,
+    new RegExp(`^${digest}  research-with-ai-v1\\.2\\.0-source\\.zip\\n$`),
+  );
+  assert.deepEqual([...archive.subarray(0, 2)], [0x50, 0x4b]);
+});
+
+test("keeps the historical v1.1 source snapshot pinned", async () => {
+  const archive = await readFile(
+    new URL(
+      "../public/releases/research-with-ai-v1.1.0-source.zip",
+      import.meta.url,
+    ),
+  );
+  const digest = createHash("sha256").update(archive).digest("hex");
+
+  assert.equal(
+    digest,
+    "d7a95965a7421c2fad8f7ffc166115d8e10694cbc39b6fd3958d3fb18cf17636",
+  );
   assert.deepEqual([...archive.subarray(0, 2)], [0x50, 0x4b]);
 });
 

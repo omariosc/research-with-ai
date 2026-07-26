@@ -27,10 +27,10 @@ attribution, and explicit limits on what was reproduced.
 
 The current content release is **v1.2.0**, released on 2026-07-26. The
 [version history](https://researchwithai.omarchoudhry.co.uk/versions) records
-the current canonical address for each independently submitted tutorial. The
-[v1.1.0 source snapshot](public/releases/research-with-ai-v1.1.0-source.zip)
-remains available with its checksum while the v1.2.0 release snapshot is
-finalised.
+the current canonical address for each independently submitted tutorial. A
+[checksum-recorded v1.2.0 source snapshot](public/releases/research-with-ai-v1.2.0-source.zip)
+preserves reviewed commit `a3044724d9e1d0ac2707c442a64fc5be40113fd0`.
+The historical v1.1.0 snapshot remains available from the version history.
 
 ## What this project contributes
 

@@ -24,7 +24,7 @@ sign-off. It is not a scientific reproduction record.
 | `research-with-ai-social.png` | Social preview | Generated for this project with an OpenAI image model | AI origin disclosed; selected and reviewed by the author |
 | Tutorial prose, diagrams, and interface | Original educational material | Release `v1.2.0` | CC BY 4.0 |
 | Application source | Website implementation | Release `v1.2.0` | MIT |
-| Source snapshot | Downloadable reviewed application source | Generated from the reviewed v1.2 source commit; the final audit and checksum file record the exact commit and SHA-256 | Generated with `git archive`; source rights remain itemised by file |
+| Source snapshot | Downloadable reviewed application source | Commit `a3044724d9e1d0ac2707c442a64fc5be40113fd0`; SHA-256 `73af076a357bd7800f8372dd4e9e4553a0e41d9d9901085651a78dd2ffd506ff` | Generated with `git archive`; source rights remain itemised by file |
 | External papers, standards, and documentation | Evidence links | Exact URLs appear beside the relevant stages | Linked and paraphrased; external rights retained |
 
 MedMNIST Figure 1 is the only copied publisher figure. It is reused under
@@ -63,7 +63,7 @@ npm audit --audit-level=high
 npx wrangler deploy --dry-run --config edge-proxy/wrangler.jsonc
 ```
 
-The test command runs 40 checks. It builds the production application, renders
+The test command runs 41 checks. It builds the production application, renders
 the hub and all three workshops, checks custom-domain roots and metadata,
 validates both immutable annotation schema releases and current YAML, checks the
 source-image hash, exercises edge routing and headers, checks route navigation
