@@ -24,6 +24,7 @@ sign-off. It is not a scientific reproduction record.
 | `research-with-ai-social.png` | Social preview | Generated for this project with an OpenAI image model | AI origin disclosed; selected and reviewed by the author |
 | Tutorial prose, diagrams, and interface | Original educational material | Release `v1.1.0` | CC BY 4.0 |
 | Application source | Website implementation | Release `v1.1.0` | MIT |
+| Source snapshot | Downloadable reviewed application source | Commit `bd3c4a2e0b1c03109773fecaadc3335066f8eb7f`; SHA-256 `d7a95965a7421c2fad8f7ffc166115d8e10694cbc39b6fd3958d3fb18cf17636` | Generated with `git archive`; source rights remain itemised by file |
 | External papers, standards, and documentation | Evidence links | Exact URLs appear beside the relevant stages | Linked and paraphrased; external rights retained |
 
 MedMNIST Figure 1 is the only copied publisher figure. It is reused under

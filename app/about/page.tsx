@@ -151,7 +151,8 @@ export default function AboutPage() {
             <a href="/worked-examples/medmnist-breast/source-manifest.json">
               source and rights manifest
             </a>
-            .
+            . The version page provides a checksum-recorded source snapshot of
+            the reviewed release.
           </p>
         </section>
         <SiteFooter />

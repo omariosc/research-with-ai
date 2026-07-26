@@ -109,6 +109,20 @@ export default function VersionsPage() {
               </a>
               .
             </p>
+            <p>
+              Download the{" "}
+              <a
+                download
+                href="/releases/research-with-ai-v1.1.0-source.zip"
+              >
+                reviewed v1.1.0 source snapshot
+              </a>{" "}
+              from commit <code>bd3c4a2</code>, with its{" "}
+              <a href="/releases/research-with-ai-v1.1.0-source.sha256">
+                SHA-256 record
+              </a>
+              .
+            </p>
           </div>
         </section>
 

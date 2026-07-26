@@ -23,7 +23,9 @@ attribution, and explicit limits on what was reproduced.
 
 The current content release is **v1.1.0**, released on 2026-07-26. The
 [version history](https://researchwithai.omarchoudhry.co.uk/versions) records
-the current canonical address for each independently submitted tutorial.
+the current canonical address for each independently submitted tutorial. A
+[checksum-recorded source snapshot](public/releases/research-with-ai-v1.1.0-source.zip)
+preserves reviewed commit `bd3c4a2e0b1c03109773fecaadc3335066f8eb7f`.
 
 ## What this project contributes
 
@@ -101,6 +103,7 @@ lib/
   storage.ts              Local persistence and browser exports
 public/
   audits/                     Repository, release, and round-trip evidence
+  releases/                   Versioned source archive and checksum
   schemas/                    Immutable annotation specification schemas
   worked-examples/            Runnable MedMNIST pack and annotation fixture
   frame-annotator-*.png       Hashed worked-example source image
