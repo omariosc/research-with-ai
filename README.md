@@ -37,7 +37,7 @@ The current content release is **v1.3.0**, released on 2026-07-26. The
 [version history](https://researchwithai.omarchoudhry.co.uk/versions) records
 the current canonical address for each independently submitted tutorial. A
 [checksum-recorded v1.3.0 source snapshot](public/releases/research-with-ai-v1.3.0-source.zip)
-preserves reviewed commit `V1_3_FEATURE_COMMIT`. Historical v1.1.0 and v1.2.0
+preserves reviewed commit `32b46f3b1f7f84c1ed56052768836c6517fe5d0f`. Historical v1.1.0 and v1.2.0
 snapshots remain available from the version history.
 
 ## What this project contributes

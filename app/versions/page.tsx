@@ -124,7 +124,7 @@ export default function VersionsPage() {
               >
                 reviewed v1.3.0 source snapshot
               </a>{" "}
-              from commit <code>V1_3_FEATURE_COMMIT</code>, with its{" "}
+              from commit <code>32b46f3</code>, with its{" "}
               <a href="/releases/research-with-ai-v1.3.0-source.sha256">
                 SHA-256 record
               </a>

@@ -6,9 +6,10 @@ Content release: `v1.3.0`
 
 Author and accountable reviewer: Omar Choudhry
 
-Reviewed feature commit: `V1_3_FEATURE_COMMIT`
+Reviewed feature commit: `32b46f3b1f7f84c1ed56052768836c6517fe5d0f`
 
-Source archive SHA-256: `V1_3_SOURCE_SHA256`
+Source archive SHA-256:
+`fa7b5e0bd466af1608b28580926f21c288f30d4ced081a066c220358168d3054`
 
 ## Purpose
 
@@ -80,10 +81,11 @@ PYTHONDONTWRITEBYTECODE=1 uv run --no-project --python 3.12 \
   python -m pytest -q -p no:cacheprovider
 ```
 
-The production build and 51 Node tests passed. They cover rendered routes and
+The production build and 53 Node tests passed. They cover rendered routes and
 metadata, project storage and migration, builders, annotation schemas and round
 trips, the synthetic scene hash, the model-service pack and ZIP checksum, edge
-routing, navigation, accessibility semantics, and required tutorial content.
+routing, navigation, accessibility semantics, every rendered local artefact,
+the non-recursive source snapshot, and required tutorial content.
 
 The external-link audit found 177 unique external links. It recorded 166 as
 reachable, retained 11 publisher or vendor responses for manual review, and
@@ -161,6 +163,7 @@ gates.
 ## Source snapshot
 
 `research-with-ai-v1.3.0-source.zip` is generated with `git archive` from the
-reviewed feature commit named above. The adjacent `.sha256` file records the
+reviewed feature commit named above. Historical archives are excluded to avoid
+recursively nesting release files. The adjacent `.sha256` file records the
 archive digest. Later documentation-only commits do not change the archived
 feature tree.

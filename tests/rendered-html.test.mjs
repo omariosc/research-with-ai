@@ -233,10 +233,43 @@ test("renders the version history and canonical workshop links", async () => {
   assert.match(html, /interactivepaper\.omarchoudhry\.co\.uk/);
   assert.match(html, /annotate\.omarchoudhry\.co\.uk/);
   assert.match(html, /research-with-ai-v1\.3\.0-source\.zip/);
+  assert.match(html, /32b46f3/);
   assert.match(html, /research-with-ai-v1\.2\.0-source\.zip/);
   assert.match(html, /a304472/);
   assert.match(html, /research-with-ai-v1\.1\.0-source\.zip/);
   assert.match(html, /bd3c4a2/);
+});
+
+test("keeps the reviewed v1.3 source snapshot pinned without nested archives", async () => {
+  const archiveUrl = new URL(
+    "../public/releases/research-with-ai-v1.3.0-source.zip",
+    import.meta.url,
+  );
+  const checksumUrl = new URL(
+    "../public/releases/research-with-ai-v1.3.0-source.sha256",
+    import.meta.url,
+  );
+  const [archive, checksumRecord] = await Promise.all([
+    readFile(archiveUrl),
+    readFile(checksumUrl, "utf8"),
+  ]);
+  const digest = createHash("sha256").update(archive).digest("hex");
+
+  assert.equal(
+    digest,
+    "fa7b5e0bd466af1608b28580926f21c288f30d4ced081a066c220358168d3054",
+  );
+  assert.equal(
+    checksumRecord,
+    `${digest}  research-with-ai-v1.3.0-source.zip\n`,
+  );
+  assert.deepEqual([...archive.subarray(0, 2)], [0x50, 0x4b]);
+  const archiveIndex = archive.toString("latin1");
+  assert.match(archiveIndex, /research-with-ai-v1\.3\.0\/package\.json/);
+  assert.doesNotMatch(
+    archiveIndex,
+    /public\/releases\/research-with-ai-v1\.[12]\.0-source\.zip/,
+  );
 });
 
 test("keeps the historical v1.2 source snapshot pinned", async () => {
@@ -263,6 +296,41 @@ test("keeps the historical v1.2 source snapshot pinned", async () => {
     new RegExp(`^${digest}  research-with-ai-v1\\.2\\.0-source\\.zip\\n$`),
   );
   assert.deepEqual([...archive.subarray(0, 2)], [0x50, 0x4b]);
+});
+
+test("every rendered local artefact reference resolves to a public file", async () => {
+  const routes = [
+    "/",
+    "/about",
+    "/agentic-research",
+    "/annotation-tools",
+    "/interactive-paper",
+    "/versions",
+    "/worked-examples/medmnist-breast",
+  ];
+  const responses = await Promise.all(routes.map((route) => render(route)));
+  const artefacts = new Set();
+
+  for (const response of responses) {
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    for (const match of html.matchAll(/\b(?:href|src)="([^"]+)"/gi)) {
+      const value = decodeHtml(match[1]).split(/[?#]/, 1)[0];
+      if (
+        value.startsWith("/") &&
+        /\.(?:csv|ico|jpg|json|lock|md|pdf|png|py|sha256|svg|toml|yaml|zip)$/i.test(
+          value,
+        )
+      ) {
+        artefacts.add(decodeURIComponent(value));
+      }
+    }
+  }
+
+  assert.ok(artefacts.size >= 20, "expected the tutorial artefact library");
+  for (const path of artefacts) {
+    await access(new URL(`../public${path}`, import.meta.url));
+  }
 });
 
 test("keeps the historical v1.1 source snapshot pinned", async () => {
