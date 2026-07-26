@@ -26,8 +26,11 @@ sign-off. It is not a scientific reproduction record.
 | Application source | Website implementation | Release `v1.1.0` | MIT |
 | External papers, standards, and documentation | Evidence links | Exact URLs appear beside the relevant stages | Linked and paraphrased; external rights retained |
 
-No publisher figure or table is copied into the platform. A future worked paper
-site must create its own item-level rights ledger before reusing media.
+MedMNIST Figure 1 is the only copied publisher figure. It is reused under
+CC BY 4.0 with attribution, source URL, local hash, alt text, and a separately
+authored long description. No publisher performance table is copied. A future
+worked paper site must create its own item-level rights ledger before reusing
+media.
 
 ## Claim and implementation map
 
@@ -67,9 +70,9 @@ The MedMNIST check validates source hashes, runs four offline negative and metri
 tests, reads three selected released prediction files, and independently
 recalculates the reported AUC and accuracy.
 
-The external-link audit checked 107 unique URLs on 26 July 2026. Ninety-eight
-were reachable, nine publisher or vendor pages returned HTTP 403 and were
-retained for manual review, and none returned an automated failure.
+The external-link audit checked 120 unique URLs on 26 July 2026. One hundred
+and eleven were reachable, nine publisher or vendor pages returned HTTP 403
+and were retained for manual review, and none returned an automated failure.
 
 ## Human release gates
 

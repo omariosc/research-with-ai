@@ -13,7 +13,7 @@ used to build the site.
 
 | AI-assisted task | Record kept | Human or independent check |
 | --- | --- | --- |
-| Source discovery | Linked source library and access review | Primary sources opened; 107-link automated audit with blocked pages retained for manual review; claims remain open to reader verification |
+| Source discovery | Linked source library and access review | Primary sources opened; 120-link automated audit with nine blocked pages retained for manual review; claims remain open to reader verification |
 | Tutorial drafting | Version-controlled content diff | Scope, wording, examples, and claim boundaries reviewed against the challenge call |
 | Repository audit | Pinned commit, commands, and observed outputs | Clean environment test run and direct source inspection |
 | Biomedical worked example | Paper, dataset, prediction archive, source manifest, hashes, command, and reviewed JSON output | Independent implementation of the official binary metric contract; negative tests for changed bytes and row identifiers; paper precision and code history checked directly |
