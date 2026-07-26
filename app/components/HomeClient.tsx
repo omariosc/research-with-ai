@@ -5,11 +5,16 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { readProgress } from "@/lib/storage";
 import type { Workshop, WorkshopSlug } from "@/lib/types";
+import {
+  TUTORIAL_RELEASE_DATE,
+  TUTORIAL_VERSION_LABEL,
+} from "@/lib/version";
 import { ArrowRight, Check } from "./Icons";
 import { PrivacyNote } from "./PrivacyNote";
 import { SiteNav } from "./SiteNav";
 
 const hostRoutes: Record<string, string> = {
+  "researchwithai.omarchoudhry.co.uk": "/",
   "agenticresearch.omarchoudhry.co.uk": "/agentic-research",
   "interactivepaper.omarchoudhry.co.uk": "/interactive-paper",
   "annotate.omarchoudhry.co.uk": "/annotation-tools",
@@ -36,7 +41,7 @@ export function HomeClient({ workshops }: { workshops: Workshop[] }) {
 
   useEffect(() => {
     const route = hostRoutes[window.location.hostname];
-    if (route) {
+    if (route && route !== window.location.pathname) {
       router.replace(route);
       return;
     }
@@ -224,9 +229,12 @@ export function SiteFooter() {
     <footer className="site-footer">
       <div>
         <strong>Research with AI</strong>
-        <span>Omar Choudhry · 2026</span>
+        <span>
+          Omar Choudhry · {TUTORIAL_VERSION_LABEL} · {TUTORIAL_RELEASE_DATE}
+        </span>
       </div>
       <div>
+        <Link href="/versions">Versions</Link>
         <a href="https://omarchoudhry.co.uk">Portfolio</a>
         <a href="https://github.com/omariosc">GitHub</a>
         <a href="https://miccai-sb.github.io/challenge">MICCAI MEC</a>

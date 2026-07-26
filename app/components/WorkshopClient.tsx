@@ -13,6 +13,10 @@ import type {
   WorkshopStep,
 } from "@/lib/types";
 import {
+  TUTORIAL_VERSION_LABEL,
+  workshopRelease,
+} from "@/lib/version";
+import {
   clearProgress,
   copyText,
   downloadText,
@@ -99,9 +103,12 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
   }
 
   function exportNotes() {
+    const release = workshopRelease(workshop.slug);
     const text = `# ${workshop.title}: working record
 
 Generated: ${new Date().toISOString()}
+Tutorial version: ${TUTORIAL_VERSION_LABEL}
+Canonical tutorial: ${release.canonicalUrl}
 
 ${workshop.steps
   .map(

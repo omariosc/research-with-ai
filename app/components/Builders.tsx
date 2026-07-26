@@ -9,6 +9,11 @@ import {
   type MouseEvent,
 } from "react";
 import { copyText, downloadText, STORAGE_PREFIX } from "@/lib/storage";
+import {
+  TUTORIAL_VERSION,
+  TUTORIAL_VERSION_LABEL,
+  WORKSHOP_RELEASES,
+} from "@/lib/version";
 import { Check, Copy, Download, Refresh } from "./Icons";
 
 type CopyState = "idle" | "copied";
@@ -89,6 +94,9 @@ export function AgenticPlanBuilder() {
 
   const output = useMemo(
     () => `# Research contract: ${form.project}
+
+> Tutorial release: ${TUTORIAL_VERSION_LABEL}
+> Canonical tutorial: ${WORKSHOP_RELEASES["agentic-research"].canonicalUrl}
 
 ## Scientific target
 
@@ -232,6 +240,9 @@ export function PaperSiteBuilder() {
   const [copyState, setCopyState] = useState<CopyState>("idle");
   const output = useMemo(
     () => `# Research website brief
+
+> Tutorial release: ${TUTORIAL_VERSION_LABEL}
+> Canonical tutorial: ${WORKSHOP_RELEASES["interactive-paper"].canonicalUrl}
 
 ## Project
 
@@ -408,6 +419,8 @@ export function AnnotationSpecBuilder() {
   const output = useMemo(
     () => `# Annotation project: ${form.project}
 
+tutorial_version: ${TUTORIAL_VERSION}
+tutorial_canonical_url: ${WORKSHOP_RELEASES["annotation-tools"].canonicalUrl}
 schema_version: 1.0.0
 data:
   type: ${form.dataType}

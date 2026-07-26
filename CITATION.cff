@@ -5,9 +5,9 @@ type: software
 authors:
   - family-names: Choudhry
     given-names: Omar
-version: 0.1.0
-date-released: 2026-07-25
-url: "https://agenticresearch.omarchoudhry.co.uk"
+version: 1.0.0
+date-released: 2026-07-26
+url: "https://researchwithai.omarchoudhry.co.uk"
 license: MIT
 keywords:
   - agentic AI

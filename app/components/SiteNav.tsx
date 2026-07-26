@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useState } from "react";
 import type { WorkshopSlug } from "@/lib/types";
+import { TUTORIAL_VERSION_LABEL } from "@/lib/version";
 import { ArrowRight, Close, Menu } from "./Icons";
+import { ThemeToggle } from "./ThemeToggle";
 
 const workshops: Array<{
   href: string;
@@ -31,7 +33,11 @@ const workshops: Array<{
   },
 ];
 
-export function SiteNav({ active }: { active?: WorkshopSlug | "home" }) {
+export function SiteNav({
+  active,
+}: {
+  active?: WorkshopSlug | "home" | "versions";
+}) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -40,15 +46,18 @@ export function SiteNav({ active }: { active?: WorkshopSlug | "home" }) {
         <Link className="mobile-brand" href="/">
           Research with AI
         </Link>
-        <button
-          aria-expanded={open}
-          aria-label={open ? "Close navigation" : "Open navigation"}
-          className="mobile-menu-button"
-          onClick={() => setOpen((value) => !value)}
-          type="button"
-        >
-          {open ? <Close /> : <Menu />}
-        </button>
+        <div className="mobile-header-actions">
+          <ThemeToggle compact />
+          <button
+            aria-expanded={open}
+            aria-label={open ? "Close navigation" : "Open navigation"}
+            className="mobile-menu-button"
+            onClick={() => setOpen((value) => !value)}
+            type="button"
+          >
+            {open ? <Close /> : <Menu />}
+          </button>
+        </div>
       </header>
       <aside className={`site-nav ${open ? "is-open" : ""}`}>
         <div className="nav-brand">
@@ -93,7 +102,17 @@ export function SiteNav({ active }: { active?: WorkshopSlug | "home" }) {
             tracking cookies.
           </p>
         </div>
+        <ThemeToggle />
         <div className="nav-footer">
+          <Link
+            aria-current={active === "versions" ? "page" : undefined}
+            className={active === "versions" ? "is-active" : ""}
+            href="/versions"
+            onClick={() => setOpen(false)}
+          >
+            Tutorial {TUTORIAL_VERSION_LABEL}
+            <ArrowRight size={15} />
+          </Link>
           <a href="https://github.com/omariosc" rel="noreferrer" target="_blank">
             GitHub
             <ArrowRight size={15} />

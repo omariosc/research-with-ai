@@ -2,14 +2,14 @@ import assert from "node:assert/strict";
 import { access, readFile } from "node:fs/promises";
 import test from "node:test";
 
-async function render(path = "/") {
+async function render(path = "/", headers = {}) {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-${path}`);
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
     new Request(`http://localhost${path}`, {
-      headers: { accept: "text/html" },
+      headers: { accept: "text/html", ...headers },
     }),
     {
       ASSETS: {
@@ -38,6 +38,9 @@ test("server-renders the platform overview and all three routes", async () => {
   assert.match(html, /href="\/interactive-paper"/);
   assert.match(html, /href="\/annotation-tools"/);
   assert.match(html, /No analytics or tracking cookies/);
+  assert.match(html, /aria-label="Switch to dark mode"/);
+  assert.match(html, /v1\.0\.0/);
+  assert.match(html, /research-with-ai:theme/);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site/);
 });
 
@@ -53,6 +56,7 @@ test("renders the ten-stage agentic research workshop", async () => {
   assert.match(html, /Package, disclose, and release/);
   assert.match(html, /research_contract\.md/);
   assert.match(html, /Human checkpoint/);
+  assert.match(html, /Tutorial release: v1\.0\.0/);
 });
 
 test("renders the website brief and annotation interactions", async () => {
@@ -73,6 +77,40 @@ test("renders the website brief and annotation interactions", async () => {
   assert.match(annotation, /A tiny annotation loop/);
   assert.match(annotation, /annotation_spec\.yaml/);
   assert.match(annotation, /frame-annotator teaching demo/);
+  assert.match(annotation, /tutorial_version: 1\.0\.0/);
+});
+
+test("renders the version history and canonical workshop links", async () => {
+  const response = await render("/versions");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+
+  assert.match(html, /Version history \| Research with AI/);
+  assert.match(html, /Stable tutorials, clearly versioned\./);
+  assert.match(html, /Current content release/);
+  assert.match(html, /v1\.0\.0/);
+  assert.match(html, /agenticresearch\.omarchoudhry\.co\.uk/);
+  assert.match(html, /interactivepaper\.omarchoudhry\.co\.uk/);
+  assert.match(html, /annotate\.omarchoudhry\.co\.uk/);
+});
+
+test("server-renders a dedicated workshop at its custom domain root", async () => {
+  const response = await render("/", {
+    host: "researchwithai.omarchoudhry.co.uk",
+    "x-forwarded-host": "interactivepaper.omarchoudhry.co.uk",
+  });
+  assert.equal(response.status, 200);
+  const html = await response.text();
+
+  assert.match(
+    html,
+    /Building a Website for Your Research Using AI \| Research with AI/,
+  );
+  assert.match(html, /Give the agent a source map, not just a PDF/);
+  assert.doesNotMatch(
+    html,
+    /Research with AI, without giving up scientific control\./,
+  );
 });
 
 test("removes starter preview code and dependency", async () => {
