@@ -1,0 +1,54 @@
+name: Bug report
+description: Report a reproducible problem in the website, builders, exports, or worked examples.
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: Do not include patient data, credentials, signed URLs, or confidential research material.
+  - type: dropdown
+    id: tutorial
+    attributes:
+      label: Affected area
+      options:
+        - Shared platform
+        - Agentic AI in Research
+        - Building a Website for Your Research Using AI
+        - Developing Custom Annotation Tools Using AI
+        - Worked example or downloadable pack
+        - Repository tooling
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: v1.3.0 or a commit hash
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: What happened?
+      description: Give the shortest reproducible sequence and the observed result.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser, operating system, viewport, Node or Python version, and relevant hardware.
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Data check
+      options:
+        - label: I removed private data, credentials, and restricted research material.
+          required: true

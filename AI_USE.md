@@ -13,7 +13,7 @@ used to build the site.
 
 | AI-assisted task | Record kept | Human or independent check |
 | --- | --- | --- |
-| Source discovery | Linked source library and access review | Primary sources opened; 177-link automated audit with eleven blocked pages retained for manual review; claims remain open to reader verification |
+| Source discovery | Linked source library and access review | Primary sources opened; 186-link automated audit with eleven blocked pages retained for manual review; claims remain open to reader verification |
 | Tutorial drafting | Version-controlled content diff | Scope, wording, examples, and claim boundaries reviewed against the challenge call |
 | Repository audit | Pinned commit, commands, and observed outputs | Clean environment test run and direct source inspection |
 | Biomedical worked example | Paper, dataset, prediction archive, source manifest, hashes, command, and reviewed JSON output | Independent implementation of the official binary metric contract; negative tests for changed bytes and row identifiers; paper precision and code history checked directly |
@@ -22,6 +22,7 @@ used to build the site.
 | Project workspaces | Versioned local-storage schema and export format | Migration, sanitisation, project isolation, scoped reset, and separate builder drafts covered by automated tests |
 | Model container lab | Complete source pack, model hash, dependency locks, tests, Docker profile, and deployment record | Locked Python tests plus live health, authentication, validation, non-root, read-only, and log checks |
 | Interface implementation | Git diff and build artefacts | Lint, production build, rendered HTML and schema tests, edge tests, responsive browser checks, and comparison with the approved visual direction |
+| Repository screenshots | Seven interface captures and a dated hash manifest | Captured from the actual v1.3.0 site at desktop and mobile viewports; inspected for private data, crop, legibility, and release consistency |
 | Visual generation | Generated social image and dated disclosure | Human selection and interface comparison |
 
 AI output was treated as a proposal, not as scientific evidence. The site does

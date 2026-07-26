@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Private security report
+    url: https://github.com/omariosc/research-with-ai/security/advisories/new
+    about: Report a vulnerability without making the details public.
+  - name: Live tutorials
+    url: https://researchwithai.omarchoudhry.co.uk
+    about: Open the shared workshop index.

@@ -1,0 +1,17 @@
+changelog:
+  categories:
+    - title: Research content and evidence
+      labels:
+        - content
+        - evidence
+    - title: Interface and accessibility
+      labels:
+        - interface
+        - accessibility
+    - title: Engineering
+      labels:
+        - engineering
+        - dependencies
+    - title: Other changes
+      labels:
+        - "*"

@@ -1,0 +1,61 @@
+name: Content or citation correction
+description: Correct a claim, source, version, attribution, or evidence boundary.
+title: "[Evidence]: "
+labels:
+  - evidence
+  - content
+body:
+  - type: dropdown
+    id: tutorial
+    attributes:
+      label: Tutorial
+      options:
+        - Shared platform
+        - Agentic AI in Research
+        - Building a Website for Your Research Using AI
+        - Developing Custom Annotation Tools Using AI
+        - Worked example or appendix
+    validations:
+      required: true
+  - type: input
+    id: section
+    attributes:
+      label: Exact section or file
+      placeholder: Tutorial stage, heading, file path, and line if known
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current statement
+      description: Quote only the shortest text needed to identify the problem.
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Primary source
+      description: DOI, versioned repository, standard, dataset record, or official documentation.
+    validations:
+      required: true
+  - type: textarea
+    id: correction
+    attributes:
+      label: Proposed correction
+      description: Explain the corrected wording and its evidence boundary.
+    validations:
+      required: true
+  - type: input
+    id: checked
+    attributes:
+      label: Source version and access date
+      placeholder: Version or commit, checked YYYY-MM-DD
+    validations:
+      required: true
+  - type: checkboxes
+    id: rights
+    attributes:
+      label: Rights check
+      options:
+        - label: I have not pasted restricted full text, private correspondence, or unlicensed media.
+          required: true

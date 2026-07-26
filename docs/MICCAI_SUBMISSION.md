@@ -33,6 +33,11 @@ communication, annotation tools, human oversight
 - [ ] Exact AI-use disclosure and named human sign-off
 - [ ] Accessibility statement and known limitations
 - [ ] Version, release notes, citation, and feedback route
+- [ ] Public GitHub repository, release tag, source archive, and checksum
+- [ ] Platform and individual-tutorial citations agree on title, version,
+      release date, and canonical URL
+- [ ] Real interface screenshots have alt text, capture provenance, rights, and
+      recorded hashes
 - [ ] Goal-based route, stage alternatives, and Try it now task demonstrated
 
 ## Evidence review
