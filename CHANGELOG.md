@@ -5,10 +5,23 @@ canonical links also appear on the website version page.
 
 ## Unreleased
 
+No unreleased changes.
+
+## 1.4.0 - 2026-07-27
+
 - Added public-repository screenshots with hashes and capture provenance.
 - Added platform and per-tutorial BibTeX guidance.
 - Added contribution, security, conduct, issue, pull-request, CI, and dependency
   maintenance files for the public GitHub repository.
+- Released the AI in healthcare conference tutorial and dedicated canonical
+  domain.
+- Added faithful frame and surgical annotation demonstrations under explicit
+  public-image boundaries.
+- Added the annotation research-outcome chronology and Paper2Web homepage
+  evidence panel.
+- Expanded recurring AI paper-review guidance across the research lifecycle.
+- Refreshed citations, release evidence, screenshots, and the annotation
+  specification schema for all four tutorials.
 
 ## 1.3.0 - 2026-07-26
 

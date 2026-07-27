@@ -31,6 +31,12 @@ const paper2AllSource: Source = {
   note: "Use as a comparison for paper conversion, not as the only route or as authority for scientific and rights decisions.",
 };
 
+const paper2WebSource: Source = {
+  title: "Paper2Web",
+  url: "https://aclanthology.org/2026.acl-demo.57/",
+  note: "Use the reported homepage counts as a scoped discoverability benchmark for selected major AI conferences, not as an estimate for all fields.",
+};
+
 const quartoSource: Source = {
   title: "Quarto website documentation",
   url: "https://quarto.org/docs/websites/",
@@ -77,7 +83,7 @@ const w3cMediaSource: Source = {
 };
 
 export const paperGuidance: WorkshopGuidance = {
-  lastVerified: "2026-07-26",
+  lastVerified: "2026-07-27",
   phases: [
     {
       id: "scope",
@@ -670,7 +676,7 @@ export const paperGuidance: WorkshopGuidance = {
             "A browser for hosted conversion; larger local comparison runs may need a capable workstation.",
           evidence:
             "Keep the comparison output, accepted and rejected sections, source links, and final site map.",
-          sources: [paper2AllSource, schemaSource],
+          sources: [paper2AllSource, paper2WebSource],
         },
         {
           id: "architecture-local",

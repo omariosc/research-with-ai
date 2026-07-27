@@ -5,11 +5,11 @@ Official call: <https://miccai-sb.github.io/challenge>
 Check the official call and OpenReview entry again on the day of submission in
 case dates or fields change.
 
-## Three released submissions and one in development
+## Four released submissions
 
 Prepare one package for each canonical tutorial. Do not rely on the shared
-homepage to supply required context. The first three tutorials belong to the
-reviewed v1.3.0 release:
+homepage to supply required context. All four tutorials belong to the reviewed
+v1.4.0 release:
 
 1. **Agentic AI in Research:** a bounded, evidence-led route from question to
    checked computational release.
@@ -18,17 +18,15 @@ reviewed v1.3.0 release:
 3. **Developing Custom Annotation Tools Using AI:** a protocol-first route to a
    tested local tool and provenance-aware dataset.
 
-The fourth tutorial has a canonical route and hostname but is not part of
-v1.3.0:
-
 4. **Run an AI in Healthcare Conference:** a community-led route from purpose,
    relationships, and programme design to safe delivery, denominator-aware
    evaluation, and follow-up. Route: `/ai-healthcare-conference`. Canonical
    hostname: `conferencewithai.omarchoudhry.co.uk`.
 
-Do not submit or cite the fourth tutorial as v1.3.0. Give it a version only
-after its content, citations, media record, tests, pilot, release evidence, and
-deployed canonical host have passed review.
+Use the v1.4.0 citation and release evidence for every package. The conference
+tutorial is released, while its learner pilot, video, transcript, final
+submission wrapper, and any unresolved attendance reconciliation remain named
+submission tasks rather than completed claims.
 
 **Keywords:** agentic AI, research workflow, reproducibility, research
 communication, annotation tools, community engagement, healthcare conference,

@@ -14,20 +14,20 @@ test("platform and tutorial citations agree on titles, version, and URLs", async
   const [cffText, bib, publicBib] = await Promise.all([
     file("CITATION.cff", "utf8"),
     file("CITATIONS.bib", "utf8"),
-    file("public/citations/research-with-ai-v1.3.0.bib", "utf8"),
+    file("public/citations/research-with-ai-v1.4.0.bib", "utf8"),
   ]);
   const cff = YAML.parse(cffText);
 
   assert.equal(cff["cff-version"], "1.2.0");
-  assert.equal(cff.version, "1.3.0");
-  assert.equal(cff["date-released"], "2026-07-26");
+  assert.equal(cff.version, "1.4.0");
+  assert.equal(cff["date-released"], "2026-07-27");
   assert.equal(cff.url, "https://researchwithai.omarchoudhry.co.uk");
   assert.equal(
     cff["repository-code"],
     "https://github.com/omariosc/research-with-ai",
   );
   assert.equal(bib, publicBib);
-  assert.equal(bib.match(/^@misc\{/gm)?.length, 4);
+  assert.equal(bib.match(/^@misc\{/gm)?.length, 5);
 
   const records = [
     [
@@ -43,6 +43,10 @@ test("platform and tutorial citations agree on titles, version, and URLs", async
       "Developing Custom Annotation Tools Using AI",
       "https://annotate.omarchoudhry.co.uk",
     ],
+    [
+      "Run an AI in Healthcare Conference",
+      "https://conferencewithai.omarchoudhry.co.uk",
+    ],
   ];
   for (const [title, url] of records) {
     assert.ok(bib.includes(title), title);
@@ -50,26 +54,42 @@ test("platform and tutorial citations agree on titles, version, and URLs", async
   }
 });
 
+test("keeps the immutable v1.3 citation snapshot separate", async () => {
+  const legacyBib = await file(
+    "public/citations/research-with-ai-v1.3.0.bib",
+    "utf8",
+  );
+
+  assert.equal(legacyBib.match(/^@misc\{/gm)?.length, 4);
+  assert.match(legacyBib, /Version 1\.3\.0, released 26 July 2026/);
+  assert.doesNotMatch(
+    legacyBib,
+    /conferencewithai\.omarchoudhry\.co\.uk/,
+  );
+});
+
 test("repository screenshots remain pinned to the reviewed interface", async () => {
   const screenshots = {
-    "docs/images/ai-healthcare-conference-case-study-development.jpg":
-      "9d22de54c0f4ef237d203b789bcd2d632df4b1d7e5e8b66d039f8146a09b0b9b",
+    "docs/images/ai-healthcare-conference-case-study.jpg":
+      "910904476675348da81be843dbb44ce45f5b5fdcb7062753633c804984b38ba2",
     "docs/images/agentic-research-systems.jpg":
-      "4a10d2fdd128046a7df9dca4201d1d8577d9d5b50ca29fc705d72f092450ee7b",
+      "5c661920d5279b2f663c3f7ff6db3b36c2e580d014a7346838d6436fcc1e6114",
     "docs/images/agentic-research-workspace.jpg":
-      "0298a20d4edadee628e5d356f991778c9ded12a2f143ee287564bb23bc4056bd",
+      "646a262854fc702dce13a43b46c7e2c0a416d449e26fd10592342dfe288dc4eb",
     "docs/images/annotation-tools-frame-annotator.jpg":
-      "591fca1dd49a1eeb998da0d844db62417f73bf5ff4c12b011f3b1ee6b9f433c7",
+      "4fd4d5c10a2e4caaeb1b4a6ae60450144d2f4709f35f059033ed09758d2cea90",
     "docs/images/annotation-tools-lask-story.jpg":
-      "228fca4589465bf9dadb5c4d55a6dd6f3733188b4792a31efcddd360840c7d97",
+      "fed7ca745641df754411b56e2db349a1bb76edec65ca87d47690f6e6d0c594f3",
     "docs/images/annotation-tools-surgical-annotator.jpg":
-      "2c6ed0d048ab286d08e88149f4963deed9d7d61dd65891e4a6a4b8beed6ee06d",
+      "e384d81b6fd99b0f4acc9614cc28ae44f8380065e05d08aa2673350aa3ec8244",
     "docs/images/interactive-paper-container-lab.jpg":
-      "a59fa87da27f4890ddba71dbb06348b238dd688dd73451731bad7cd8ed5f5b82",
+      "8da6b7c2286cb8eef7ed169f5f145f0ea6a0983f14173fc2883a9500fcae5e4a",
+    "docs/images/interactive-paper-homepage-evidence.jpg":
+      "94c122362c21eda8215545fa2fe4c2a3ab0f590bebdaf2fe879daef2670d2009",
     "docs/images/mobile-overview.jpg":
-      "fa6be3061e302aaa965b38eee2e24a3c2b012cbdb20570e5b447ecf5d2284f30",
+      "49cb969c2512b92de02eb75914c2dd60279814dbbd978ba49689312e70fbd72f",
     "docs/images/research-with-ai-overview.jpg":
-      "9490b9be11bdfe1fc74efdefe413b7d2e978ca6dacb7b915e0590226b9252cc2",
+      "cf7ccc2713f6228050afa0520594514ce8f2e665c95edb669b97aae870dd7175",
   };
 
   for (const [path, expected] of Object.entries(screenshots)) {
@@ -176,17 +196,24 @@ test("README links the tutorials, evidence, screenshots, and citations", async (
     "https://agenticresearch.omarchoudhry.co.uk",
     "https://interactivepaper.omarchoudhry.co.uk",
     "https://annotate.omarchoudhry.co.uk",
+    "https://conferencewithai.omarchoudhry.co.uk",
     "docs/images/research-with-ai-overview.jpg",
-    "docs/images/ai-healthcare-conference-case-study-development.jpg",
+    "docs/images/ai-healthcare-conference-case-study.jpg",
     "docs/images/agentic-research-systems.jpg",
     "docs/images/interactive-paper-container-lab.jpg",
+    "docs/images/interactive-paper-homepage-evidence.jpg",
     "docs/images/annotation-tools-frame-annotator.jpg",
     "docs/images/annotation-tools-surgical-annotator.jpg",
     "public/reading-notes/agentic-science-systems-2026-07-26.md",
     "public/audits/annotation-tool-origin-story-2026-07-26.md",
     "public/citations/annotation-showcase-media-2026-07-27.md",
+    "public/citations/paper2web-project-homepage-evidence-2026-07-27.md",
     "public/citations/ai-healthcare-conference-operations-and-evaluation-2026-07-26.md",
     "public/worked-examples/model-container-service/README.md",
+    "public/audits/platform-release-v1.4.0-2026-07-27.md",
+    "public/releases/research-with-ai-v1.4.0-source.zip",
+    "public/releases/research-with-ai-v1.4.0-source.sha256",
+    "public/schemas/annotation-spec-1.4.0.schema.json",
     "CITATION.cff",
     "CITATIONS.bib",
     "CITING.md",
@@ -203,6 +230,7 @@ test("repository documentation has no broken relative file links", async () => {
     "SECURITY.md",
     "docs/images/README.md",
     "docs/releases/v1.3.0.md",
+    "docs/releases/v1.4.0.md",
   ];
 
   for (const path of markdownFiles) {

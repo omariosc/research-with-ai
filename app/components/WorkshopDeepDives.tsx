@@ -556,39 +556,32 @@ function AnnotationOriginStory({
         <p>First-hand build story</p>
         <h2 id="annotation-origin-title">From a fast beta to the LASK workflow</h2>
         <span>
-          This section separates the public record from Omar&apos;s first-hand
-          account. That distinction lets the personal lesson remain useful
-          without turning memory into independently verified evidence.
+          Public records and first-hand links stay separate, so experience is
+          useful without being presented as independent evidence.
         </span>
       </div>
 
       <div className="origin-story-grid">
         <article>
           <span>Omar&apos;s build note</span>
-          <h3>The Hamlyn question</h3>
+          <h3>A project that needed a faster workflow</h3>
           <p>
-            At the Hamlyn Symposium, I set myself a practical question: could I
-            build an interface that let me label long stretches of surgical
-            video at the speed of keyboard muscle memory? The beta was
-            deliberately small. I marked ranges on a timeline, assigned labels
-            with memorable keys, and exported clip-level and frame-level
-            records. It was quick enough to make a much larger project feel
-            realistic.
+            For our group project at the 2025 Hamlyn Winter School, I configured
+            improper posture, hyperextension, and controller collision as
+            memorable labels, then exported frame records from marked runs.
           </p>
           <small>
-            Author account. The public repository does not independently record
-            the Hamlyn origin or a measured annotation speed.
+            Author account. Public records verify the setting and labels; no
+            timing study is claimed.
           </small>
         </article>
         <article>
           <span>Public software record</span>
           <h3>The tool grew around repeated actions</h3>
           <p>
-            The first public commit on 5 March 2026 records a configurable Flask
-            tool with range labelling, a timeline, keyboard shortcuts, and
-            JSON/CSV export. The later surgical-annotator added masks, keypoints,
-            shaft lines, copy-prior, auto-advance, batch triage, and a fuller
-            shortcut map while remaining locally usable.
+            Public commits show keyboard-first ranges and JSON/CSV export, then
+            masks, keypoints, shaft lines, copy-prior, and batch triage in the
+            local surgical-annotator.
           </p>
           <SourceLink href="https://github.com/omariosc/frame-annotator/commit/deb7d43a2b6ff93ac1ac5a33c2f00028d7833823">
             Open the beta commit
@@ -597,45 +590,123 @@ function AnnotationOriginStory({
             Open the larger-tool integration
           </SourceLink>
         </article>
-        <article>
-          <span>Public dataset record</span>
-          <h3>LASK makes the scale concrete</h3>
+      </div>
+
+      <div className="annotation-outcomes" id="annotation-outcomes">
+        <div className="annotation-outcomes-heading">
+          <div>
+            <p>Research outcomes</p>
+            <h3>What the annotation work enabled</h3>
+          </div>
           <p>
-            LASK v1.0 contains 37 trials. Kinematics are dense across about
-            91,000 frames. The visual ground truth is different: manual
-            keyframes, roughly every 100th frame and at least three per trial,
-            contain two-tool masks, keypoints, and visibility labels. A good
-            annotation tool reduces friction, but it does not remove the need
-            for a protocol and human review.
+            This joins public outcomes with Omar&apos;s labelled first-hand
+            account. It does not claim that one tool caused every result.
           </p>
-          <SourceLink href="https://doi.org/10.5281/zenodo.20752651">
-            Open LASK v1.0 on Zenodo
-          </SourceLink>
-          <small>Dataset record and files: CC BY 4.0.</small>
-        </article>
+        </div>
+
+        <ol className="annotation-outcome-chain">
+          <li>
+            <time dateTime="2025-07">Jul 2025</time>
+            <div>
+              <h4>The bounding-box workload became visible</h4>
+              <p>
+                The MIUA record reported 114 trials, 324,101 frames, and 3,725
+                bounding-box-labelled frames, including a complete 2,680-frame
+                validation sequence. The same dataset supported a peer-reviewed
+                real-time tool-detection study.
+              </p>
+              <SourceLink href="https://eprints.whiterose.ac.uk/id/eprint/230457/">
+                Open the published record
+              </SourceLink>
+              <SourceLink href="https://doi.org/10.1049/htl2.70045">
+                Open the detection study
+              </SourceLink>
+            </div>
+          </li>
+          <li>
+            <time dateTime="2025-12-05">Dec 2025</time>
+            <div>
+              <h4>A Hamlyn group project tested the fast workflow</h4>
+              <p>
+                Our four-person group presented <cite>Know Your ABCs</cite>. My
+                archive records 994 synchronised RGB-D pairs and 116 labelled
+                clips; Imperial verifies the project sessions and evaluation.
+              </p>
+              <SourceLink href="https://www.imperial.ac.uk/a-z-research/hamlyn-centre/events-and-global-engagement/hamlyn-winter-school-on-surgical-imaging-and-vision/">
+                Open the Winter School record
+              </SourceLink>
+              <small>
+                Title and counts: author-controlled public record and archive.
+              </small>
+            </div>
+          </li>
+          <li>
+            <time dateTime="2026-03-05">Mar 2026</time>
+            <div>
+              <h4>The beta became inspectable and reusable</h4>
+              <p>
+                The first public commit preserved keyboard-first ranges,
+                exports, and the A, B, C safety taxonomy, making the method
+                reusable.
+              </p>
+              <SourceLink href="https://github.com/omariosc/frame-annotator/blob/deb7d43a2b6ff93ac1ac5a33c2f00028d7833823/examples/surgical_safety.yaml">
+                Inspect the original configuration
+              </SourceLink>
+            </div>
+          </li>
+          <li>
+            <time dateTime="2026-06-18">Jun 2026</time>
+            <div>
+              <h4>LASK turned the larger workflow into a citable dataset</h4>
+              <p>
+                LASK v1.0 released 37 trials, about 91,000 dense kinematic
+                frames, and sparse manually reviewed masks, keypoints, and
+                visibility labels.
+              </p>
+              <SourceLink href="https://doi.org/10.5281/zenodo.20752651">
+                Open LASK v1.0 on Zenodo
+              </SourceLink>
+            </div>
+          </li>
+          <li id="annotation-btpn-outcome">
+            <time dateTime="2026">MICCAI 2026</time>
+            <div>
+              <h4>BTPN carried the labels into an accepted paper</h4>
+              <p>
+                The masks and keypoints support the BTPN visual pipeline,
+                accepted to MICCAI 2026. Its public companion is available; the
+                official proceedings record is forthcoming.
+              </p>
+              <SourceLink href="https://github.com/omariosc/BTPN">
+                Open the BTPN companion repository
+              </SourceLink>
+              <small>
+                Author-reported acceptance. No proceedings DOI is claimed yet.
+              </small>
+            </div>
+          </li>
+        </ol>
       </div>
 
       <div className="ai-role-ledger">
         <div>
           <p>What AI helped with</p>
           <ul>
-            <li>Turning interaction requirements into reviewable code.</li>
-            <li>Iterating shortcuts, batch actions, exports, tests, and packaging.</li>
-            <li>Finding edge cases and drafting documentation for human review.</li>
+            <li>Implementation, shortcuts, exports, tests, and documentation.</li>
           </ul>
         </div>
         <div>
           <p>What remained human-owned</p>
           <ul>
-            <li>The label protocol, uncertainty rules, and meaningful errors.</li>
-            <li>The commands that matched Omar&apos;s hands and working rhythm.</li>
-            <li>Quality checks, corrections, and the released manual labels.</li>
+            <li>
+              Protocol, uncertainty rules, working rhythm, quality checks, and
+              released manual labels.
+            </li>
           </ul>
         </div>
         <p>
-          Public commit trailers record AI coding assistance. The deposited LASK
-          record describes its visual annotations as manual, so this tutorial
-          does not claim that AI generated the released ground truth.
+          Commit trailers record AI coding assistance; released LASK visual
+          labels remain manual.
         </p>
       </div>
 
@@ -650,8 +721,7 @@ function AnnotationOriginStory({
           <div>
             <strong>Origin and evidence note</strong>
             <p>
-              A citable record of the public commits, LASK facts, author account,
-              AI contribution boundary, and screenshot rights decision.
+              The longer source record, claim boundaries, and media decision.
             </p>
             <a
               download
@@ -663,6 +733,122 @@ function AnnotationOriginStory({
           </div>
         </div>
       </div>
+    </section>
+  );
+}
+
+function ResearchWebsiteLandscape() {
+  return (
+    <section
+      aria-labelledby="website-landscape-title"
+      className="deep-dive deep-dive-paper website-landscape"
+    >
+      <div className="deep-dive-heading">
+        <p>Evidence for the format</p>
+        <h2 id="website-landscape-title">
+          Project websites are established, but still far from routine
+        </h2>
+        <span>
+          Paper2Web studied selected major AI-conference papers from 2020 to
+          2025. Its authors identified a verified project homepage for 10,716
+          papers and did not find one for 85,843. That is a useful benchmark for
+          this tutorial, not an estimate for every research field.
+        </span>
+      </div>
+
+      <div className="website-adoption-summary">
+        <div className="website-adoption-copy">
+          <p>Homepage prevalence in the Paper2Web corpus</p>
+          <strong>11.1%</strong>
+          <span>About one paper in nine had a verified project homepage.</span>
+          <SourceLink href="https://aclanthology.org/2026.acl-demo.57/">
+            Read the ACL 2026 paper
+          </SourceLink>
+          <a
+            download
+            href="/citations/paper2web-project-homepage-evidence-2026-07-27.md"
+          >
+            <Download size={14} />
+            Download the evidence record
+          </a>
+        </div>
+
+        <figure className="website-adoption-figure">
+          <div
+            aria-label="Of 96,559 papers, 10,716 or 11.1 percent had a verified project homepage and 85,843 or 88.9 percent did not have one identified."
+            className="website-adoption-bar"
+            role="img"
+          >
+            <span
+              aria-hidden="true"
+              className="website-adoption-bar-found"
+              style={{ width: "11.1%" }}
+            />
+            <span
+              aria-hidden="true"
+              className="website-adoption-bar-not-found"
+              style={{ width: "88.9%" }}
+            />
+          </div>
+          <dl className="website-adoption-legend">
+            <div>
+              <dt>
+                <i className="is-found" />
+                Verified homepage
+              </dt>
+              <dd>10,716 · 11.1%</dd>
+            </div>
+            <div>
+              <dt>
+                <i className="is-not-found" />
+                No homepage identified
+              </dt>
+              <dd>85,843 · 88.9%</dd>
+            </div>
+          </dl>
+          <figcaption>
+            96,559 papers from selected major AI conferences, 2020–2025.
+            Percentages are calculated from the published counts and rounded to
+            one decimal place.
+          </figcaption>
+        </figure>
+      </div>
+
+      <div className="website-evidence-notes">
+        <details open>
+          <summary>How was this measured?</summary>
+          <p>
+            Paper2Web searched paper and associated repository links, resolved
+            ambiguous candidates, and retained human-created project
+            homepages. The authors also manually audited a 2,000-page sample
+            when studying site characteristics.
+          </p>
+        </details>
+        <details>
+          <summary>What does “not identified” mean?</summary>
+          <p>
+            It means the study did not find a relevant link through its paper
+            and repository workflow. An unlinked or newly created site may have
+            been missed. The result measures discoverability within this
+            corpus, not all website creation.
+          </p>
+        </details>
+        <details>
+          <summary>What is the practical lesson?</summary>
+          <p>
+            A website is still a meaningful opportunity, but publishing a page
+            is not the same as making research understandable. Start from a
+            reader task, preserve claim boundaries, link reusable artefacts,
+            and test the experience with someone outside the project.
+          </p>
+        </details>
+      </div>
+
+      <p className="media-boundary">
+        This is an original, accessible teaching graphic derived from counts
+        reported in the CC BY 4.0 Paper2Web paper. No paper figure or third-party
+        website screenshot has been copied.
+      </p>
     </section>
   );
 }
@@ -950,5 +1136,10 @@ export function WorkshopDeepDive({
   if (slug === "ai-healthcare-conference") {
     return <ConferenceCaseStudy checked={checked} onToggle={onToggle} />;
   }
-  return <ContainerLab checked={checked} onToggle={onToggle} />;
+  return (
+    <>
+      <ResearchWebsiteLandscape />
+      <ContainerLab checked={checked} onToggle={onToggle} />
+    </>
+  );
 }

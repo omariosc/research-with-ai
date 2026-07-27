@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { builderKey, copyText, downloadText } from "@/lib/storage";
-import { WORKSHOP_RELEASES } from "@/lib/version";
+import { TUTORIAL_VERSION_LABEL, WORKSHOP_RELEASES } from "@/lib/version";
 import { Check, Copy, Download } from "./Icons";
 
 type CopyState = "idle" | "copied";
@@ -205,7 +205,7 @@ export function ConferencePlanBuilder({
   const output = useMemo(
     () => `# Conference planning record: ${form.title || "Untitled event"}
 
-> Tutorial status: in development, not part of v1.3.0
+> Tutorial release: ${TUTORIAL_VERSION_LABEL}
 > Canonical tutorial: ${conferenceRelease.canonicalUrl}
 > Planning figures are scenarios, not promises or verified attendance.
 
@@ -336,7 +336,7 @@ Record the AI tool, task, inputs, information withheld, output used, human revie
     errors.length > 0
       ? `# Conference planning record
 
-> Tutorial status: in development, not part of v1.3.0
+> Tutorial release: ${TUTORIAL_VERSION_LABEL}
 > Canonical tutorial: ${conferenceRelease.canonicalUrl}
 
 Complete the accountable lead and any other required fields to preview and export the full planning record.`

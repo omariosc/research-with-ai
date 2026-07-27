@@ -18,6 +18,7 @@ import type {
 import { guidanceByWorkshop } from "@/lib/content/guidance";
 import {
   TUTORIAL_HOMEPAGE,
+  TUTORIAL_RELEASE_DATE,
   WORKSHOP_RELEASES,
   workshopRelease,
 } from "@/lib/version";
@@ -157,7 +158,7 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
   const tutorialStatus =
     release.status === "released"
       ? `v${release.version}`
-      : "in development, not part of v1.3.0";
+      : "in development";
   const structuredCitations = [
     ...workshop.sourceLibrary,
     ...workshop.steps.flatMap((step) => step.sources),
@@ -174,7 +175,7 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
     ...(release.status === "released"
       ? {
           version: `v${release.version}`,
-          datePublished: "2026-07-26",
+          datePublished: TUTORIAL_RELEASE_DATE,
         }
       : {
           creativeWorkStatus: "Draft",
@@ -1372,9 +1373,9 @@ function SourceLibrary({
         <h2>Follow the evidence yourself</h2>
         <span>
           This includes the stage instructions and every cited alternative.
-          Source links reviewed 26 July 2026. Product capabilities and policies
-          change, so open the source and check its current version before relying
-          on it.
+          Source links reviewed {guidance.lastVerified}. Product capabilities
+          and policies change, so open the source and check its current version
+          before relying on it.
         </span>
       </div>
       <ol>
