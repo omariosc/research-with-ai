@@ -17,6 +17,9 @@ const workshopByHost: Record<string, Workshop> = {
   "conferencewithai.omarchoudhry.co.uk": aiHealthcareConference,
 };
 
+const platformDescription =
+  "Four practical workshops for agentic research, research project websites, custom annotation tools, and community-led AI in healthcare conferences.";
+
 async function requestedHost() {
   const requestHeaders = await headers();
   const forwarded = requestHeaders.get("x-forwarded-host");
@@ -29,10 +32,24 @@ export async function generateMetadata(): Promise<Metadata> {
   if (!workshop) {
     return {
       title: { absolute: "Research with AI" },
-      description:
-        "Four practical workshops for agentic research, research project websites, custom annotation tools, and community-led AI in healthcare conferences.",
+      description: platformDescription,
       alternates: {
         canonical: TUTORIAL_HOMEPAGE,
+      },
+      openGraph: {
+        type: "website",
+        siteName: "Research with AI",
+        title: "Research with AI",
+        description: platformDescription,
+        url: TUTORIAL_HOMEPAGE,
+        images: [
+          {
+            url: `${TUTORIAL_HOMEPAGE}/research-with-ai-social.png`,
+            width: 1200,
+            height: 630,
+            alt: "Research with AI interactive workshop interface",
+          },
+        ],
       },
     };
   }

@@ -76,6 +76,11 @@ test("server-renders the platform overview and all four routes", async () => {
     html,
     /Research with AI, without giving up scientific control\./,
   );
+  assert.equal(canonicalHref(html), "https://researchwithai.omarchoudhry.co.uk");
+  assert.equal(
+    metaContent(html, "property", "og:url"),
+    "https://researchwithai.omarchoudhry.co.uk",
+  );
   assert.match(html, /href="\/agentic-research"/);
   assert.match(html, /href="\/interactive-paper"/);
   assert.match(html, /href="\/annotation-tools"/);
