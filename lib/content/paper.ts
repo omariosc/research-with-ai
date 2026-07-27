@@ -554,7 +554,7 @@ For the demo, document whether it is live, recorded, illustrative, or static, pl
     {
       title: "Paper2Web",
       url: "https://aclanthology.org/2026.acl-demo.57/",
-      note: "A primary research reference for turning papers into interactive web pages.",
+      note: "The ACL 2026 paper reports 10,716 verified project homepages and 85,843 papers without an identified homepage in a 96,559-paper corpus from selected major AI conferences, 2020–2025. The tutorial uses those counts in an original chart and preserves the study's scope and discovery limits.",
     },
     {
       title: "Paper2All",

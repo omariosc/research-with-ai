@@ -1,8 +1,8 @@
 import type { WorkshopSlug } from "@/lib/types";
 
-export const TUTORIAL_VERSION = "1.3.0";
+export const TUTORIAL_VERSION = "1.4.0";
 export const TUTORIAL_VERSION_LABEL = `v${TUTORIAL_VERSION}`;
-export const TUTORIAL_RELEASE_DATE = "2026-07-26";
+export const TUTORIAL_RELEASE_DATE = "2026-07-27";
 export const TUTORIAL_HOMEPAGE =
   "https://researchwithai.omarchoudhry.co.uk";
 
@@ -53,8 +53,8 @@ export const WORKSHOP_RELEASES: Record<WorkshopSlug, WorkshopRelease> = {
   "ai-healthcare-conference": {
     slug: "ai-healthcare-conference",
     title: "Run an AI in Healthcare Conference",
-    version: null,
-    status: "in-development",
+    version: TUTORIAL_VERSION,
+    status: "released",
     canonicalHostname: "conferencewithai.omarchoudhry.co.uk",
     canonicalUrl: "https://conferencewithai.omarchoudhry.co.uk",
   },

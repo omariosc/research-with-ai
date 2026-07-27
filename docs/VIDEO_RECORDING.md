@@ -1,10 +1,8 @@
 # Video recording plan
 
-The reviewed v1.3.0 plan covers three focused tutorials from the same visual
-system. A fourth recording plan is included below for the conference tutorial,
-which remains in development and is not part of v1.3.0. Each recording should
-begin with a real problem, show one useful failure or correction, and end with a
-file the viewer can keep.
+The reviewed v1.4.0 plan covers four focused tutorials from the same visual
+system. Each recording should begin with a real problem, show one useful
+failure or correction, and end with a file the viewer can keep.
 
 ## Shared recording setup
 
@@ -31,7 +29,7 @@ file the viewer can keep.
 
 ## Video 1: Agentic AI in Research
 
-Target length: 15 to 22 minutes.
+Target length: 15 to 20 minutes.
 
 1. Open a paper and state the narrow reproduction question.
 2. Select the Paper reproduction route, state the audience and outcomes, then
@@ -107,7 +105,7 @@ Target length: 12 to 18 minutes.
 
 ## Video 4: Run an AI in Healthcare Conference
 
-Status: in development. Do not label this recording v1.3.0.
+Released in v1.4.0.
 
 Target length: 12 to 18 minutes.
 
@@ -151,7 +149,7 @@ Target length: 12 to 18 minutes.
 
 ## One-minute finalist cut
 
-The v1.3.0 finalist cut uses one sentence and one visual for each released
+The v1.4.0 finalist cut uses one sentence and one visual for each released
 workshop:
 
 - Research agents can search, inspect, execute, and draft, but the researcher
@@ -160,14 +158,9 @@ workshop:
   read.
 - A custom annotation tool can fit the study, but only if the protocol, quality
   controls, and data handling are designed first.
-
-For a later standalone conference submission:
-
 - A useful AI in healthcare conference begins with its community, then turns
   relationships into an accessible programme, accountable delivery, and honest
   follow-up.
 
-For a v1.3.0 cut, end on the shared homepage and the three released tutorial
-URLs. A later conference cut may add
-`conferencewithai.omarchoudhry.co.uk` only while clearly labelled in
-development, or after its own reviewed release.
+End on the shared homepage and the four released tutorial URLs, including
+`conferencewithai.omarchoudhry.co.uk`.

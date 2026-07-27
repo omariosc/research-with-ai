@@ -5,15 +5,14 @@
 [![Software licence: MIT](https://img.shields.io/badge/software-MIT-315f9d)](LICENSE)
 [![Tutorial content: CC BY 4.0](https://img.shields.io/badge/tutorial%20content-CC%20BY%204.0-2f855a)](CONTENT-LICENSE.md)
 
-Three released, evidence-led workshops for researchers who want to use AI
-without giving up scientific control, plus a fourth tutorial in active
-development about running an AI in healthcare conference.
+Four released, evidence-led workshops for researchers who want to use AI
+without giving up scientific control.
 
 <p align="center">
   <a href="https://researchwithai.omarchoudhry.co.uk">
     <img
       src="docs/images/research-with-ai-overview.jpg"
-      alt="Dark-mode Research with AI homepage introducing three workshops and the rule that scope, evidence, interpretation, and release remain with the researcher."
+      alt="Dark-mode Research with AI homepage introducing four workshops and the rule that scope, evidence, interpretation, and release remain with the researcher."
       width="100%"
     >
   </a>
@@ -24,13 +23,12 @@ copyable prompts, explicit approval gates, runnable checks, source libraries,
 and exportable research records. It is designed as teaching material, not as a
 catalogue of AI products or a substitute for scientific judgement.
 
-> **Release status, checked 27 July 2026:** v1.3.0 remains the latest tagged
-> release for the first three tutorials. The current development source adds
-> the conference tutorial and substantial interface, annotation, and research
-> workflow improvements. Production URLs can serve this newer development
-> build, while the conference route remains visibly labelled in development.
-> Use the
-> [v1.3.0 GitHub release](https://github.com/omariosc/research-with-ai/releases/tag/v1.3.0)
+> **Release status, checked 27 July 2026:** v1.4.0 is the reviewed release for
+> all four tutorials. It adds the AI in healthcare conference workshop,
+> faithful frame and surgical annotation demonstrations, the annotation
+> research-outcome chronology, the Paper2Web evidence panel, refreshed
+> screenshots, and consistent release and citation records. Use the
+> [v1.4.0 GitHub release](https://github.com/omariosc/research-with-ai/releases/tag/v1.4.0)
 > or its source snapshot when an exact stable artefact is required.
 
 ## Choose a tutorial
@@ -40,14 +38,13 @@ catalogue of AI products or a substitute for scientific judgement.
 | **Agentic AI in Research** | [Open tutorial](https://agenticresearch.omarchoudhry.co.uk) | Research contract, paper reproduction plan, HPC-ready runbook, verification record, and AI-use statement | [`lib/content/agentic.ts`](lib/content/agentic.ts) | [Cite this tutorial](CITING.md#agentic-ai-in-research) |
 | **Building a Website for Your Research Using AI** | [Open tutorial](https://interactivepaper.omarchoudhry.co.uk) | Evidence map, rights ledger, accessible research site plan, runnable demo, and release record | [`lib/content/paper.ts`](lib/content/paper.ts) | [Cite this tutorial](CITING.md#building-a-website-for-your-research-using-ai) |
 | **Developing Custom Annotation Tools Using AI** | [Open tutorial](https://annotate.omarchoudhry.co.uk) | Versioned protocol, offline tool plan, provenance-aware export, review workflow, and evaluation protocol | [`lib/content/annotation.ts`](lib/content/annotation.ts) | [Cite this tutorial](CITING.md#developing-custom-annotation-tools-using-ai) |
-| **Run an AI in Healthcare Conference** | [Canonical URL, in development](https://conferencewithai.omarchoudhry.co.uk) | Conference brief, responsibility and programme records, safety and privacy checks, run sheet, and evaluation plan | [`lib/content/conference.ts`](lib/content/conference.ts) | [Citation status](CITING.md#run-an-ai-in-healthcare-conference-in-development) |
+| **Run an AI in Healthcare Conference** | [Open tutorial](https://conferencewithai.omarchoudhry.co.uk) | Conference brief, responsibility and programme records, safety and privacy checks, run sheet, and evaluation plan | [`lib/content/conference.ts`](lib/content/conference.ts) | [Cite this tutorial](CITING.md#run-an-ai-in-healthcare-conference) |
 
 The [shared workshop index](https://researchwithai.omarchoudhry.co.uk) provides
-the common entry point. Each released dedicated hostname can be submitted,
-taught from, and cited independently. The fourth tutorial uses the application
-route `/ai-healthcare-conference` and reserves
-`conferencewithai.omarchoudhry.co.uk` as its canonical hostname, but it should
-remain labelled in development until it has its own reviewed release.
+the common entry point. Each dedicated hostname can be submitted, taught from,
+and cited independently. The fourth tutorial uses the application route
+`/ai-healthcare-conference` and the canonical hostname
+`conferencewithai.omarchoudhry.co.uk`.
 
 ## What makes the tutorials useful
 
@@ -81,11 +78,12 @@ remain labelled in development until it has its own reviewed release.
     </td>
     <td width="50%">
       <a href="https://interactivepaper.omarchoudhry.co.uk">
-        <img src="docs/images/interactive-paper-container-lab.jpg" alt="Interactive paper tutorial showing a six-step model container lab and a comparison of personal computers, Raspberry Pi devices, and NVIDIA Jetson hardware.">
+        <img src="docs/images/interactive-paper-homepage-evidence.jpg" alt="Research website tutorial showing an original accessible chart: 10,716 of 96,559 papers in the Paper2Web corpus had a verified project homepage.">
       </a>
       <br>
-      <strong>Research websites and model services</strong><br>
-      A portable FastAPI and Docker lab with hardware-specific acceptance checks.
+      <strong>Research websites</strong><br>
+      A scoped prevalence benchmark, source-to-claim workflow, and honest route
+      from paper and repository to a useful public companion.
     </td>
   </tr>
   <tr>
@@ -109,10 +107,10 @@ remain labelled in development until it has its own reviewed release.
   <tr>
     <td colspan="2">
       <a href="https://conferencewithai.omarchoudhry.co.uk">
-        <img src="docs/images/ai-healthcare-conference-case-study-development.jpg" alt="In-development AI in healthcare conference tutorial showing the firm-boundaries and flexible-edges principle beside the committee responsibility map.">
+        <img src="docs/images/ai-healthcare-conference-case-study.jpg" alt="Released AI in healthcare conference tutorial showing the firm-boundaries and flexible-edges principle beside the committee responsibility map.">
       </a>
       <br>
-      <strong>AI in healthcare conference, in development</strong><br>
+      <strong>AI in healthcare conference</strong><br>
       A first-hand Leeds case with an advertised-versus-revised programme,
       committee roles, an aggregate denominator ledger, full-scale feedback
       charts, media boundaries, and a locally stored planning tool.
@@ -122,12 +120,13 @@ remain labelled in development until it has its own reviewed release.
 
 Additional captures include the
 [project workspace](docs/images/agentic-research-workspace.jpg) and
+[portable model-service lab](docs/images/interactive-paper-container-lab.jpg),
+plus the
 [390 by 844 mobile layout](docs/images/mobile-overview.jpg). The
-[first-hand LASK story](docs/images/annotation-tools-lask-story.jpg) remains
-available as a separate narrative capture. Dimensions, hashes, capture
+[annotation research-outcome chronology](docs/images/annotation-tools-lask-story.jpg)
+remains available as a separate narrative capture. Dimensions, hashes, capture
 conditions, and rights are recorded in the
-[screenshot manifest](docs/images/README.md), alongside the clearly provisional
-conference tutorial capture.
+[screenshot manifest](docs/images/README.md).
 
 ## Reviewed evidence and downloads
 
@@ -137,32 +136,31 @@ conference tutorial capture.
 | Version history | Canonical tutorial URLs and immutable release records | [Live page](https://researchwithai.omarchoudhry.co.uk/versions) |
 | BreastMNIST worked evidence pack | Pinned source files and independent prediction-artifact metric re-evaluation | [Live page](https://researchwithai.omarchoudhry.co.uk/worked-examples/medmnist-breast) |
 | Agentic science reading notes | Google Co-Scientist, AI Scientist v1 and v2, the related Nature study, and Medical AI Scientist | [Markdown](public/reading-notes/agentic-science-systems-2026-07-26.md) |
-| Annotation origin record | Public commits, LASK facts, author account, AI role, and screenshot-rights decision | [Markdown](public/audits/annotation-tool-origin-story-2026-07-26.md) |
+| Annotation origin and outcomes record | MIUA bounding boxes, Hamlyn group project, public commits, LASK, BTPN, AI role, and media decision | [Markdown](public/audits/annotation-tool-origin-story-2026-07-26.md) |
 | Annotation showcase media record | Exact first-three privacy allowlist, LASK attribution, image and native-annotation hashes, transformations, and claim boundaries | [Markdown](public/citations/annotation-showcase-media-2026-07-27.md) |
 | Annotation export audit | Canonical JSON, review CSV round trip, YOLO subset, and declared information loss | [Markdown](public/audits/annotation-round-trip-2026-07-26.md) |
+| Paper2Web homepage evidence | Published counts, 11.1% calculation, sampling boundary, chart decision, and reuse limits | [Markdown](public/citations/paper2web-project-homepage-evidence-2026-07-27.md) |
 | Conference first-hand record | Organiser account for the CDT panel, digital pathology workshop, and approximate essay and poster entries | [Markdown](public/citations/ai-healthcare-conference-first-hand-2026-07-26.md) |
 | Conference operations and evaluation record | Aggregate workbook audit, advertised and revised programme, committee structure, logistics account, feedback distributions, and unresolved denominators | [Markdown](public/citations/ai-healthcare-conference-operations-and-evaluation-2026-07-26.md) |
 | Conference media and permission record | LinkedIn source posts, project-specific permission, retained photographs, alt text, and evidential limits | [Markdown](public/citations/ai-healthcare-conference-media-2026-07-26.md) |
 | Model container lab | Locked FastAPI service, synthetic model, Docker profile, tests, and deployment record | [Lab guide](public/worked-examples/model-container-service/README.md) |
-| Annotation specification | Immutable v1.3.0 JSON Schema used by the interactive builder | [Schema](public/schemas/annotation-spec-1.3.0.schema.json) |
-| Release evidence | Rights, claims, word counts, Docker acceptance, browser QA, and remaining human gates | [v1.3.0 audit](public/audits/platform-release-v1.3.0-2026-07-26.md) |
-| Reviewed source snapshot | Source archive generated from the recorded feature commit | [ZIP](public/releases/research-with-ai-v1.3.0-source.zip) and [SHA-256](public/releases/research-with-ai-v1.3.0-source.sha256) |
+| Annotation specification | Immutable v1.4.0 JSON Schema used by the interactive builder | [Schema](public/schemas/annotation-spec-1.4.0.schema.json) |
+| Release evidence | Rights, claims, word counts, Docker acceptance, browser QA, and remaining human gates | [v1.4.0 audit](public/audits/platform-release-v1.4.0-2026-07-27.md) |
+| Reviewed source snapshot | Source archive generated from the recorded feature commit | [ZIP](public/releases/research-with-ai-v1.4.0-source.zip) and [SHA-256](public/releases/research-with-ai-v1.4.0-source.sha256) |
 
 ## Citation
 
 For the complete platform:
 
-> Choudhry, O. (2026). *Research with AI Tutorial Platform* (Version 1.3.0)
+> Choudhry, O. (2026). *Research with AI Tutorial Platform* (Version 1.4.0)
 > [Software and interactive tutorial collection].
 > https://researchwithai.omarchoudhry.co.uk
 
 GitHub can format the platform citation from [CITATION.cff](CITATION.cff).
-[CITING.md](CITING.md) provides separate human-readable citations for the three
-released tutorials and a clearly provisional record for the conference
-tutorial. [CITATIONS.bib](CITATIONS.bib) provides four copy-ready BibTeX
-records for the v1.3.0 platform and its three released tutorials. The
-conference tutorial is not included in those v1.3.0 machine-readable records.
-No DOI is claimed for this repository. The
+[CITING.md](CITING.md) provides separate human-readable citations for all four
+tutorials. [CITATIONS.bib](CITATIONS.bib) provides five copy-ready BibTeX
+records for the v1.4.0 platform and its four released tutorials. No DOI is
+claimed for this repository. The
 [LASK DOI](https://doi.org/10.5281/zenodo.20752651) identifies the dataset, not
 this platform or the annotation tutorial.
 

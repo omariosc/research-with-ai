@@ -1,7 +1,7 @@
 import type { WorkshopGuidance } from "@/lib/types";
 
 export const annotationGuidance: WorkshopGuidance = {
-  lastVerified: "2026-07-26",
+  lastVerified: "2026-07-27",
   phases: [
     {
       id: "govern",

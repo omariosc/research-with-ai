@@ -52,10 +52,7 @@ export function SiteNav({
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const navRef = useRef<HTMLElement>(null);
   const wasOpenRef = useRef(false);
-  const versionLinkLabel =
-    active === "ai-healthcare-conference"
-      ? "Conference in development"
-      : `Tutorial ${TUTORIAL_VERSION_LABEL}`;
+  const versionLinkLabel = `Tutorial ${TUTORIAL_VERSION_LABEL}`;
 
   useEffect(() => {
     const mobileViewport = window.matchMedia("(max-width: 1120px)");
@@ -196,13 +193,6 @@ export function SiteNav({
             ))}
           </ol>
         </nav>
-        <div className="nav-note">
-          <span>Local, not encrypted</span>
-          <p>
-            Project notes, checklists, and drafts use browser storage. Never
-            enter patient data, secrets, or sensitive research details.
-          </p>
-        </div>
         <ThemeToggle />
         <div className="nav-footer">
           <a

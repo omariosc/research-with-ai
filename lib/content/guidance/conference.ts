@@ -109,7 +109,7 @@ function pathsFor(
 }
 
 export const conferenceGuidance: WorkshopGuidance = {
-  lastVerified: "2026-07-26",
+  lastVerified: "2026-07-27",
   phases: [
     {
       id: "frame",

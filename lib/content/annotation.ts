@@ -544,6 +544,21 @@ Expert notes:
   ],
   sourceLibrary: [
     {
+      title: "7-DoF Laparoscopic Peg Transfer Dataset for Surgical Skill Assessment",
+      url: "https://eprints.whiterose.ac.uk/id/eprint/230457/",
+      note: "The Frontiers-published MIUA 2025 record for 114 trials, 324,101 frames, and 3,725 bounding-box-labelled frames, including one complete 2,680-frame validation sequence. It predates the public annotation beta and does not name the tool used to create the boxes.",
+    },
+    {
+      title: "Real-Time Tool Detection in Laparoscopic Datasets for Surgical Training in Low-Resource Settings",
+      url: "https://doi.org/10.1049/htl2.70045",
+      note: "A peer-reviewed downstream study using the box-labelled laparoscopic dataset. The tutorial cites the research outcome without repeating the paper's internally inconsistent nano-model latency statement.",
+    },
+    {
+      title: "Hamlyn Winter School on Surgical Imaging and Vision",
+      url: "https://www.imperial.ac.uk/a-z-research/hamlyn-centre/events-and-global-engagement/hamlyn-winter-school-on-surgical-imaging-and-vision/",
+      note: "Imperial College London's official record for the 1–5 December 2025 school, including its workshops, mini-projects, and project evaluation. The specific tool-to-project link remains Omar's first-hand account.",
+    },
+    {
       title: "LASK dataset, version 1.0",
       url: "https://doi.org/10.5281/zenodo.20752651",
       note: "The versioned Zenodo record for 37 trials with dense time-aligned kinematics and sparse manual visual annotations. The record is evidence for the released data, not for the private history of the annotation tool.",
@@ -557,6 +572,11 @@ Expert notes:
       title: "surgical-annotator integration commit",
       url: "https://github.com/omariosc/frame-annotator/commit/461615a71beabeaa0ed67120a883cf4ce900d7b1",
       note: "The later public checkpoint that brought masks, shaft lines, keypoints, phase labels, and batch annotation into the same repository.",
+    },
+    {
+      title: "Bayesian Temporal Pose Networks companion repository",
+      url: "https://github.com/omariosc/BTPN",
+      note: "The public code and citation record for the BTPN paper accepted to MICCAI 2026. An official proceedings DOI is not yet claimed.",
     },
     {
       title: "frame-annotator and surgical-annotator at the audited commit",

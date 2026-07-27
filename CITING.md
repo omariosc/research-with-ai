@@ -2,9 +2,7 @@
 
 Use the platform citation when you refer to the software or the complete
 collection. Use an individual tutorial citation when your work relied mainly on
-one workshop. Version 1.3.0 contains the three released tutorials listed below.
-The conference tutorial is in development and must not be cited as part of
-v1.3.0.
+one workshop. Version 1.4.0 contains the four released tutorials listed below.
 
 The repository does not currently have a registered DOI. Do not use the LASK
 dataset DOI as the DOI for this platform or the annotation tutorial. LASK is a
@@ -12,41 +10,37 @@ separate scholarly object.
 
 ## Complete platform
 
-Choudhry, O. (2026). *Research with AI Tutorial Platform* (Version 1.3.0)
+Choudhry, O. (2026). *Research with AI Tutorial Platform* (Version 1.4.0)
 [Software and interactive tutorial collection].
 https://researchwithai.omarchoudhry.co.uk
 
 Source: [GitHub repository](https://github.com/omariosc/research-with-ai) and
-[v1.3.0 release](https://github.com/omariosc/research-with-ai/releases/tag/v1.3.0).
+[v1.4.0 release](https://github.com/omariosc/research-with-ai/releases/tag/v1.4.0).
 
 ## Agentic AI in Research
 
-Choudhry, O. (2026). *Agentic AI in Research* (Version 1.3.0) [Interactive
+Choudhry, O. (2026). *Agentic AI in Research* (Version 1.4.0) [Interactive
 tutorial]. Research with AI. https://agenticresearch.omarchoudhry.co.uk
 
 ## Building a Website for Your Research Using AI
 
 Choudhry, O. (2026). *Building a Website for Your Research Using AI* (Version
-1.3.0) [Interactive tutorial]. Research with AI.
+1.4.0) [Interactive tutorial]. Research with AI.
 https://interactivepaper.omarchoudhry.co.uk
 
 ## Developing Custom Annotation Tools Using AI
 
 Choudhry, O. (2026). *Developing Custom Annotation Tools Using AI* (Version
-1.3.0) [Interactive tutorial]. Research with AI.
+1.4.0) [Interactive tutorial]. Research with AI.
 https://annotate.omarchoudhry.co.uk
 
-## Run an AI in Healthcare Conference (in development)
+## Run an AI in Healthcare Conference
 
-This tutorial has a canonical URL but no released version. Until a reviewed
-release is published, describe it explicitly as in development:
-
-Choudhry, O. (2026). *Run an AI in Healthcare Conference* [Interactive
-tutorial in development]. Research with AI.
+Choudhry, O. (2026). *Run an AI in Healthcare Conference* (Version 1.4.0)
+[Interactive tutorial]. Research with AI.
 https://conferencewithai.omarchoudhry.co.uk
 
-Do not add Version 1.3.0 to this citation. The Leeds AI Week case currently
-uses three separate evidence records:
+The Leeds AI Week case uses three separate evidence records:
 
 - [First-hand case-study record](public/citations/ai-healthcare-conference-first-hand-2026-07-26.md)
   for the organiser account, panel purpose, workshop context, committee and
@@ -69,12 +63,9 @@ rendered in the public repository or site.
 
 - GitHub renders [CITATION.cff](CITATION.cff) for the complete platform.
 - [CITATIONS.bib](CITATIONS.bib) contains separate BibTeX entries for the
-  platform and all three tutorials.
+  platform and all four tutorials.
 - The site distribution includes the same bibliography at
-  `public/citations/research-with-ai-v1.3.0.bib`.
-
-These v1.3.0 machine-readable files do not yet include the conference tutorial.
-Add it only as part of a separately reviewed release.
+  `public/citations/research-with-ai-v1.4.0.bib`.
 
 If a version DOI is registered later, it should be added to the platform CFF
 and BibTeX record without replacing the canonical tutorial URLs.

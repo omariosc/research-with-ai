@@ -114,8 +114,8 @@ OpenAI image model. Its AI origin is disclosed in `AI_USE.md`.
 
 ### LinkedIn photographs
 
-The in-development conference tutorial contains eight distinct event
-photographs retrieved from two posts by Mohammad Tasfiq Jawaad:
+The conference tutorial contains eight distinct event photographs retrieved
+from two posts by Mohammad Tasfiq Jawaad:
 
 - [Conference recap post](https://www.linkedin.com/posts/mohammad-tasfiq-jawaad_leedsaiweek-ai-healthcare-ugcPost-7428858664037396480-NJEn/)
 - [Opening keynote post](https://www.linkedin.com/posts/mohammad-tasfiq-jawaad_leedsaiweek-healthcare-ai-activity-7428762183339180032-_Vyb)

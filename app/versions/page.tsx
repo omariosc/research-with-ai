@@ -44,10 +44,8 @@ export default function VersionsPage() {
           <h2>Four tutorials, one shared method</h2>
           <p>
             Each workshop has its own canonical address and can be cited,
-            reviewed, and submitted independently. Three workshops are in the
-            reviewed v1.3.0 release. The conference tutorial is in active
-            development and will receive a version only after its content,
-            citations, and release evidence are complete.
+            reviewed, and submitted independently. All four workshops are in
+            the reviewed v1.4.0 release.
           </p>
         </section>
 
@@ -82,24 +80,6 @@ export default function VersionsPage() {
 
         <section className="release-notes">
           <div>
-            <p>In development</p>
-            <h2>Workshop 04</h2>
-            <time dateTime="2026-07-26">Started 2026-07-26</time>
-          </div>
-          <div>
-            <h3>Run an AI in Healthcare Conference</h3>
-            <p>
-              A fourth case-study-led tutorial is being developed from the AI
-              in Healthcare Conference at Leeds AI Week 2026. It is not part of
-              the reviewed v1.3.0 source snapshot and will remain clearly
-              labelled until its evidence, citations, permissions, and
-              implementation have been reviewed.
-            </p>
-          </div>
-        </section>
-
-        <section className="release-notes">
-          <div>
             <p>Current released version</p>
             <h2>{TUTORIAL_VERSION_LABEL}</h2>
             <time dateTime={TUTORIAL_RELEASE_DATE}>
@@ -107,28 +87,29 @@ export default function VersionsPage() {
             </time>
           </div>
           <div>
-            <h3>Project workspaces and evidence deep dives</h3>
+            <h3>Four complete tutorials and refreshed evidence</h3>
             <ul>
               <li>
-                Named local projects with separate checklists, decisions,
-                assessments, builder drafts, and exportable notes
+                Released the case-study-led AI in healthcare conference
+                tutorial, conference planner, evaluation record, and dedicated
+                canonical domain
               </li>
               <li>
-                A source-led comparison of Google Co-Scientist, the AI
-                Scientist lineage, and Medical AI Scientist
+                Added faithful frame-annotator and surgical-annotator teaching
+                demonstrations under strict public-image boundaries
               </li>
               <li>
-                A clearly labelled first-hand annotation-tool story linked to
-                the public frame-annotator history and LASK v1.0 on Zenodo
+                Connected the annotation-tool story to the Hamlyn group
+                project, MIUA bounding-box work, LASK v1.0, and BTPN while
+                keeping each evidence boundary explicit
               </li>
               <li>
-                A runnable synthetic FastAPI and Docker service with locked
-                dependencies, failure tests, least-privilege runtime controls,
-                and PC, Raspberry Pi, and Jetson deployment guidance
+                Added an original Paper2Web prevalence visual and updated
+                evidence for building useful research websites
               </li>
               <li>
-                Downloadable reading notes, evidence records, deployment
-                template, and complete model-service source pack
+                Strengthened recurring AI paper review and refreshed
+                screenshots, citations, schemas, and release records
               </li>
             </ul>
             <p>
@@ -138,6 +119,45 @@ export default function VersionsPage() {
               </a>
               .
             </p>
+            <p>
+              Download the{" "}
+              <a
+                download
+                href="/releases/research-with-ai-v1.4.0-source.zip"
+              >
+                reviewed v1.4.0 source snapshot
+              </a>{" "}
+              from feature commit <code>d72814d</code>, with its{" "}
+              <a href="/releases/research-with-ai-v1.4.0-source.sha256">
+                SHA-256 record
+              </a>
+              .
+            </p>
+          </div>
+        </section>
+
+        <section className="release-notes release-notes-previous">
+          <div>
+            <p>Previous release</p>
+            <h2>v1.3.0</h2>
+            <time dateTime="2026-07-26">Released 2026-07-26</time>
+          </div>
+          <div>
+            <h3>Project workspaces and evidence deep dives</h3>
+            <ul>
+              <li>
+                Named local projects with separate notes, progress, assessments,
+                deep-dive checks, and builder drafts
+              </li>
+              <li>
+                Source-led comparisons of AI scientist systems and the
+                first-hand annotation-tool origin story
+              </li>
+              <li>
+                A runnable synthetic FastAPI and Docker model-service teaching
+                pack
+              </li>
+            </ul>
             <p>
               Download the{" "}
               <a
