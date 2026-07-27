@@ -38,7 +38,7 @@ const workshops: Array<{
   {
     href: WORKSHOP_RELEASES["ai-healthcare-conference"].canonicalUrl,
     number: "4",
-    title: "AI healthcare conference",
+    title: "Run a conference",
     slug: "ai-healthcare-conference",
   },
 ];
