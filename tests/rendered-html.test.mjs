@@ -457,12 +457,42 @@ test("renders the version history and canonical workshop links", async () => {
   assert.match(html, /Four complete tutorials and refreshed evidence/);
   assert.doesNotMatch(html, /Workshop 04|In development/);
   assert.match(html, /research-with-ai-v1\.4\.0-source\.zip/);
+  assert.match(html, /d72814d/);
   assert.match(html, /research-with-ai-v1\.3\.0-source\.zip/);
   assert.match(html, /32b46f3/);
   assert.match(html, /research-with-ai-v1\.2\.0-source\.zip/);
   assert.match(html, /a304472/);
   assert.match(html, /research-with-ai-v1\.1\.0-source\.zip/);
   assert.match(html, /bd3c4a2/);
+});
+
+test("keeps the reviewed v1.4 source snapshot pinned without nested archives", async () => {
+  const archiveUrl = new URL(
+    "../public/releases/research-with-ai-v1.4.0-source.zip",
+    import.meta.url,
+  );
+  const checksumUrl = new URL(
+    "../public/releases/research-with-ai-v1.4.0-source.sha256",
+    import.meta.url,
+  );
+  const [archive, checksumRecord] = await Promise.all([
+    readFile(archiveUrl),
+    readFile(checksumUrl, "utf8"),
+  ]);
+  const digest = createHash("sha256").update(archive).digest("hex");
+
+  assert.equal(
+    digest,
+    "e2fdb25733e5bf9c74dfa272bbbf1e464d0298ac275ea838637b5a42d7b697d7",
+  );
+  assert.equal(
+    checksumRecord,
+    `${digest}  research-with-ai-v1.4.0-source.zip\n`,
+  );
+  assert.deepEqual([...archive.subarray(0, 2)], [0x50, 0x4b]);
+  const archiveIndex = archive.toString("latin1");
+  assert.match(archiveIndex, /research-with-ai-v1\.4\.0\/package\.json/);
+  assert.doesNotMatch(archiveIndex, /public\/releases\/.*\.(?:zip|sha256)/);
 });
 
 test("keeps the reviewed v1.3 source snapshot pinned without nested archives", async () => {

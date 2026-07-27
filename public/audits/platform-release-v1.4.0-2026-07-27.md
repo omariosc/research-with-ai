@@ -6,9 +6,9 @@ Content release: `v1.4.0`
 
 Author and accountable reviewer: Omar Choudhry
 
-Reviewed feature commit: `PENDING`
+Reviewed feature commit: `d72814ddb89dcd77a7c99704e965f68119880d51`
 
-Source archive SHA-256: `PENDING`
+Source archive SHA-256: `e2fdb25733e5bf9c74dfa272bbbf1e464d0298ac275ea838637b5a42d7b697d7`
 
 ## Purpose
 
@@ -89,6 +89,52 @@ npx wrangler deploy --dry-run --config edge-proxy/wrangler.jsonc
 The final command results, test count, link totals, reading budgets, browser
 viewports, and deployment checks are recorded before the release tag is
 published.
+
+### Automated results
+
+- The production build, lint, and type-check completed successfully.
+- The Node suite passed 79 tests with no failures.
+- The public-asset gate inspected 77 files totalling 12,551,210 bytes and found
+  no generated environments, bytecode, private files, symlinks, or oversized
+  assets.
+- The exact first-three frame allowlist and three-pair LASK boundary passed.
+- Two annotation records completed the review-CSV round trip without field
+  loss. The deliberately lossy YOLO export declared every omitted field.
+- Four MedMNIST verification tests passed and the three released prediction
+  files recovered the reported AUC and accuracy cells at three decimals.
+- The locked model-service Python suite passed three tests. A live Docker run
+  returned HTTP 200 for health, readiness, and an authorised golden
+  prediction, HTTP 401 without the token, probability `0.619517`, UID 10001,
+  a healthy container, and a failed write attempt against the read-only
+  application filesystem.
+- `npm audit --audit-level=high` reported no known vulnerabilities.
+- The edge Worker dry run completed successfully.
+
+### Reading budget
+
+| Tutorial | Tutorial words excluding references | Total visible words |
+| --- | ---: | ---: |
+| Agentic AI in Research | 3,946 | 4,621 |
+| Building a Website for Your Research Using AI | 3,588 | 3,960 |
+| Developing Custom Annotation Tools Using AI | 3,966 | 4,441 |
+| Run an AI in Healthcare Conference | 3,971 | 4,157 |
+
+Every tutorial remains below the challenge's 4,000-word limit when the repeated
+source library is excluded.
+
+### Browser and link review
+
+Chrome checks covered the homepage, all four tutorials, the version history,
+and the methods page at 390 by 844, 768 by 1,024, 1,024 by 1,366, and 1,440 by
+900 pixels. Every route had zero horizontal overflow. The phone navigation
+exposed all four tutorial links, and both the light and dark themes rendered
+with the expected background and responsive width.
+
+The pre-publication link run found 210 unique external links: 193 reachable,
+16 publisher or vendor responses retained for manual review, and one expected
+404 for the not-yet-published v1.4.0 GitHub release URL. That self-referential
+release link must be rerun after publication and is not counted as evidence
+that the public release already exists.
 
 ## Human release gates
 
