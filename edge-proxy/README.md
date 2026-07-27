@@ -1,12 +1,13 @@
 # Research with AI domain proxy
 
-This Cloudflare Worker gives the shared platform four stable public hostnames
-without duplicating the application:
+This Cloudflare Worker is configured to give the shared platform five stable
+public hostnames without duplicating the application:
 
 - `researchwithai.omarchoudhry.co.uk`
 - `agenticresearch.omarchoudhry.co.uk`
 - `interactivepaper.omarchoudhry.co.uk`
 - `annotate.omarchoudhry.co.uk`
+- `conferencewithai.omarchoudhry.co.uk`
 
 It forwards requests to the tested Sites release, maps each dedicated root to
 its workshop route, and preserves the public hostname in `x-forwarded-host`.

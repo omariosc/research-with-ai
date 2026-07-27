@@ -36,6 +36,7 @@ const internalHosts = new Set([
   "[::1]",
   "agenticresearch.omarchoudhry.co.uk",
   "annotate.omarchoudhry.co.uk",
+  "conferencewithai.omarchoudhry.co.uk",
   "interactivepaper.omarchoudhry.co.uk",
   "researchwithai.omarchoudhry.co.uk",
 ]);

@@ -4,6 +4,10 @@ import { useState } from "react";
 import type { WorkshopSlug } from "@/lib/types";
 import { copyText } from "@/lib/storage";
 import { Check, Copy, Download, ExternalLink, FileText } from "./Icons";
+import {
+  CONFERENCE_CHECK_ITEMS,
+  ConferenceCaseStudy,
+} from "./ConferenceCaseStudy";
 
 export const DEEP_DIVE_CHECK_ITEMS: Record<
   WorkshopSlug,
@@ -25,6 +29,11 @@ export const DEEP_DIVE_CHECK_ITEMS: Record<
     {
       id: "record-claim-boundary",
       label: "Write one sentence saying what the result does not show.",
+    },
+    {
+      id: "resolve-paper-review-ledger",
+      label:
+        "Resolve, reject, or defer every paper-review issue with a recorded reason.",
     },
   ],
   "interactive-paper": [
@@ -71,6 +80,7 @@ export const DEEP_DIVE_CHECK_ITEMS: Record<
       label: "Version the tool, protocol, labels, and dataset separately.",
     },
   ],
+  "ai-healthcare-conference": CONFERENCE_CHECK_ITEMS,
 };
 
 export const DEEP_DIVE_CHECK_IDS: Record<
@@ -86,6 +96,9 @@ export const DEEP_DIVE_CHECK_IDS: Record<
   "annotation-tools": DEEP_DIVE_CHECK_ITEMS["annotation-tools"].map(
     (item) => item.id,
   ),
+  "ai-healthcare-conference": DEEP_DIVE_CHECK_ITEMS[
+    "ai-healthcare-conference"
+  ].map((item) => item.id),
 };
 
 function DeepDiveChecklist({
@@ -132,6 +145,53 @@ function SourceLink({
   );
 }
 
+const paperReviewLifecycle = [
+  {
+    title: "Question and contribution",
+    body:
+      "Challenge the problem, contribution, novelty, and audience before one story takes hold.",
+  },
+  {
+    title: "Study design",
+    body:
+      "Review comparators, endpoints, confounders, sample size, and the cheapest falsifier.",
+  },
+  {
+    title: "Analysis lock",
+    body:
+      "Check splits, exclusions, missing data, metrics, uncertainty, and stopping rules before held-out outcomes.",
+  },
+  {
+    title: "Results and interpretation",
+    body:
+      "Look for leakage, denominator errors, alternative explanations, and claims that exceed the evidence.",
+  },
+  {
+    title: "Complete manuscript",
+    body:
+      "Review the claim-to-evidence chain across text, figures, tables, supplement, and reproducibility material.",
+  },
+  {
+    title: "Submission rehearsal",
+    body:
+      "Use the venue rubric, reporting checklist, and AI policy. Resolve the ledger.",
+  },
+] as const;
+
+const criticalPaperReviewPrompt = `Act as a demanding but constructive scientific reviewer for [target venue or journal].
+
+Use the strongest permitted model and reasoning effort. Review [revision], [supplement], [venue criteria], [checklist], and [approved evidence]. List what you inspected. Return NOT FOUND for absent evidence.
+
+Do not rewrite or score it. Review:
+1. design, data, comparators, statistics, leakage, and uncertainty;
+2. claim-to-evidence consistency;
+3. novelty, related work, alternatives, and overclaiming;
+4. reproducibility, ethics, reporting, limitations, and clarity.
+
+For each concern return ID, location, category, severity, confidence, manuscript evidence, consequence, smallest resolving check, and closure evidence. Verify literature by DOI or stable URL. Label post-hoc work exploratory.
+
+End with the three priorities, questions for a domain or statistical expert, and "What this review may have misunderstood". Audit each concern as supported, ambiguous, or probably false. Do not invent evidence or treat model agreement as independent validation.`;
+
 function AgenticLandscape({
   checked,
   onToggle,
@@ -139,6 +199,7 @@ function AgenticLandscape({
   checked: string[];
   onToggle: (id: string) => void;
 }) {
+  const [reviewPromptCopied, setReviewPromptCopied] = useState(false);
   const systems = [
     {
       name: "Google Co-Scientist",
@@ -251,6 +312,125 @@ function AgenticLandscape({
           <small>Human chooses revise, stop, or release</small>
         </li>
       </ol>
+
+      <section
+        aria-labelledby="paper-review-lifecycle-title"
+        className="paper-review-lifecycle"
+      >
+        <header className="paper-review-heading">
+          <div>
+            <p>AI review throughout the paper lifecycle</p>
+            <h3 id="paper-review-lifecycle-title">
+              Find weak decisions while they can still be changed
+            </h3>
+          </div>
+          <p>
+            Review after major decisions, while a weak question, missing
+            comparator, or overclaim can still change. The researcher checks
+            every concern and owns every decision.
+          </p>
+        </header>
+
+        <ol
+          aria-label="Six paper-review checkpoints across the research lifecycle"
+          className="paper-review-checkpoints"
+        >
+          {paperReviewLifecycle.map((checkpoint, index) => (
+            <li key={checkpoint.title}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <div>
+                <h4>{checkpoint.title}</h4>
+                <p>{checkpoint.body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <div className="paper-review-route-heading">
+          <h4>Choose a review route your material permits</h4>
+          <p>
+            Both can miss issues. Keep each prompt, response, and human decision.
+          </p>
+        </div>
+
+        <div className="paper-review-routes">
+          <article>
+            <span>Dedicated service</span>
+            <h4>
+              <SourceLink href="https://paperreview.ai/">
+                Stanford Agentic Reviewer at PaperReview.ai
+              </SourceLink>
+            </h4>
+            <p>
+              Yixing Jiang and Andrew Ng&apos;s reviewer uses related arXiv work.
+              It reviews the first 15 pages of an English PDF up to 10 MB,
+              favours arXiv-rich fields, and may be wrong.
+            </p>
+            <SourceLink href="https://paperreview.ai/tech-overview">
+              Read how the reviewer works
+            </SourceLink>
+          </article>
+          <article>
+            <span>Configurable alternative</span>
+            <h4>A powerful permitted model with high reasoning effort</h4>
+            <p>
+              Supply the paper, supplement, rubric, checklist, and permitted
+              evidence. Use the strongest suitable model and reasoning effort,
+              then rerun after revision.
+            </p>
+            <small>
+              Record provider, model, dated version, reasoning setting, prompt,
+              inputs, and manuscript revision.
+            </small>
+          </article>
+        </div>
+
+        <aside className="paper-review-caution">
+          <strong>Permission comes before upload</strong>
+          <p>
+            Check confidentiality, approvals, service terms, and venue policy.
+            Never upload another researcher&apos;s confidential submission. Use
+            a public draft or an approved managed or local environment.
+          </p>
+        </aside>
+
+        <div className="paper-review-ledger">
+          <div>
+            <p>Durable review record</p>
+            <h4>Resolve the issue ledger, not just the prose</h4>
+            <span>
+              Authors verify, accept, reject, defer, or leave each AI concern
+              unresolved with a reason.
+            </span>
+          </div>
+          <ul aria-label="Fields to keep for every paper-review issue">
+            <li>Issue ID, round, date, model, and manuscript revision</li>
+            <li>Page, section, figure, table, equation, or appendix</li>
+            <li>Category, severity, confidence, and decision deadline</li>
+            <li>Concern, evidence, and what could change the judgement</li>
+            <li>Required check, analysis, experiment, clarification, or edit</li>
+            <li>Owner, author decision, reason, status, and closure evidence</li>
+          </ul>
+        </div>
+
+        <div className="container-prompt paper-review-prompt">
+          <div>
+            <span>Prompt for a critical paper review</span>
+            <button
+              onClick={async () => {
+                await copyText(criticalPaperReviewPrompt);
+                setReviewPromptCopied(true);
+                window.setTimeout(() => setReviewPromptCopied(false), 1600);
+              }}
+              type="button"
+            >
+              {reviewPromptCopied ? <Check size={15} /> : <Copy size={15} />}
+              {reviewPromptCopied ? "Copied" : "Copy"}
+            </button>
+          </div>
+          <pre>{criticalPaperReviewPrompt}</pre>
+        </div>
+      </section>
 
       <div className="source-correction">
         <strong>A useful source correction</strong>
@@ -766,6 +946,9 @@ export function WorkshopDeepDive({
   }
   if (slug === "annotation-tools") {
     return <AnnotationOriginStory checked={checked} onToggle={onToggle} />;
+  }
+  if (slug === "ai-healthcare-conference") {
+    return <ConferenceCaseStudy checked={checked} onToggle={onToggle} />;
   }
   return <ContainerLab checked={checked} onToggle={onToggle} />;
 }

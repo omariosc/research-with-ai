@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type {
   StoredWorkshopWorkspace,
   WorkshopProject,
@@ -26,12 +26,26 @@ export function ProjectWorkspace({
   const [mode, setMode] = useState<EditorMode>("closed");
   const [name, setName] = useState(activeProject.name);
   const [status, setStatus] = useState("Saved locally on this browser");
+  const hasNotes = activeProject.notes.trim().length > 0;
+  const [notesOpen, setNotesOpen] = useState(hasNotes);
+  const previousProjectId = useRef(activeProject.id);
 
   useEffect(() => {
     setName(activeProject.name);
     setMode("closed");
     setStatus("Saved locally on this browser");
   }, [activeProject.id, activeProject.name]);
+
+  useEffect(() => {
+    if (previousProjectId.current !== activeProject.id) {
+      previousProjectId.current = activeProject.id;
+      setNotesOpen(hasNotes);
+      return;
+    }
+    if (hasNotes) {
+      setNotesOpen((current) => current || hasNotes);
+    }
+  }, [activeProject.id, hasNotes]);
 
   function openEditor(nextMode: Exclude<EditorMode, "closed">) {
     setName(nextMode === "rename" ? activeProject.name : "");
@@ -51,21 +65,22 @@ export function ProjectWorkspace({
     <section
       aria-labelledby="project-workspace-title"
       className="project-workspace"
+      id="project-workspace"
     >
       <div className="project-workspace-heading">
         <div>
-          <p>Your research workspace</p>
+          <p>Active project</p>
           <h2 id="project-workspace-title">{activeProject.name}</h2>
         </div>
         <p>
-          Each project keeps its own checklist, decisions, notes, assessment,
-          and builder drafts.
+          Progress, decisions, notes, assessment, and builder drafts are kept
+          separately for this project in this browser on this workshop site.
         </p>
       </div>
 
       <div className="project-workspace-controls">
         <label>
-          <span>Current project</span>
+          <span>Choose a project</span>
           <select
             onChange={(event) => onSelect(event.target.value)}
             value={workspace.activeProjectId}
@@ -111,30 +126,48 @@ export function ProjectWorkspace({
         </form>
       ) : null}
 
-      <label className="project-notes">
-        <span>
-          Project notes
-          <small aria-live="polite">{status}</small>
-        </span>
-        <textarea
-          maxLength={12000}
-          onChange={(event) => {
-            onUpdateNotes(event.target.value);
-            setStatus("Saved locally on this browser");
-          }}
-          onFocus={() => setStatus("Editing")}
-          onBlur={() => setStatus("Saved locally on this browser")}
-          placeholder="Keep questions, decisions, links, and reminders here. Do not store secrets or identifiable data."
-          rows={4}
-          value={activeProject.notes}
-        />
-      </label>
-      <p className="project-storage-note">
-        This workspace uses unencrypted local browser storage on the current
-        tutorial address. It is not a shared notebook, a backup, or a place for
-        confidential research data. Export the working record for a durable
-        project file.
-      </p>
+      <details
+        className="project-notes-disclosure"
+        key={activeProject.id}
+        onToggle={(event) => setNotesOpen(event.currentTarget.open)}
+        open={notesOpen}
+      >
+        <summary className="project-notes-summary">
+          <span className="project-notes-summary-copy">
+            <strong>Project notes</strong>
+            <span>Questions, links, decisions, and reminders for this project.</span>
+          </span>
+          <small className="project-notes-summary-status">
+            {hasNotes ? "Notes saved" : "No notes yet"}
+          </small>
+        </summary>
+        <div className="project-notes-panel">
+          <label className="project-notes">
+            <span>
+              Notes for {activeProject.name}
+              <small aria-live="polite">{status}</small>
+            </span>
+            <textarea
+              maxLength={12000}
+              onChange={(event) => {
+                onUpdateNotes(event.target.value);
+                setStatus("Saved locally on this browser");
+              }}
+              onFocus={() => setStatus("Editing")}
+              onBlur={() => setStatus("Saved locally on this browser")}
+              placeholder="Keep questions, decisions, links, and reminders here. Do not store secrets or identifiable data."
+              rows={4}
+              value={activeProject.notes}
+            />
+          </label>
+          <p className="project-storage-note">
+            These notes use unencrypted local browser storage on the current
+            workshop site. This is not a shared notebook or a backup. Do not
+            enter confidential research data, patient information, or secrets.
+            Export the working record for a durable project file.
+          </p>
+        </div>
+      </details>
     </section>
   );
 }

@@ -6,19 +6,31 @@ export const TUTORIAL_RELEASE_DATE = "2026-07-26";
 export const TUTORIAL_HOMEPAGE =
   "https://researchwithai.omarchoudhry.co.uk";
 
-export type WorkshopRelease = {
+type WorkshopReleaseBase = {
   slug: WorkshopSlug;
   title: string;
-  version: string;
   canonicalHostname: string;
   canonicalUrl: string;
 };
+
+export type WorkshopRelease = WorkshopReleaseBase &
+  (
+    | {
+        version: string;
+        status: "released";
+      }
+    | {
+        version: null;
+        status: "in-development";
+      }
+  );
 
 export const WORKSHOP_RELEASES: Record<WorkshopSlug, WorkshopRelease> = {
   "agentic-research": {
     slug: "agentic-research",
     title: "Agentic AI in Research",
     version: TUTORIAL_VERSION,
+    status: "released",
     canonicalHostname: "agenticresearch.omarchoudhry.co.uk",
     canonicalUrl: "https://agenticresearch.omarchoudhry.co.uk",
   },
@@ -26,6 +38,7 @@ export const WORKSHOP_RELEASES: Record<WorkshopSlug, WorkshopRelease> = {
     slug: "interactive-paper",
     title: "Building a Website for Your Research Using AI",
     version: TUTORIAL_VERSION,
+    status: "released",
     canonicalHostname: "interactivepaper.omarchoudhry.co.uk",
     canonicalUrl: "https://interactivepaper.omarchoudhry.co.uk",
   },
@@ -33,8 +46,17 @@ export const WORKSHOP_RELEASES: Record<WorkshopSlug, WorkshopRelease> = {
     slug: "annotation-tools",
     title: "Developing Custom Annotation Tools Using AI",
     version: TUTORIAL_VERSION,
+    status: "released",
     canonicalHostname: "annotate.omarchoudhry.co.uk",
     canonicalUrl: "https://annotate.omarchoudhry.co.uk",
+  },
+  "ai-healthcare-conference": {
+    slug: "ai-healthcare-conference",
+    title: "Run an AI in Healthcare Conference",
+    version: null,
+    status: "in-development",
+    canonicalHostname: "conferencewithai.omarchoudhry.co.uk",
+    canonicalUrl: "https://conferencewithai.omarchoudhry.co.uk",
   },
 };
 

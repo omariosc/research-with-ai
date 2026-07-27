@@ -3,7 +3,6 @@ import {
   useEffect,
   useMemo,
   useState,
-  type MouseEvent,
 } from "react";
 import {
   BUILDER_SCHEMA_VERSION,
@@ -20,7 +19,7 @@ import {
   TUTORIAL_VERSION_LABEL,
   WORKSHOP_RELEASES,
 } from "@/lib/version";
-import { Check, Copy, Download, Refresh } from "./Icons";
+import { Check, Copy, Download } from "./Icons";
 
 type CopyState = "idle" | "copied";
 
@@ -283,6 +282,7 @@ ${governanceStop ? "STOP. Do not upload, inspect, or process the data with an AI
 - Coding agent: inspect first, propose diffs, run the smallest verified test.
 - Compute agent: prepare and monitor bounded jobs after explicit approval.
 - Writing assistant: expand verified human notes and flag unsupported claims.
+- Reviewer zero: run focused critique passes and return a traceable issue ledger; the authors decide every change.
 
 ## Approval-required actions
 
@@ -296,10 +296,14 @@ ${approvalItems
 - [ ] Paper claim linked to a section, figure or table, split, and metric
 - [ ] Repository pinned to a commit and licence reviewed
 - [ ] Clean-environment smoke test passes
+- [ ] Study design reviewed before held-out results are viewed
 - [ ] Scheduled job limits and paths approved
 - [ ] Hypothesis and primary analysis recorded before held-out testing
 - [ ] Metric recalculated independently
 - [ ] Figure regenerated from raw outputs
+- [ ] First complete draft reviewed against the venue rubric and reporting checklist
+- [ ] Every decision-critical and major concern resolved or recorded with evidence
+- [ ] Pre-submission review rerun after material changes
 - [ ] Citations, privacy, licence, and AI-use statement reviewed
 
 ## Stop conditions
@@ -1116,12 +1120,31 @@ validation:
             onChange={(value) => setForm({ ...form, labels: value })}
             value={form.labels}
           />
-          <TextArea
-            label="Tasks, one per line: ID | type | target label IDs | cardinality | geometry or units | allowed values | missing values | interval boundaries"
-            onChange={(value) => setForm({ ...form, tasks: value })}
-            rows={8}
-            value={form.tasks}
-          />
+          <details className="task-format-guide">
+            <summary>
+              <span>Task definitions</span>
+              <strong>Open the advanced row format</strong>
+            </summary>
+            <div>
+              <p>
+                Use one row per annotation task. Each row contains eight fields
+                separated by a vertical bar: ID, type, target label IDs,
+                cardinality, geometry or units, allowed values, missing values,
+                and interval boundaries.
+              </p>
+              <code>
+                instrument_box | bounding_box | instrument_box |
+                zero_or_one_per_instrument | percent_top_left_xywh | |
+                not_visible,not_applicable | not_applicable
+              </code>
+              <TextArea
+                label="Task rows"
+                onChange={(value) => setForm({ ...form, tasks: value })}
+                rows={8}
+                value={form.tasks}
+              />
+            </div>
+          </details>
           <TextArea
             label="Review and adjudication"
             onChange={(value) => setForm({ ...form, review: value })}
@@ -1289,475 +1312,5 @@ function Select({
         ))}
       </select>
     </label>
-  );
-}
-
-function NumberField({
-  label,
-  onChange,
-  value,
-}: {
-  label: string;
-  onChange: (value: number) => void;
-  value: number;
-}) {
-  return (
-    <label className="field">
-      <span>{label}</span>
-      <input
-        max={100}
-        min={0}
-        onChange={(event) =>
-          onChange(Math.max(0, Math.min(100, Number(event.target.value))))
-        }
-        step={1}
-        type="number"
-        value={value}
-      />
-    </label>
-  );
-}
-
-type DemoPoint = {
-  id: "joint" | "ee_tip" | "ee_left" | "ee_right";
-  x: number;
-  y: number;
-  visibility: "visible" | "occluded" | "out_of_frame" | "not_applicable";
-};
-
-export function AnnotationDemo() {
-  const createdAt = "2026-07-26T12:00:00.000Z";
-  const [tool, setTool] = useState<"box" | "keypoint">("box");
-  const [box, setBox] = useState({ x: 52, y: 36, width: 25, height: 36 });
-  const [points, setPoints] = useState<DemoPoint[]>([
-    { id: "joint", x: 66, y: 48, visibility: "visible" },
-    { id: "ee_tip", x: 74, y: 64, visibility: "visible" },
-    { id: "ee_left", x: 70, y: 60, visibility: "visible" },
-    { id: "ee_right", x: 78, y: 60, visibility: "visible" },
-  ]);
-  const [selectedPointId, setSelectedPointId] =
-    useState<DemoPoint["id"]>("joint");
-  const [phase, setPhase] = useState("transfer");
-  const [visibility, setVisibility] = useState("visible");
-  const [coordinateX, setCoordinateX] = useState(62);
-  const [coordinateY, setCoordinateY] = useState(55);
-  const [demoStatus, setDemoStatus] = useState(
-    "Teaching preview ready. No annotation has been saved.",
-  );
-  const [revision, setRevision] = useState(1);
-  const [updatedAt, setUpdatedAt] = useState(createdAt);
-
-  function markRecordChanged(status: string) {
-    setRevision((value) => value + 1);
-    setUpdatedAt(new Date().toISOString());
-    setDemoStatus(status);
-  }
-
-  function placeSelectedKeypoint(x: number, y: number) {
-    if (visibility === "out_of_frame") {
-      setDemoStatus(
-        "Geometry is absent while the instrument is out of frame. Change visibility before placing a keypoint.",
-      );
-      return;
-    }
-    setPoints((current) =>
-      current.map((point) =>
-        point.id === selectedPointId
-          ? {
-              ...point,
-              x,
-              y,
-              visibility:
-                point.visibility === "out_of_frame" ||
-                point.visibility === "not_applicable"
-                  ? "visible"
-                  : point.visibility,
-            }
-          : point,
-      ),
-    );
-    markRecordChanged(
-      `${selectedPointId} moved to ${x.toFixed(0)} percent across and ${y.toFixed(0)} percent down. JSON updated.`,
-    );
-  }
-
-  function changeSelectedPointVisibility(value: string) {
-    const pointVisibility = value as DemoPoint["visibility"];
-    setPoints((current) =>
-      current.map((point) =>
-        point.id === selectedPointId
-          ? { ...point, visibility: pointVisibility }
-          : point,
-      ),
-    );
-    markRecordChanged(
-      `${selectedPointId} status changed to ${pointVisibility}. JSON updated.`,
-    );
-  }
-
-  function addAt(x: number, y: number) {
-    if (visibility === "out_of_frame") {
-      setDemoStatus(
-        "Geometry is absent while the instrument is out of frame. Change visibility before placing it.",
-      );
-      return;
-    }
-    if (tool === "box") {
-      setBox({
-        x: Math.max(2, Math.min(73, x - 12.5)),
-        y: Math.max(2, Math.min(62, y - 18)),
-        width: 25,
-        height: 36,
-      });
-      markRecordChanged(
-        `Box moved to ${x.toFixed(0)} percent across and ${y.toFixed(0)} percent down. JSON updated.`,
-      );
-      return;
-    }
-    placeSelectedKeypoint(x, y);
-  }
-
-  function handleFrameClick(event: MouseEvent<HTMLDivElement>) {
-    const bounds = event.currentTarget.getBoundingClientRect();
-    addAt(
-      ((event.clientX - bounds.left) / bounds.width) * 100,
-      ((event.clientY - bounds.top) / bounds.height) * 100,
-    );
-  }
-
-  const json = JSON.stringify(
-    {
-      frame_id: "demo_frame_0000",
-      frame_index: 0,
-      frame_dimensions_px: [480, 360],
-      source_asset_dimensions_px: [800, 600],
-      source_viewport_xywh_px: [0, 0, 800, 600],
-      render_transform: "scale the complete 4:3 source uniformly",
-      phase,
-      instrument_1: {
-        visibility,
-        box:
-          visibility === "out_of_frame"
-            ? null
-            : [box.x, box.y, box.width, box.height].map((value) =>
-                Number(value.toFixed(1)),
-              ),
-        keypoints: points.map(({ id, visibility: pointVisibility, x, y }) => ({
-          id,
-          xy:
-            visibility === "out_of_frame" ||
-            pointVisibility === "out_of_frame" ||
-            pointVisibility === "not_applicable"
-              ? null
-              : [Number(x.toFixed(1)), Number(y.toFixed(1))],
-          visibility:
-            visibility === "out_of_frame" ? "out_of_frame" : pointVisibility,
-          estimated:
-            visibility !== "out_of_frame" &&
-            pointVisibility === "occluded",
-        })),
-      },
-      provenance: {
-        annotation_id: "ann_demo_0000",
-        revision_id: `rev_${String(revision).padStart(3, "0")}`,
-        annotator_id: "demo_annotator",
-        protocol_version: "1.0.0",
-        frame_index_or_time: {
-          frame_index: 0,
-          index_base: 0,
-        },
-        coordinate_convention_and_units: {
-          origin: "top_left",
-          unit: "percent_of_annotation_frame",
-          box_encoding: "xywh",
-          point_encoding: "xy",
-          annotation_frame_dimensions_px: [480, 360],
-          source_asset_dimensions_px: [800, 600],
-          source_viewport_xywh_px: [0, 0, 800, 600],
-        },
-        origin: "manual",
-        source_hash:
-          "sha256:a13ab3684833e3bb14c87ff5eed4486c724ee794552dfaf55aa63a61caab7344",
-        created_at: createdAt,
-        updated_at: updatedAt,
-        review_state: "draft",
-        ai_assistance: {
-          suggestion_exposed: false,
-          model_id: null,
-          suggestion_id: null,
-          decision: null,
-        },
-      },
-    },
-    null,
-    2,
-  );
-
-  return (
-    <section className="annotation-demo" id="demo">
-      <div className="section-heading section-heading-wide">
-        <p>Try the interaction</p>
-        <h2>A tiny annotation loop</h2>
-        <span>
-          Choose a tool, click the frame, change the phase or visibility, and
-          inspect the plain JSON record. This is a teaching mock built from the
-          repository&apos;s surgical-annotator workflow, not a clinical
-          labelling system.
-        </span>
-      </div>
-      <div className="demo-workbench">
-        <div className="demo-main">
-          <div className="demo-toolbar" role="toolbar" aria-label="Annotation tools">
-            <button
-              aria-pressed={tool === "box"}
-              className={tool === "box" ? "is-active" : ""}
-              onClick={() => {
-                setTool("box");
-                setDemoStatus("Bounding-box tool selected.");
-              }}
-              type="button"
-            >
-              Bounding box
-            </button>
-            <button
-              aria-pressed={tool === "keypoint"}
-              className={tool === "keypoint" ? "is-active" : ""}
-              onClick={() => {
-                setTool("keypoint");
-                setDemoStatus("Keypoint tool selected.");
-              }}
-              type="button"
-            >
-              Keypoint
-            </button>
-            <button
-              onClick={() => {
-                setBox({ x: 52, y: 36, width: 25, height: 36 });
-                setPoints([
-                  { id: "joint", x: 66, y: 48, visibility: "visible" },
-                  { id: "ee_tip", x: 74, y: 64, visibility: "visible" },
-                  { id: "ee_left", x: 70, y: 60, visibility: "visible" },
-                  { id: "ee_right", x: 78, y: 60, visibility: "visible" },
-                ]);
-                setSelectedPointId("joint");
-                setTool("box");
-                setPhase("transfer");
-                setVisibility("visible");
-                setCoordinateX(62);
-                setCoordinateY(55);
-                setRevision(1);
-                setUpdatedAt(createdAt);
-                setDemoStatus("Teaching preview reset to its initial record.");
-              }}
-              type="button"
-            >
-              <Refresh size={15} />
-              Reset
-            </button>
-          </div>
-          <div
-            aria-describedby="demo-frame-hint"
-            aria-disabled={visibility === "out_of_frame"}
-            aria-label={
-              visibility === "out_of_frame"
-                ? "Synthetic peg-transfer training scene. Instrument is marked out of frame, so geometry placement is unavailable."
-                : `Synthetic peg-transfer training scene. Active tool: ${tool}. Use the pointer or the exact-coordinate controls to place the annotation.`
-            }
-            className={`demo-frame tool-${tool}`}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                addAt(coordinateX, coordinateY);
-              }
-            }}
-            onClick={handleFrameClick}
-            role="button"
-            tabIndex={0}
-          >
-            <img
-              alt="Original synthetic peg-transfer board with two simplified instruments and no clinical data"
-              height="600"
-              src="/worked-examples/annotation-synthetic-frame.svg"
-              width="800"
-            />
-            {visibility !== "out_of_frame" ? (
-              <>
-                <span
-                  className="demo-box"
-                  style={{
-                    height: `${box.height}%`,
-                    left: `${box.x}%`,
-                    top: `${box.y}%`,
-                    width: `${box.width}%`,
-                  }}
-                >
-                  <small>instrument 1</small>
-                </span>
-                {points.map((point, index) =>
-                  point.visibility === "out_of_frame" ||
-                  point.visibility === "not_applicable" ? null : (
-                    <span
-                      className={`demo-point ${
-                        point.visibility === "occluded" ? "is-occluded" : ""
-                      }`}
-                      key={point.id}
-                      style={{ left: `${point.x}%`, top: `${point.y}%` }}
-                      title={`${point.id}: ${point.visibility}`}
-                    >
-                      {index + 1}
-                    </span>
-                  ),
-                )}
-              </>
-            ) : (
-              <span className="demo-absent">
-                Instrument marked out of frame
-              </span>
-            )}
-          </div>
-          <div className="demo-hint" id="demo-frame-hint">
-            {visibility === "out_of_frame" ? (
-              <>
-                Geometry is absent. Change instrument visibility before placing
-                a box or named keypoint.
-              </>
-            ) : (
-              <>
-                Click the image to{" "}
-                {tool === "box"
-                  ? "place the box"
-                  : `place ${selectedPointId}`}. Keyboard users can set exact
-                coordinates, then press Enter or Space on the frame or use the
-                panel controls.
-              </>
-            )}
-          </div>
-        </div>
-        <aside className="demo-inspector" aria-label="Annotation inspector">
-          <h3>Frame record</h3>
-          <Select
-            label="Phase"
-            onChange={(value) => {
-              setPhase(value);
-              markRecordChanged(`Phase changed to ${value}. JSON updated.`);
-            }}
-            options={[
-              ["approach", "Approach"],
-              ["grasp", "Grasp"],
-              ["transfer", "Transfer"],
-              ["release", "Release"],
-            ]}
-            value={phase}
-          />
-          <Select
-            label="Visibility"
-            onChange={(value) => {
-              setVisibility(value);
-              if (value === "occluded") {
-                setPoints((current) =>
-                  current.map((point) => ({
-                    ...point,
-                    visibility: "occluded",
-                  })),
-                );
-              }
-              markRecordChanged(
-                value === "out_of_frame"
-                  ? "Visibility changed to out of frame. Geometry is now recorded as absent."
-                  : `Visibility changed to ${value}. JSON updated.`,
-              );
-            }}
-            options={[
-              ["visible", "Visible"],
-              ["partly_visible", "Partly visible"],
-              ["out_of_frame", "Out of frame"],
-              ["occluded", "Occluded"],
-            ]}
-            value={visibility}
-          />
-          <div className="field-row">
-            <Select
-              disabled={visibility === "out_of_frame"}
-              label="Named keypoint"
-              onChange={(value) =>
-                setSelectedPointId(value as DemoPoint["id"])
-              }
-              options={[
-                ["joint", "Joint"],
-                ["ee_tip", "End-effector tip"],
-                ["ee_left", "End-effector left"],
-                ["ee_right", "End-effector right"],
-              ]}
-              value={selectedPointId}
-            />
-            <Select
-              disabled={visibility === "out_of_frame"}
-              label={`${selectedPointId} status`}
-              onChange={changeSelectedPointVisibility}
-              options={[
-                ["visible", "Visible"],
-                ["occluded", "Occluded, estimated"],
-                ["out_of_frame", "Out of frame"],
-                ["not_applicable", "Not applicable"],
-              ]}
-              value={
-                points.find((point) => point.id === selectedPointId)
-                  ?.visibility ?? "visible"
-              }
-            />
-          </div>
-          <div className="sample-control-row">
-            <button
-              disabled={visibility === "out_of_frame"}
-              onClick={() => {
-                setBox({ x: 45.5, y: 24, width: 25, height: 36 });
-                markRecordChanged(
-                  "Sample box placed at 58 percent across and 42 percent down. JSON updated.",
-                );
-              }}
-              type="button"
-            >
-              Place sample box
-            </button>
-            <button
-              disabled={visibility === "out_of_frame"}
-              onClick={() => {
-                placeSelectedKeypoint(62, 55);
-              }}
-              type="button"
-            >
-              Place selected named point
-            </button>
-          </div>
-          <div className="coordinate-controls">
-            <NumberField
-              label="X position (%)"
-              onChange={setCoordinateX}
-              value={coordinateX}
-            />
-            <NumberField
-              label="Y position (%)"
-              onChange={setCoordinateY}
-              value={coordinateY}
-            />
-            <button
-              disabled={visibility === "out_of_frame"}
-              onClick={() => addAt(coordinateX, coordinateY)}
-              type="button"
-            >
-              Apply exact position
-            </button>
-          </div>
-          <p className="sr-only" role="status" aria-live="polite">
-            {demoStatus}
-          </p>
-          <pre>{json}</pre>
-          <p className="demo-provenance">
-            The useful part is not the rectangle. It is the protocol version,
-            review state, source identity, and record of AI assistance around it.
-          </p>
-        </aside>
-      </div>
-    </section>
   );
 }

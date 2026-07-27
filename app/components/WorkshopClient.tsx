@@ -18,7 +18,6 @@ import type {
 import { guidanceByWorkshop } from "@/lib/content/guidance";
 import {
   TUTORIAL_HOMEPAGE,
-  TUTORIAL_VERSION_LABEL,
   WORKSHOP_RELEASES,
   workshopRelease,
 } from "@/lib/version";
@@ -37,11 +36,12 @@ import {
 } from "@/lib/storage";
 import { routeNeighbours } from "@/lib/workshop-navigation";
 import {
-  AnnotationDemo,
   AnnotationSpecBuilder,
   AgenticPlanBuilder,
   PaperSiteBuilder,
 } from "./Builders";
+import { AnnotationShowcase } from "./AnnotationShowcase";
+import { ConferencePlanBuilder } from "./ConferencePlanBuilder";
 import {
   ArrowLeft,
   ArrowRight,
@@ -140,16 +140,24 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
     workshop.steps.findIndex((step) => step.id === progress.activeStep),
   );
   const active = workshop.steps[activeIndex];
-  const overallPercent = Math.round(
-    (progress.completed.length / workshop.steps.length) * 100,
-  );
   const currentRoute = routeProgress(workshop, guidance, progress);
+  const activeTrackIndex = currentRoute.route.stepIds.indexOf(active.id);
   const { next: nextStep, previous: previousStep } = routeNeighbours(
     workshop,
     currentRoute.route,
     active.id,
   );
+  const builderLabel = {
+    "agentic-research": "Build research plan",
+    "interactive-paper": "Build website brief",
+    "annotation-tools": "Build annotation specification",
+    "ai-healthcare-conference": "Build conference plan",
+  }[workshop.slug];
   const release = workshopRelease(workshop.slug);
+  const tutorialStatus =
+    release.status === "released"
+      ? `v${release.version}`
+      : "in development, not part of v1.3.0";
   const structuredCitations = [
     ...workshop.sourceLibrary,
     ...workshop.steps.flatMap((step) => step.sources),
@@ -163,8 +171,14 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
     name: workshop.title,
     description: workshop.description,
     url: release.canonicalUrl,
-    version: TUTORIAL_VERSION_LABEL,
-    datePublished: "2026-07-26",
+    ...(release.status === "released"
+      ? {
+          version: `v${release.version}`,
+          datePublished: "2026-07-26",
+        }
+      : {
+          creativeWorkStatus: "Draft",
+        }),
     inLanguage: "en-GB",
     isAccessibleForFree: true,
     license: "https://creativecommons.org/licenses/by/4.0/",
@@ -198,8 +212,38 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
     });
   }
 
+  function focusWorkbench() {
+    window.requestAnimationFrame(() => {
+      const heading = document.querySelector<HTMLElement>("#workbench-title");
+      heading?.focus({ preventScroll: true });
+      document.querySelector(".workbench")?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "auto"
+          : "smooth",
+        block: "start",
+      });
+    });
+  }
+
+  function revealStageInNavigator(stepId: string) {
+    window.requestAnimationFrame(() => {
+      const button = Array.from(
+        document.querySelectorAll<HTMLButtonElement>("[data-stage-id]"),
+      ).find((candidate) => candidate.dataset.stageId === stepId);
+      const rail = button?.closest("ol");
+      if (!button || !rail || rail.scrollWidth <= rail.clientWidth) return;
+      rail.scrollTo({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "auto"
+          : "smooth",
+        left: button.offsetLeft - (rail.clientWidth - button.clientWidth) / 2,
+      });
+    });
+  }
+
   function selectStep(step: WorkshopStep) {
     save({ ...progress, activeStep: step.id });
+    revealStageInNavigator(step.id);
     focusLesson();
   }
 
@@ -213,7 +257,7 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
     );
     if (!step) return;
     save({ ...progress, routeId: route.id, activeStep: step.id });
-    focusLesson();
+    focusWorkbench();
   }
 
   function reset() {
@@ -272,7 +316,6 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
   }
 
   function exportNotes() {
-    const release = workshopRelease(workshop.slug);
     const selectedRoute = guidance.routes.find(
       (route) => route.id === progress.routeId,
     );
@@ -282,7 +325,7 @@ Project: ${activeProject.name}
 Project ID: ${activeProject.id}
 
 Generated: ${new Date().toISOString()}
-Tutorial version: ${TUTORIAL_VERSION_LABEL}
+Tutorial status: ${tutorialStatus}
 Canonical tutorial: ${release.canonicalUrl}
 Selected route: ${selectedRoute?.title ?? "not selected"}
 
@@ -375,7 +418,7 @@ ${workshop.assessment
 
 ## Reminder
 
-This export records a teaching checklist, not proof that the scientific checks were done. Keep the actual sources, test outputs, approvals, and decision records with the project.
+This export records the workshop checklist, not proof that the scientific checks were done. It does not include the separate builder draft. Download that output from the builder. Keep the actual sources, test outputs, approvals, and decision records with the project.
 `;
     const safeProjectName =
       activeProject.name
@@ -404,13 +447,23 @@ This export records a teaching checklist, not proof that the scientific checks w
             <strong>{workshop.navTitle}</strong>
           </div>
           <div>
-            <button onClick={exportNotes} type="button">
+            <button
+              aria-label="Export workshop record"
+              onClick={exportNotes}
+              title="Export workshop record"
+              type="button"
+            >
               <Download size={16} />
-              Export record
+              <span>Export</span>
             </button>
-            <button onClick={reset} type="button">
+            <button
+              aria-label="Reset workshop progress"
+              onClick={reset}
+              title="Reset workshop progress"
+              type="button"
+            >
               <Refresh size={16} />
-              Reset project
+              <span>Reset</span>
             </button>
           </div>
         </header>
@@ -422,11 +475,13 @@ This export records a teaching checklist, not proof that the scientific checks w
             <p>{workshop.description}</p>
           </div>
           <aside>
-            <span>You will leave with</span>
+            <span>Full lifecycle outcome</span>
             <p>{workshop.promise}</p>
-            <small>{workshop.duration}</small>
+            <small>Full workshop: {workshop.duration}</small>
           </aside>
         </section>
+
+        <TutorialOrienter />
 
         <ProjectWorkspace
           activeProject={activeProject}
@@ -449,34 +504,36 @@ This export records a teaching checklist, not proof that the scientific checks w
           routeId={progress.routeId}
           workshop={workshop}
         />
-        <CaseStudy workshop={workshop} />
-        {workshop.slug !== "interactive-paper" ? (
-          <WorkshopDeepDive
-            checked={progress.bonusChecks}
-            onToggle={(id) =>
-              save({
-                ...progress,
-                bonusChecks: toggleItem(progress.bonusChecks, id),
-              })
-            }
-            slug={workshop.slug}
-          />
-        ) : null}
 
-        <section className="workbench" aria-label={`${workshop.title} checklist`}>
+        <section
+          aria-labelledby="workbench-title"
+          className="workbench"
+          id="workbench"
+        >
+          <div className="workbench-heading">
+            <p>Core workshop</p>
+            <h2 id="workbench-title" tabIndex={-1}>
+              Work one stage at a time
+            </h2>
+            <span>
+              Stages in your workshop track are marked in the navigator. Do the
+              action, save the output, record the evidence, and let a person
+              choose Ready, Revise, or Stop.
+            </span>
+          </div>
           <div className="workbench-progress">
             <div>
               <span>
                 {currentRoute.selected
-                  ? currentRoute.route.title
-                  : `Suggested: ${currentRoute.route.title}`}
+                  ? `Your track: ${currentRoute.route.title}`
+                  : `Suggested track: ${currentRoute.route.title}`}
               </span>
               <strong>
-                {currentRoute.completed} / {currentRoute.total}
+                {currentRoute.completed} of {currentRoute.total}
               </strong>
               <small>
-                All stages {progress.completed.length} /{" "}
-                {currentRoute.workshopTotal}
+                Entire workshop, including optional extra stages:{" "}
+                {progress.completed.length} of {currentRoute.workshopTotal}
               </small>
             </div>
             <div
@@ -494,12 +551,18 @@ This export records a teaching checklist, not proof that the scientific checks w
               />
             </div>
             <span className="overall-progress">
-              Overall completion {overallPercent}%
+              {currentRoute.percent}% of track
             </span>
           </div>
 
           <div className="workbench-body">
             <nav className="step-rail" aria-label="Workshop stages">
+              <div className="step-rail-heading">
+                <strong>Stage navigator</strong>
+                <span>
+                  Track stages are marked. Scroll sideways on smaller screens.
+                </span>
+              </div>
               <ol>
                 {workshop.steps.map((step, index) => {
                   const complete = progress.completed.includes(step.id);
@@ -515,6 +578,7 @@ This export records a teaching checklist, not proof that the scientific checks w
                         ]
                           .filter(Boolean)
                           .join(" ")}
+                        data-stage-id={step.id}
                         onClick={() => selectStep(step)}
                         type="button"
                       >
@@ -523,10 +587,10 @@ This export records a teaching checklist, not proof that the scientific checks w
                         </span>
                         <div>
                           <strong>{step.title}</strong>
-                          <small>
-                            {step.output}
-                            {inRoute ? " · selected route" : ""}
-                          </small>
+                          <small>{step.output}</small>
+                          <em className={inRoute ? "is-track-stage" : ""}>
+                            {inRoute ? "In your track" : "Extra stage"}
+                          </em>
                         </div>
                       </button>
                     </li>
@@ -534,16 +598,19 @@ This export records a teaching checklist, not proof that the scientific checks w
                 })}
               </ol>
               <a className="rail-builder-link" href="#builder">
-                Build your own plan
+                {builderLabel}
                 <ArrowRight size={16} />
               </a>
             </nav>
             <LessonPanel
               active={active}
               activeIndex={activeIndex}
+              activeTrackIndex={activeTrackIndex}
               approved={progress.approved.includes(active.id)}
+              builderLabel={builderLabel}
               complete={progress.completed.includes(active.id)}
               count={workshop.steps.length}
+              currentTrackTitle={currentRoute.route.title}
               decision={progress.decisions[active.id] ?? ""}
               evidenceNote={progress.evidenceNotes[active.id] ?? ""}
               guide={guidance.steps[active.id]}
@@ -635,6 +702,7 @@ This export records a teaching checklist, not proof that the scientific checks w
               practiceChecks={progress.practiceChecks[active.id] ?? []}
               previous={previousStep}
               selectedPathId={progress.pathChoices[active.id] ?? ""}
+              trackCount={currentRoute.total}
             />
           </div>
         </section>
@@ -646,29 +714,50 @@ This export records a teaching checklist, not proof that the scientific checks w
           />
         ) : null}
         {workshop.slug === "interactive-paper" ? (
-          <>
-            <PaperSiteBuilder
-              key={`${activeProject.id}:${builderRevision}`}
-              projectId={activeProject.id}
-            />
-            <WorkshopDeepDive
-              checked={progress.bonusChecks}
-              onToggle={(id) =>
-                save({
-                  ...progress,
-                  bonusChecks: toggleItem(progress.bonusChecks, id),
-                })
-              }
-              slug={workshop.slug}
-            />
-          </>
+          <PaperSiteBuilder
+            key={`${activeProject.id}:${builderRevision}`}
+            projectId={activeProject.id}
+          />
         ) : null}
         {workshop.slug === "annotation-tools" ? (
           <div key={`${activeProject.id}:${builderRevision}`}>
-            <AnnotationDemo />
+            <AnnotationShowcase />
             <AnnotationSpecBuilder projectId={activeProject.id} />
           </div>
         ) : null}
+        {workshop.slug === "ai-healthcare-conference" ? (
+          <ConferencePlanBuilder
+            key={`${activeProject.id}:${builderRevision}`}
+            projectId={activeProject.id}
+          />
+        ) : null}
+
+        <section
+          aria-labelledby="extended-learning-title"
+          className="extended-learning-heading"
+        >
+          <p>Optional, after the core stages</p>
+          <h2 id="extended-learning-title">
+            See the workflow in practice
+          </h2>
+          <span>
+            The worked evidence and extended reading below add context. They do
+            not block completion of your workshop track.
+          </span>
+        </section>
+        {workshop.slug !== "ai-healthcare-conference" ? (
+          <CaseStudy workshop={workshop} />
+        ) : null}
+        <WorkshopDeepDive
+          checked={progress.bonusChecks}
+          onToggle={(id) =>
+            save({
+              ...progress,
+              bonusChecks: toggleItem(progress.bonusChecks, id),
+            })
+          }
+          slug={workshop.slug}
+        />
 
         <WorkshopAssessment
           answers={progress.assessmentAnswers}
@@ -693,6 +782,56 @@ This export records a teaching checklist, not proof that the scientific checks w
   );
 }
 
+function TutorialOrienter() {
+  const items = [
+    {
+      title: "Project",
+      body: "Name the work and keep its notes separate from other projects.",
+    },
+    {
+      title: "Workshop track",
+      body: "Choose the subset of stages that matches today’s goal.",
+    },
+    {
+      title: "Stage",
+      body: "Do one action, save its output, and use optional help when needed.",
+    },
+    {
+      title: "Human checkpoint",
+      body: "Record evidence, decide Ready, Revise, or Stop, then export.",
+    },
+  ];
+
+  return (
+    <section
+      aria-labelledby="tutorial-orienter-title"
+      className="tutorial-orienter"
+    >
+      <div>
+        <p>How this tutorial works</p>
+        <h2 id="tutorial-orienter-title">
+          One project, one track, one stage at a time
+        </h2>
+      </div>
+      <ol>
+        {items.map((item, index) => (
+          <li key={item.title}>
+            <span>{index + 1}</span>
+            <div>
+              <strong>{item.title}</strong>
+              <p>{item.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <p className="tutorial-orienter-note">
+        Your workshop record and builder output are separate downloads. Both
+        stay in this browser until you export them.
+      </p>
+    </section>
+  );
+}
+
 function WorkshopPrimer({
   guidance,
   onChooseRoute,
@@ -711,30 +850,12 @@ function WorkshopPrimer({
   return (
     <section className="workshop-primer" aria-labelledby="primer-title">
       <div className="primer-heading">
-        <p>Before you begin</p>
-        <h2 id="primer-title">Know the route and the standard</h2>
+        <p>Choose a workshop track</p>
+        <h2 id="primer-title">Start with today&apos;s goal</h2>
         <span>
-          This is for {workshop.audience} Guided workshop: {workshop.duration}.
-          Real project: {workshop.projectTime}
+          Designed for {workshop.audience} The full guided workshop takes{" "}
+          {workshop.duration}. {workshop.projectTime}
         </span>
-      </div>
-      <div className="primer-grid primer-grid-basics">
-        <article>
-          <h3>Prerequisites</h3>
-          <ul>
-            {workshop.prerequisites.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ul>
-        </article>
-        <article>
-          <h3>By the end, you can</h3>
-          <ol>
-            {workshop.outcomes.map((item) => (
-              <li key={item}>{item}</li>
-            ))}
-          </ol>
-        </article>
       </div>
       <WorkflowNavigator
         guidance={guidance}
@@ -744,6 +865,30 @@ function WorkshopPrimer({
         routeId={routeId}
         workshop={workshop}
       />
+      <details className="primer-readiness">
+        <summary>
+          <span>Preparation and full outcomes</span>
+          <strong>Check what you need before doing the whole lifecycle</strong>
+        </summary>
+        <div className="primer-grid primer-grid-basics">
+          <article>
+            <h3>Prerequisites</h3>
+            <ul>
+              {workshop.prerequisites.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </article>
+          <article>
+            <h3>By the end, you can</h3>
+            <ol>
+              {workshop.outcomes.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ol>
+          </article>
+        </div>
+      </details>
     </section>
   );
 }
@@ -842,9 +987,12 @@ function DecisionGuidance({
 function LessonPanel({
   active,
   activeIndex,
+  activeTrackIndex,
   approved,
+  builderLabel,
   complete,
   count,
+  currentTrackTitle,
   decision,
   evidenceNote,
   guide,
@@ -860,12 +1008,16 @@ function LessonPanel({
   practiceChecks,
   previous,
   selectedPathId,
+  trackCount,
 }: {
   active: WorkshopStep;
   activeIndex: number;
+  activeTrackIndex: number;
   approved: boolean;
+  builderLabel: string;
   complete: boolean;
   count: number;
+  currentTrackTitle: string;
   decision: "" | "ready" | "revise" | "stop";
   evidenceNote: string;
   guide: WorkshopStepGuide;
@@ -881,6 +1033,7 @@ function LessonPanel({
   practiceChecks: string[];
   previous?: WorkshopStep;
   selectedPathId: string;
+  trackCount: number;
 }) {
   const [copied, setCopied] = useState(false);
   const evidenceReady = evidenceNote.trim().length >= 20 && decision !== "";
@@ -890,7 +1043,9 @@ function LessonPanel({
       <header className="lesson-header">
         <div>
           <span>
-            Stage {activeIndex + 1} of {count}
+            {activeTrackIndex >= 0
+              ? `${currentTrackTitle}: track stage ${activeTrackIndex + 1} of ${trackCount} · full workshop stage ${activeIndex + 1} of ${count}`
+              : `Extra stage outside ${currentTrackTitle} · full workshop stage ${activeIndex + 1} of ${count}`}
             {active.duration ? ` · ${active.duration}` : ""}
           </span>
           <h2 id="lesson-heading" tabIndex={-1}>
@@ -900,8 +1055,8 @@ function LessonPanel({
         </div>
         <div className="lesson-output">
           <div className="label-with-help">
-            <span>Keep</span>
-            <ContextHelp label="Keep">
+            <span>Output to save</span>
+            <ContextHelp label="output to save">
               Save this named artefact with the project so another person can
               inspect the decision later.
             </ContextHelp>
@@ -912,7 +1067,7 @@ function LessonPanel({
 
       <div className="lesson-content-grid">
         <section className="lesson-action">
-          <p className="lesson-label">Your move</p>
+          <p className="lesson-label">1. Do the work</p>
           <p>{active.action}</p>
           <div className="prompt-block">
             <div>
@@ -947,7 +1102,7 @@ function LessonPanel({
 
         <aside className="checkpoint-panel">
           <div className="label-with-help checkpoint-label">
-            <p className="lesson-label">Human checkpoint</p>
+            <p className="lesson-label">2 to 5. Human checkpoint</p>
             <ContextHelp label="Human checkpoint">
               A named person reviews the evidence. The agent cannot approve its
               own work.
@@ -958,7 +1113,10 @@ function LessonPanel({
           </span>
           <p>{active.checkpoint}</p>
           <label className="evidence-field">
-            <span>Record what was retrieved and what a person checked</span>
+            <span>
+              <strong>2. Evidence note</strong>
+              Record what was retrieved and what a person checked
+            </span>
             <textarea
               onChange={(event) => onEvidenceNote(event.target.value)}
               placeholder={"agent_retrieved: artefact or locator\nhuman_opened: source or output\nclaim_checked: result and remaining issue\n\nAn agent must leave the human fields blank."}
@@ -974,7 +1132,7 @@ function LessonPanel({
             </ContextHelp>
           </div>
           <fieldset className="decision-field">
-            <legend>Decision</legend>
+            <legend>3. Human decision</legend>
             {(["ready", "revise", "stop"] as const).map((value) => (
               <label key={value}>
                 <input
@@ -1007,8 +1165,8 @@ function LessonPanel({
           >
             <span>{approved ? <Check size={17} /> : null}</span>
             {approved
-              ? "Checkpoint review recorded"
-              : "Record checkpoint review"}
+              ? "4. Human review recorded"
+              : "4. Record human review"}
           </button>
           <button
             className="complete-button"
@@ -1016,7 +1174,7 @@ function LessonPanel({
             onClick={onComplete}
             type="button"
           >
-            {complete ? "Reopen this stage" : "Complete this stage"}
+            {complete ? "5. Reopen this stage" : "5. Complete this stage"}
           </button>
           {!approved ? (
             <small>
@@ -1066,7 +1224,7 @@ function LessonPanel({
         {next ? (
           <button onClick={() => onSelect(next)} type="button">
             <span>
-              Next
+              {complete ? "Next stage" : "Continue, this stage stays open"}
               <strong>{next.title}</strong>
             </span>
             <ArrowRight size={18} />
@@ -1075,7 +1233,7 @@ function LessonPanel({
           <a href="#builder">
             <span>
               Next
-              <strong>Build your plan</strong>
+              <strong>{builderLabel}</strong>
             </span>
             <ArrowRight size={18} />
           </a>
@@ -1250,6 +1408,10 @@ function NextWorkshop({ current }: { current: Workshop["slug"] }) {
     {
       slug: "annotation-tools",
       title: "Developing Custom Annotation Tools",
+    },
+    {
+      slug: "ai-healthcare-conference",
+      title: "Run an AI in Healthcare Conference",
     },
   ] as const;
   const index = routes.findIndex((route) => route.slug === current);

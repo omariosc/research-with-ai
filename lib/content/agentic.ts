@@ -7,10 +7,10 @@ export const agenticResearch: Workshop = {
   title: "Agentic AI in Research",
   navTitle: "Agentic research",
   description:
-    "Take one research question from field mapping to an independently checked, reproducible workflow. Use agents for the work they are good at, and keep scientific decisions with the researcher.",
+    "Take one research question from field mapping to an independently checked, reproducible workflow. Use agents to search, build, test, and critique the work at meaningful decision points, while keeping scientific decisions with the researcher.",
   promise:
-    "Finish with a research contract, a paper reproduction plan, an HPC-ready runbook, a verification record, and an AI-use statement.",
-  duration: "10 stages · 75-minute guided walkthrough",
+    "Finish with a research contract, a paper reproduction plan, an HPC-ready runbook, a verification record, a resolved paper-review ledger, and an AI-use statement.",
+  duration: "10 stages · about 80 guided minutes",
   audience:
     "Masters students, PhD researchers, clinicians, and research software practitioners who are new to agentic research workflows.",
   prerequisites: [
@@ -25,10 +25,11 @@ export const agenticResearch: Workshop = {
     "Audit an unfamiliar repository before executing it",
     "Turn a checked local command into a bounded compute plan",
     "Verify results independently and disclose substantive AI assistance",
+    "Use repeated AI reviewer passes without surrendering scientific judgement",
   ],
   projectTime:
     "A real paper reproduction usually takes several days to several weeks.",
-  quickRoute: ["contract", "paper", "release"],
+  quickRoute: ["contract", "paper", "communicate", "release"],
   accent: "blue",
   startLabel: "Write the research contract",
   steps: [
@@ -36,17 +37,17 @@ export const agenticResearch: Workshop = {
       id: "contract",
       title: "Set the research contract",
       summary:
-        "Define the scientific question, success criterion, permitted data, budget, stop conditions, and actions that need approval before an agent searches or runs anything.",
+        "Define the scientific question, success criterion, permitted data, budget, stop conditions, review checkpoints, and actions that need approval before an agent searches or runs anything.",
       action:
-        "Name the accountable researcher and write a one-page contract before sharing data or granting tools.",
+        "Name the accountable researcher and schedule review passes before the design, analysis, and manuscript become expensive to change.",
       output: "research_contract.md",
       duration: "7 minutes",
-      prompt: `Help me draft a one-page research contract for the project below. Include the research question, primary success metric, permitted and prohibited data, compute and spending limits, actions that require approval, stop conditions, and the accountable researcher. Mark missing information as questions rather than making assumptions. Treat the contract as a planning record, not as access control, and list the technical permissions that must enforce its boundaries.
+      prompt: `Help me draft a one-page research contract for the project below. Include the research question, primary success metric, permitted and prohibited data, compute and spending limits, actions that require approval, stop conditions, and the accountable researcher. Add review checkpoints before the protocol is locked, after the first analysis, after the first complete draft, before co-author sign-off, before submission, and after any material revision. For each checkpoint, name the human who decides whether feedback changes the work. Mark missing information as questions rather than making assumptions. Treat the contract as a planning record, not as access control, and list the technical permissions that must enforce its boundaries.
 
 Project context:
 [Paste your context here]`,
       checkpoint:
-        "A named researcher confirms the question, metric, data boundary, budget, and approval-required actions.",
+        "A named researcher confirms the question, metric, data boundary, budget, approval-required actions, and review cadence.",
       checkpointLabel: "Approve the research boundary",
       watchFor:
         "Do not paste patient-identifiable data, credentials, confidential manuscripts, or private material into an unapproved service.",
@@ -71,14 +72,14 @@ Project context:
       id: "evidence",
       title: "Build a verifiable evidence map",
       summary:
-        "Use deep research to map a field, then open the primary sources behind every important claim. An evidence map is useful, but it is not automatically a systematic review.",
+        "Use deep research to map a field, then ask a sceptical reviewer what is missing and open the primary sources behind every important claim. An evidence map is useful, but it is not automatically a systematic review.",
       action:
-        "Create a source table that separates agent retrieval from checks completed by a person.",
+        "Create a source table that separates agent retrieval, reviewer concerns, and checks completed by a person.",
       output: "sources.csv",
       duration: "10 minutes",
-      prompt: `Map primary research on [topic] published from [date] to [date]. Record the databases or sites searched, exact queries, and search date. Prioritise peer-reviewed papers, official datasets, and benchmark papers. For each important claim, provide the exact supporting source, DOI or stable URL, study type, population or dataset, and one limitation. Use three fields: agent_retrieved for what you located, human_opened for what a person opened, and claim_checked for the result of a person's check. Populate agent_retrieved only. Leave human_opened and claim_checked blank for the researcher. Never infer that I opened a source. Do not describe this as a systematic review.`,
+      prompt: `Map primary research on [topic] published from [date] to [date]. Record the databases or sites searched, exact queries, and search date. Prioritise peer-reviewed papers, official datasets, and benchmark papers. For each important claim, provide the exact supporting source, DOI or stable URL, study type, population or dataset, and one limitation. Then act as a sceptical reviewer: identify the closest competing work, evidence that could weaken the proposed gap, and important sources or perspectives the search may have missed. Use four fields: agent_retrieved, reviewer_concern, human_opened, and claim_checked. Populate only the first two. Leave human_opened and claim_checked blank for the researcher. Never infer that I opened a source or that the search proves novelty. Do not describe this as a systematic review.`,
       checkpoint:
-        "Open every source supporting a central claim. Confirm the title, authors, DOI, method, population or dataset, and reported result.",
+        "Open every source supporting or challenging a central claim. Confirm its title, authors, DOI, method, population or dataset, result, and relevance to the claimed gap.",
       checkpointLabel: "Verify the central sources",
       watchFor:
         "A fluent synthesis can still cite the wrong paper, merge two studies, or turn a limitation into a conclusion.",
@@ -202,14 +203,14 @@ Project context:
       id: "hypothesis",
       title: "Prespecify the reproduction or new study",
       summary:
-        "Agentic systems can expand and critique a hypothesis space, but a ranked idea is not evidence. Choose one scientific branch before viewing held-out results, and keep novelty, selection, and falsification decisions with the researcher.",
+        "Agentic systems can expand and critique a hypothesis space, but a ranked idea is not evidence. Review the design before viewing held-out results, choose one scientific branch, and keep novelty, selection, and falsification decisions with the researcher.",
       action:
         "Declare Branch A or B, then timestamp its metric, comparison, tolerance or falsifier, and exclusion rule before testing.",
       output: "analysis_prespecification.md",
       duration: "7 minutes",
-      prompt: `Work in one declared branch. Branch A is reproduction: before the run, record the paper's reported claim, expected metric, tolerance, discrepancy rules, and exclusions without inventing a new scientific claim. Branch B is a new study: before any held-out result is viewed, timestamp the hypothesis, counter-hypothesis, analysis, metric, comparison, and exclusion rule. For Branch B, propose three testable hypotheses from the checked evidence map and baseline. For each, give weakening evidence, a falsifier, likely confounders, and the cheapest discriminating experiment. Do not mix a new result into the reproduction claim or call it novel until a separate novelty search is complete.`,
+      prompt: `Work in one declared branch. Branch A is reproduction: before the run, record the paper's reported claim, expected metric, tolerance, discrepancy rules, and exclusions without inventing a new scientific claim. Branch B is a new study: before any held-out result is viewed, timestamp the hypothesis, counter-hypothesis, analysis, metric, comparison, and exclusion rule. For Branch B, propose three testable hypotheses from the checked evidence map and baseline. For each, give weakening evidence, a falsifier, likely confounders, and the cheapest discriminating experiment. Then review the selected design as a critical methods reviewer: challenge endpoint choice, leakage, power or sample-size assumptions, comparators, exclusions, subgroup plans, feasibility, ethics, and alternative explanations. Return concerns for human resolution without silently rewriting the prespecification. Do not mix a new result into the reproduction claim or call it novel until a separate novelty search is complete.`,
       checkpoint:
-        "A researcher confirms the chosen branch and timestamps the complete analysis rule before held-out results are viewed. A domain expert reviews any new scientific hypothesis.",
+        "A researcher resolves or records the design-review concerns, confirms the chosen branch, and timestamps the complete analysis rule before held-out results are viewed. A domain expert reviews any new scientific hypothesis.",
       checkpointLabel: "Review and timestamp the prespecification",
       watchFor:
         "Do not invent a new hypothesis for a reproduction or relabel an exploratory result as prespecified. A plausible mechanism is not evidence of novelty, causality, or clinical value.",
@@ -276,12 +277,12 @@ Project context:
       id: "validation",
       title: "Verify the result independently",
       summary:
-        "Treat verification as a separate scientific task. Recompute the primary metric, inspect failures, quantify distinct sources of uncertainty, and look for leakage or shortcut behaviour.",
+        "Treat verification as a separate scientific task and an early paper-review pass. Recompute the primary metric, inspect failures, quantify uncertainty, and challenge the interpretation before it hardens into prose.",
       action:
         "Compare the prespecified expectation with the observed result using an evaluator outside the training code. Include the paper's reported value only for the reproduction branch.",
       output: "verification_report.md",
       duration: "8 minutes",
-      prompt: `Audit this completed experiment without changing the prespecified metric, tolerance, falsifier, exclusions, or selected checkpoint. Recompute the primary metric with an independent implementation and confirm the evaluation split and sample count. For Branch A, compare the paper's reported value, the prespecified tolerance, and the observed result. For Branch B, compare the prespecified prediction and falsifier with the observed result without implying that the paper reported it. Report variation across training seeds separately from uncertainty across patients or cases. Inspect the largest failures and test for leakage or shortcut signals. Report discrepancies before suggesting explanations.`,
+      prompt: `Audit this completed experiment without changing the prespecified metric, tolerance, falsifier, exclusions, or selected checkpoint. Recompute the primary metric with an independent implementation and confirm the evaluation split and sample count. For Branch A, compare the paper's reported value, the prespecified tolerance, and the observed result. For Branch B, compare the prespecified prediction and falsifier with the observed result without implying that the paper reported it. Report variation across training seeds separately from uncertainty across patients or cases. Inspect the largest failures and test for leakage or shortcut signals. Then conduct a results-review pass: identify alternative explanations, missing robustness checks, inconsistent denominators, and claims that the evidence cannot support. Report discrepancies and concerns before suggesting explanations or edits.`,
       checkpoint:
         "Confirm the split, sample count, metric, uncertainty method, exclusions, and failure cases. Verify that test data did not guide model or prompt selection.",
       checkpointLabel: "Approve the verification record",
@@ -315,29 +316,54 @@ Project context:
     },
     {
       id: "communicate",
-      title: "Create traceable figures and text",
+      title: "Draft, review, and revise traceably",
       summary:
-        "Generate figures from machine-readable results through committed code. Start writing assistance from verified human bullet points and keep uncertainty and limitations intact.",
+        "Generate figures and text from checked evidence, then use AI as reviewer zero at meaningful checkpoints: design, initial results, first complete draft, co-author review, pre-submission, and material revision.",
       action:
-        "Regenerate one figure from raw outputs and link every numerical sentence to its source file or table.",
-      output: "figures/reproduce_figure.py",
-      duration: "5 minutes",
-      prompt: `Using only [raw result files] and the verified analysis specification, write code for Figure [number]. Create a companion provenance record with input checksums, code commit, command, sample counts, units, uncertainty, exclusions, and output checksum. Then turn my bullet points into a concise results-section draft. Link every numerical claim to its generating file or table, preserve caveats, and flag any sentence that requires a citation or human interpretation.`,
+        "Regenerate one figure from raw outputs, run focused reviewer passes, verify each concern, and record what the authors accepted, rejected, deferred, or left unresolved.",
+      output: "figures/reproduce_figure.py + paper_review_log.md",
+      duration: "8 minutes",
+      prompt: `First, use only [raw result files] and the verified analysis specification to write code for Figure [number]. Create a provenance record with input checksums, code commit, command, sample counts, units, uncertainty, exclusions, and output checksum. Turn my verified bullet points into a concise draft, linking every numerical claim to its generating file or table and flagging anything that needs a citation or human interpretation.
+
+Then act as a critical but fair reviewer for [venue or journal]. Use its current review criteria, the complete manuscript, appendices, reporting checklist, verified result files, and figure provenance supplied here. Use a high reasoning-effort mode and the most capable model permitted by the project's data policy. Do not infer information that is absent.
+
+Review separately:
+1. study design, methods, statistics, leakage, bias, and alternative explanations;
+2. claim-to-evidence consistency, including figures, tables, denominators, and uncertainty;
+3. novelty and related work, with verifiable DOI or URL suggestions;
+4. reproducibility, reporting requirements, ethics, and clinical interpretation;
+5. clarity, limitations, and fit to the target venue.
+
+For every concern, return: issue ID; decision-critical, major, minor, or question; exact section, figure, or table; challenged claim; manuscript evidence; why it matters; confidence; smallest check, analysis, experiment, or edit that could resolve it; and what evidence would close the concern. Label unverified literature suggestions. Finish with "What this review may have misunderstood". Do not rewrite the paper or invent experiments yet.
+
+Then audit your own review. Mark each concern supported, ambiguous, or probably a false positive using quoted manuscript evidence. Look specifically for issues the first pass may have missed in novelty, domain assumptions, appendices, and supplementary analyses. Return a review ledger for the authors to resolve.`,
       checkpoint:
-        "Check axes, labels, denominators, uncertainty, exclusions, and every written claim against the raw evidence.",
-      checkpointLabel: "Verify the figure and claims",
+        "Every decision-critical and major concern has a human-owned disposition and evidence. Figures, numbers, citations, limitations, and resulting edits are checked against source material.",
+      checkpointLabel: "Resolve the review ledger",
       watchFor:
-        "Do not use image generation to create scientific evidence. Use code and source data for plots and diagrams that carry claims.",
+        "AI criticism is a lead to investigate, not a verdict. Models can share blind spots, miss novelty or specialist context, and confidently propose unnecessary work. Never upload an unpublished or confidential draft unless the service, venue, institution, and collaborators permit it.",
       videoCue:
-        "Generate a figure from raw results, change one source value, and show the figure rebuild through the same command.",
+        "Run one focused review, verify a useful concern, reject one false positive with evidence, revise the paper, and rerun the same review to show the issue closing.",
       sources: [
         {
-          title: "CLAIM 2024",
-          url: "https://pubs.rsna.org/doi/10.1148/ryai.240300",
+          title: "Stanford Agentic Reviewer technical overview",
+          url: "https://paperreview.ai/tech-overview",
+          note: "Yixing Jiang and Andrew Ng describe a related-work-grounded reviewer and its limits. The site warns that reviews can contain errors.",
         },
         {
-          title: "Nature Portfolio AI policy",
-          url: "https://www.nature.com/nature-portfolio/editorial-policies/ai",
+          title: "Can LLMs provide useful paper feedback?",
+          url: "https://doi.org/10.1056/AIoa2400196",
+          note: "Large-scale empirical evidence for useful author feedback, with differences from human reviewing.",
+        },
+        {
+          title: "Mind the Blind Spots",
+          url: "https://aclanthology.org/2025.emnlp-main.1805/",
+          note: "Evidence that LLM reviews can underweight novelty while concentrating on technical validity.",
+        },
+        {
+          title: "Stanford on AI-assisted pre-submission review",
+          url: "https://news.stanford.edu/stories/2026/03/ai-scientific-research-peer-review",
+          note: "James Zou describes strengths in checkable inconsistencies and limitations in novelty and significance judgements.",
         },
       ],
     },
@@ -345,17 +371,17 @@ Project context:
       id: "release",
       title: "Package, disclose, and release",
       summary:
-        "A research-ready release includes the environment, tests, provenance, decision log, licences, citation metadata, data documentation, and a clear account of AI assistance.",
+        "Before submission or release, review the exact candidate again. Reconcile the issue ledger, venue checklist, environment, tests, provenance, licences, citation metadata, data documentation, and AI-use disclosure.",
       action:
-        "Test from a fresh clone, review privacy and licences, then archive the exact approved release.",
+        "Run reviewer zero against the frozen candidate, confirm every promised correction, test from a fresh clone, and archive only the human-approved release.",
       output: "AI_USE.md",
       duration: "4 minutes",
-      prompt: `Audit this project as if you were an independent researcher attempting reproduction. Create a release checklist covering the README, exact commands, lockfile or container, tests, data access and licence, model or dataset card, raw results, figure scripts, CITATION.cff, decision log, AI-use disclosure, and archive DOI. Do not push, publish, or create a release until a human approves the final diff and privacy review.`,
+      prompt: `Audit this project and manuscript as if you were an independent researcher and a final pre-submission reviewer. Re-run the target venue checklist and compare the current paper with the resolved review ledger. Confirm that every accepted change was made, every rejected or deferred concern has a human reason, and no revision introduced a new contradiction. Check abstract-to-results consistency, denominators, uncertainty, figure labels, references, limitations, declarations, reporting guidance, data and code availability, README, exact commands, lockfile or container, tests, licences, model or dataset card, raw results, figure scripts, CITATION.cff, decision log, AI-use disclosure, and archive DOI. Do not push, submit, publish, or create a release until the accountable authors approve the final diff, privacy review, and review-resolution record.`,
       checkpoint:
-        "A fresh clone reproduces the smoke test, citations and licences are checked, substantive AI use is disclosed, and a human accepts responsibility.",
+        "A fresh clone reproduces the smoke test, the review ledger has no unexamined decision-critical concern, citations and licences are checked, substantive AI use is disclosed, and the authors accept responsibility.",
       checkpointLabel: "Approve the release record",
       watchFor:
-        "Do not let a tidy repository hide missing data rights, unverified citations, hand-edited figures, or an irreproducible environment.",
+        "Do not overfit the paper to a simulated score or let a tidy repository hide unresolved scientific concerns, missing data rights, unverified citations, hand-edited figures, or an irreproducible environment.",
       videoCue:
         "End from a fresh directory. Clone the release, run the smoke test, and open the generated result and AI-use record.",
       sources: [
@@ -504,6 +530,34 @@ Project context:
         },
       ],
     },
+    {
+      id: "review-throughout",
+      question:
+        "When should AI-assisted paper review begin, and what should happen to its suggestions?",
+      options: [
+        {
+          id: "last-night",
+          label: "Run one grammar check the night before submission",
+          correct: false,
+          feedback:
+            "Late feedback cannot cheaply correct a weak question, design, analysis, or missing experiment.",
+        },
+        {
+          id: "continuous",
+          label: "Review at decision points and resolve each concern with evidence",
+          correct: true,
+          feedback:
+            "Use focused passes before design lock, after initial results, on the first complete draft, before submission, and after material revisions. People decide what changes.",
+        },
+        {
+          id: "follow-all",
+          label: "Apply every suggestion from the strongest model",
+          correct: false,
+          feedback:
+            "A powerful reviewer can still miss novelty, misunderstand specialist context, or propose unnecessary post-hoc work.",
+        },
+      ],
+    },
   ],
   glossary: [
     {
@@ -581,6 +635,16 @@ Project context:
       definition:
         "The record of where an artefact came from and which inputs, code, commands, and decisions produced it.",
     },
+    {
+      term: "Reviewer zero",
+      definition:
+        "A structured author-side critique run before formal peer review, used to surface questions rather than make the publication decision.",
+    },
+    {
+      term: "Review issue ledger",
+      definition:
+        "A durable table recording each concern, its location and evidence, the human decision, resulting action, and closure status.",
+    },
   ],
   sourceLibrary: [
     {
@@ -627,6 +691,31 @@ Project context:
       title: "PaperBench",
       url: "https://openai.com/index/paperbench/",
       note: "A benchmark for reproducing AI research papers.",
+    },
+    {
+      title: "Stanford Agentic Reviewer",
+      url: "https://paperreview.ai/",
+      note: "An experimental author-side reviewer by Yixing Jiang and Andrew Ng. Use only for upload-permitted English manuscripts and treat its output as fallible criticism.",
+    },
+    {
+      title: "Stanford Agentic Reviewer technical overview",
+      url: "https://paperreview.ai/tech-overview",
+      note: "Documents its related-work retrieval workflow, ICLR-based score experiment, arXiv and English-language boundaries, and warning that reviews may contain errors.",
+    },
+    {
+      title: "Can large language models provide useful feedback on research papers?",
+      url: "https://doi.org/10.1056/AIoa2400196",
+      note: "Large-scale empirical study of model-generated feedback and researcher perceptions. It supports supplementary feedback, not replacement of expert review.",
+    },
+    {
+      title: "Usefulness of LLMs as an author checklist assistant",
+      url: "https://arxiv.org/abs/2411.03417",
+      note: "NeurIPS 2024 author experiment showing perceived usefulness alongside inaccuracies, strictness, and gaming risks.",
+    },
+    {
+      title: "Mind the Blind Spots",
+      url: "https://aclanthology.org/2025.emnlp-main.1805/",
+      note: "Focus-level evaluation showing that model reviews can concentrate on technical validity and underweight novelty.",
     },
     {
       title: "FUTURE-AI",

@@ -1,6 +1,6 @@
 # Agentic science systems: checked reading notes
 
-Checked: 2026-07-26
+Checked: 2026-07-27
 
 Purpose: an original teaching comparison for the Agentic AI in Research
 tutorial. These notes paraphrase the sources. They are not substitutes for the
@@ -231,6 +231,109 @@ run.
 - The system does not demonstrate clinical care or prospective patient research.
 - Independent reproduction is blocked until the promised code and artefacts
   become public.
+
+## AI review as a recurring author-side checkpoint
+
+AI review is most useful before a weak decision becomes expensive. It should
+not be left until the final language edit. The tutorial therefore treats
+reviewer zero as a recurring author-side role: the model raises traceable
+questions, the researchers check them against evidence, and named humans decide
+whether the work changes.
+
+### Evidence boundary
+
+The evidence supports AI as an additional reader, not a substitute for
+co-authors, statisticians, domain experts, editors, or formal peer review.
+
+| Evidence | Reported result | What it supports | Main caveat |
+|---|---|---|---|
+| [Liang et al., NEJM AI](https://doi.org/10.1056/AIoa2400196) | GPT-4 feedback was compared with reviews for 3,096 Nature-family papers and 1,709 ICLR papers; 57.4% of 308 participating researchers rated their feedback helpful or very helpful | A rapid additional reader can surface useful concerns, especially early in preparation | Point overlap does not prove that the model has expert judgement or that every criticism is correct |
+| [NeurIPS 2024 author checklist experiment](https://arxiv.org/abs/2411.03417) | More than 70% of surveyed authors found the assistant useful and more than 70% said they would revise, but inaccuracy and excessive strictness were the most frequent reported problems | AI can help authors check a paper against an explicit reporting or submission rubric | The assistant could be gamed and was not suitable as an automated approval gate |
+| [Mind the Blind Spots, EMNLP 2025](https://aclanthology.org/2025.emnlp-main.1805/) | Across 676 reviews, off-the-shelf models concentrated more on technical validity and underweighted novelty | Use separate review passes and retain specialist novelty judgement | A confident methods critique is not a complete paper review |
+| [Reviewing the reviews, 2026 preprint](https://arxiv.org/abs/2605.20668) | In a work-in-progress expert study, current reviewing agents produced some strong and distinct criticisms, but AI reviewers overlapped more with one another and showed recurring specialist-context weaknesses | Capable current models can complement human reviewers with another set of checks | The study is a preliminary preprint and explicitly does not support replacing human review |
+
+These studies do not establish a universal year-by-year improvement rate or a
+single human-level threshold. Review quality depends on the model, prompt,
+field, paper type, supplied context, rubric, and evaluator.
+
+### Review checkpoints
+
+| Checkpoint | Reviewer-zero question | Record to keep | Human gate |
+|---|---|---|---|
+| Before protocol lock | Are the question, endpoints, comparators, exclusions, power assumptions, leakage controls, and ethics defensible? | Design-risk register and protocol revision | Lead researcher, domain expert, and statistician as needed |
+| After initial analysis | Which alternative explanations, missing checks, unstable estimates, or figure-to-result discrepancies remain? | Claim-to-evidence table and analysis decisions | Analysis owner and relevant co-authors |
+| First complete draft | Can a cold reader follow the argument, reproduce the methods, and connect every major claim to evidence? | Focused methods, novelty, reporting, and clarity reviews | Authors accept, reject, defer, or investigate each major concern |
+| Before co-author sign-off | Which decision-critical issues remain unresolved, and did a revision introduce a contradiction elsewhere? | Deduplicated issue ledger tied to one paper revision | All accountable authors |
+| Frozen submission candidate | Does the exact manuscript, supplement, code, figures, checklist, and disclosure satisfy the venue requirements? | Final ledger, checklist, source checks, and approval record | Corresponding author and institutional checks where required |
+| After a material revision | Did the change close the original concern without weakening another claim? | Same review rerun against the new revision | Named author confirms closure or reopens the issue |
+
+Review after changes that affect the design, evidence, claims, or release.
+Running a new review after every sentence can create churn and encourage authors
+to overfit the paper to a simulated reviewer.
+
+### Review issue ledger
+
+Each criticism remains unresolved until a person checks the evidence and records
+a disposition.
+
+| Issue ID | Paper location | Concern and evidence | Severity and confidence | Human disposition | Action and owner | Closure evidence |
+|---|---|---|---|---|---|---|
+| RZ-001 | Figure or section | What the reviewer challenged and the exact manuscript evidence | Decision-critical, major, minor, or question; high, medium, or low confidence | Accept, reject, defer, investigate, or unresolved, with a reason | Named change, check, analysis, or experiment | Revised location, result, source, or reason the concern was a false positive |
+
+Agreement between models can help prioritise a concern, but it is not
+independent verification. Models can share training data, prompts, preferences,
+and blind spots.
+
+### Stanford Agentic Reviewer
+
+[Stanford Agentic Reviewer](https://paperreview.ai/) is the current product name
+used by the experimental author-side reviewer from Yixing Jiang and Andrew Ng.
+Its [technical overview](https://paperreview.ai/tech-overview) documents this
+workflow:
+
+1. Convert the uploaded paper PDF to Markdown.
+2. Generate searches for related methods, benchmarks, and papers.
+3. Retrieve and select relevant arXiv records.
+4. Summarise selected full papers when needed.
+5. Generate a structured review grounded in the submitted paper and retrieved
+   related work.
+
+At the checked date, the upload page accepts a PDF of no more than 10 MB and
+analyses only the first 15 pages. The technical overview says the service
+supports English-language papers and is expected to work better in arXiv-rich
+fields such as AI than in fields with weaker arXiv coverage. A long methods
+appendix, supplement, biomedical evidence base, or non-English paper can
+therefore fall outside the reviewed context.
+
+The developers report an ICLR 2025 score experiment in which AI-human Spearman
+correlation was 0.42 and human-human correlation was 0.41 on the held-out set.
+This is a narrow score-agreement result for one conference setting. It does not
+show that the full review is equivalent to an expert review. The same overview
+reports lower acceptance-prediction AUC for the AI score than for one human
+score, 0.75 compared with 0.84, and warns that generated reviews may contain
+errors.
+
+Use the service only for public or explicitly upload-permitted manuscripts.
+Before sending an unpublished draft to any external reviewer, check the
+institution, venue, funder, collaborator, intellectual-property, retention,
+deletion, and model-training rules. Do not upload patient information,
+identifiable images, restricted data, confidential third-party manuscripts,
+credentials, or commercially sensitive material. If the paper cannot leave the
+approved environment, use an institution-approved or local reviewer and keep
+the same human disposition and evidence checks.
+
+### Practical review prompt design
+
+A useful review prompt supplies the exact venue rubric, complete paper,
+appendices, reporting checklist, verified result files, and figure provenance.
+It asks separate questions about methods and statistics, claim-to-evidence
+consistency, novelty, reproducibility, ethics, clinical interpretation, and
+clarity. Every concern should include its exact location, challenged claim,
+evidence, consequence, confidence, smallest resolving check, and closure
+criterion. A second pass should label each criticism supported, ambiguous, or
+probably a false positive and finish by stating what the review may have
+misunderstood. The authors should resolve the resulting ledger before asking
+the model to rewrite anything.
 
 ## Media and source-rights register
 

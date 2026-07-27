@@ -31,6 +31,19 @@ function canonicalHref(html) {
   return tag?.match(/\bhref="([^"]*)"/i)?.[1];
 }
 
+function assertAppearsInOrder(html, labels) {
+  let previousIndex = -1;
+  for (const label of labels) {
+    const index = html.indexOf(label);
+    assert.notEqual(index, -1, `Expected rendered HTML to include "${label}"`);
+    assert.ok(
+      index > previousIndex,
+      `Expected "${label}" to appear after "${labels[labels.indexOf(label) - 1]}"`,
+    );
+    previousIndex = index;
+  }
+}
+
 async function render(path = "/", headers = {}) {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-${path}`);
@@ -52,7 +65,7 @@ async function render(path = "/", headers = {}) {
   );
 }
 
-test("server-renders the platform overview and all three routes", async () => {
+test("server-renders the platform overview and all four routes", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
@@ -66,6 +79,12 @@ test("server-renders the platform overview and all three routes", async () => {
   assert.match(html, /href="\/agentic-research"/);
   assert.match(html, /href="\/interactive-paper"/);
   assert.match(html, /href="\/annotation-tools"/);
+  assert.match(html, /href="\/ai-healthcare-conference"/);
+  assert.match(
+    html,
+    /href="https:\/\/github\.com\/omariosc\/research-with-ai"/,
+  );
+  assert.doesNotMatch(html, /href="https:\/\/github\.com\/omariosc"/);
   assert.match(html, /href="https:\/\/researchwithai\.omarchoudhry\.co\.uk\/worked-examples\/medmnist-breast"/);
   assert.match(html, /Local, not encrypted/);
   assert.match(html, /aria-label="Switch to dark mode"/);
@@ -84,18 +103,21 @@ test("renders the ten-stage agentic research workshop", async () => {
   assert.match(html, /Set the research contract/);
   assert.match(html, /Scale safely to HPC/);
   assert.match(html, /Verify the result independently/);
+  assert.match(html, /Draft, review, and revise traceably/);
   assert.match(html, /Package, disclose, and release/);
   assert.match(html, /research_contract\.md/);
   assert.match(html, /Human checkpoint/);
   assert.match(html, /Tutorial release: v1\.3\.0/);
-  assert.match(html, /Your research workspace/);
+  assert.match(html, /Active project/);
   assert.match(html, /My first project/);
+  assert.match(html, /How this tutorial works/);
+  assert.match(html, /One project, one track, one stage at a time/);
   assert.match(html, /What makes the workflow agentic\?/);
   assert.match(html, /Google Co-Scientist/);
   assert.match(html, /Medical AI Scientist/);
   assert.match(html, /arXiv:2606\.15497/);
   assert.match(html, /Original reading-note appendix/);
-  assert.match(html, /Know the route and the standard/);
+  assert.match(html, /Start with today/);
   assert.match(
     html,
     /One table row, traced from paper to released predictions/,
@@ -105,28 +127,62 @@ test("renders the ten-stage agentic research workshop", async () => {
   assert.match(html, /Choose what you would do next/);
   assert.match(html, /Plain-language glossary/);
   assert.match(html, /agent_retrieved: artefact or locator/);
-  assert.match(html, /Record checkpoint review/);
-  assert.match(html, /Follow the whole lifecycle or focus first/);
+  assert.match(html, /4\. Record human review/);
+  assert.match(html, /Follow the whole lifecycle or focus on what you need/);
   assert.match(html, /Research orientation/);
-  assert.match(html, /Suggested starting route/);
+  assert.match(html, /Suggested workshop track/);
   assert.match(html, /name="workshop-route"/);
-  assert.match(html, /Beginning-to-end workflow/);
-  assert.match(html, /Stage field guide/);
-  assert.match(html, /Compare approaches, terms and shortcuts/);
-  assert.match(html, /Terms in this stage/);
+  assert.match(html, /Beginning-to-end lifecycle phases/);
+  assert.match(html, /Optional stage guide/);
+  assert.match(html, /Compare approaches, terms and researcher tips/);
+  assert.match(html, /Optional terms for this stage/);
   assert.match(html, /Approval gate/);
-  assert.match(html, /Researcher tricks/);
-  assert.match(html, /Alternatives and tradeoffs/);
+  assert.match(html, /Optional researcher tips/);
+  assert.match(html, /Choose an approach for this stage/);
   assert.match(html, /Hosted planning assistant/);
   assert.match(html, /Data boundary/);
-  assert.match(html, /No path selected/);
-  assert.match(html, /Try it now/);
+  assert.match(html, /No approach selected/);
+  assert.match(html, /Optional practice/);
   assert.match(html, /small checks/);
   assert.match(html, /Guidance checked/);
-  assert.match(html, /2026-07-26/);
-  assert.match(html, /aria-label="What does Keep mean\?"/);
+  assert.match(html, /2026-07-27/);
+  assert.match(html, /AI review throughout the paper lifecycle/);
+  assert.match(html, /Find weak decisions while they can still be changed/);
+  assert.match(html, /Stanford Agentic Reviewer/);
+  assert.match(html, /first 15 pages of an English PDF up to 10 MB/);
+  assert.match(html, /A powerful permitted model with high reasoning effort/);
+  assert.match(html, /Permission comes before upload/);
+  assert.match(html, /Durable review record/);
+  assert.match(html, /Prompt for a critical paper review/);
+  assert.match(html, /Use only for upload-permitted English manuscripts/);
+  assert.match(
+    html,
+    /Never upload an unpublished or confidential draft unless the service, venue, institution, and collaborators permit it/,
+  );
+  assert.match(html, /Review issue ledger/);
+  assert.match(html, /critical but fair reviewer/);
+  assert.match(html, /What this review may have misunderstood/);
+  assert.match(html, /Example prompt/);
+  assert.match(html, />Copy</);
+  assert.match(html, /aria-label="What does output to save mean\?"/);
   assert.match(html, /OpenAlex developer documentation/);
   assert.doesNotMatch(html, /role="tooltip"/);
+  assertAppearsInOrder(html, [
+    "Read one paper against its evidence",
+    "Draft, review, and revise traceably",
+    "Package, disclose, and release",
+  ]);
+  assertAppearsInOrder(html, [
+    "How this tutorial works",
+    "Active project",
+    "Choose a workshop track",
+    "Work one stage at a time",
+    "Write the contract before the first prompt",
+    "Optional, after the core stages",
+    "One table row, traced from paper to released predictions",
+    "What makes the workflow agentic?",
+    "Choose what you would do next",
+  ]);
   assert.ok(
     html.indexOf("Prespecify the reproduction or new study") <
       html.indexOf("Scale safely to HPC"),
@@ -165,14 +221,35 @@ test("renders the website brief and annotation interactions", async () => {
   assert.match(paper, /model-container-service\.zip/);
   assert.match(paper, /Port forwarding is not the deployment plan/);
   assert.match(annotation, /Developing Custom Annotation Tools Using AI/);
-  assert.match(annotation, /A tiny annotation loop/);
+  assert.match(annotation, /Two tools, two different annotation jobs/);
+  assert.match(annotation, /aria-label="Choose annotation tool"/);
+  assert.match(annotation, /id="frame-annotator-tab"/);
+  assert.match(annotation, /aria-controls="frame-annotator-panel"/);
+  assert.match(annotation, /id="surgical-annotator-tab"/);
+  assert.match(annotation, /aria-controls="surgical-annotator-panel"/);
+  assert.match(annotation, /Classify frame ranges on a timeline/);
+  assert.match(annotation, /Draw masks, lines, keypoints, and phases/);
+  assert.match(
+    annotation,
+    /These are exactly the first three permitted repository samples in canonical order/,
+  );
+  assert.match(annotation, /frame_0000\.png/);
+  assert.match(annotation, /frame_0001\.png/);
+  assert.match(annotation, /frame_0002\.png/);
+  assert.match(annotation, /Reset starter/);
+  assert.match(annotation, /Local draft only/);
+  assert.match(annotation, /This is the real frame-annotator shape/);
+  assert.match(
+    annotation,
+    /href="\/citations\/annotation-showcase-media-2026-07-27\.md"/,
+  );
   assert.match(annotation, /From a fast beta to the LASK workflow/);
   assert.match(annotation, /Open LASK v1\.0 on Zenodo/);
   assert.match(annotation, /The Hamlyn question/);
   assert.match(annotation, /Author account/);
-  assert.match(annotation, /annotation-synthetic-frame\.svg/);
+  assert.doesNotMatch(annotation, /annotation-synthetic-frame\.svg/);
+  assert.doesNotMatch(annotation, /A tiny annotation loop/);
   assert.match(annotation, /annotation-spec\.yaml/);
-  assert.match(annotation, /surgical-annotator workflow/);
   assert.match(annotation, /tutorial_version: &quot;1\.3\.0&quot;/);
   assert.match(annotation, /schema_version: &quot;1\.3\.0&quot;/);
   assert.match(annotation, /origin: &quot;manual&quot;/);
@@ -180,9 +257,6 @@ test("renders the website brief and annotation interactions", async () => {
     annotation,
     /href="\/schemas\/annotation-spec-1\.3\.0\.schema\.json"/,
   );
-  assert.match(annotation, /frame_dimensions_px/);
-  assert.match(annotation, /480/);
-  assert.match(annotation, /percent_of_annotation_frame/);
   assert.match(annotation, /YOLO line exactly/);
   assert.match(annotation, /source_hash/);
   assert.match(annotation, /Local offline workflow/);
@@ -195,6 +269,28 @@ test("renders the website brief and annotation interactions", async () => {
     paper,
     /Connected to the paper, code, data, and reproduced result/,
   );
+  assertAppearsInOrder(paper, [
+    "How this tutorial works",
+    "Active project",
+    "Choose a workshop track",
+    "Work one stage at a time",
+    "Give the agent a source map, not just a PDF",
+    "Optional, after the core stages",
+    "Publishing the same evidence without changing its claim",
+    "Turn a model into a portable service",
+    "Choose what you would do next",
+  ]);
+  assertAppearsInOrder(annotation, [
+    "How this tutorial works",
+    "Active project",
+    "Choose a workshop track",
+    "Work one stage at a time",
+    "Two tools, two different annotation jobs",
+    "Turn an annotation protocol into software requirements",
+    "Optional, after the core stages",
+    "From a fast beta to the LASK workflow",
+    "Choose what you would do next",
+  ]);
 });
 
 test("renders the MedMNIST evidence page and its three claim states", async () => {
@@ -217,6 +313,82 @@ test("renders the MedMNIST evidence page and its three claim states", async () =
   assert.equal(canonicalHref(html), "https://researchwithai.omarchoudhry.co.uk/worked-examples/medmnist-breast");
 });
 
+test("renders the ten-stage AI in healthcare conference workshop", async () => {
+  const response = await render("/ai-healthcare-conference");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+
+  assert.match(
+    html,
+    /<title>Run an AI in Healthcare Conference \| Research with AI<\/title>/i,
+  );
+  assert.match(
+    html,
+    /A student-led conference built from local relationships/,
+  );
+  assert.match(html, /conferencewithai\.omarchoudhry\.co\.uk/);
+  assert.match(html, /Active project/);
+  assert.match(html, /How this tutorial works/);
+  assert.match(html, /One project, one track, one stage at a time/);
+  assert.match(html, /name="workshop-route"/);
+  assert.match(html, /Tutorial status: in development, not part of v1\.3\.0/);
+  assert.match(html, /Conference in development/);
+  assert.match(html, /id="conference-committee-title"/);
+  assert.match(html, /Conference co-chairs/);
+  assert.match(html, /Financial officer/);
+  assert.match(html, /AI Week chair and webmaster/);
+  assert.match(html, /Speaker coordinators/);
+  assert.match(html, /id="conference-programme-comparison-title"/);
+  assert.match(html, /Advertised web agenda/);
+  assert.match(html, /Workshop 2: TBA/);
+  assert.match(html, /Did not run/);
+  assert.match(html, /organiser joined the final panel/i);
+  assert.match(html, /Swipe sideways to see the decision record/);
+  assert.match(html, /id="conference-denominator-ledger-title"/);
+  assert.match(html, /135 rows/);
+  assert.match(html, /67 marked HERE/);
+  assert.match(html, /about 74/);
+  assert.match(html, /30 responses/);
+  assert.match(
+    html,
+    /aria-label="Of 178 RSVP response rows, 78 were accepted, 6 declined and 94 had no response\."/,
+  );
+  assert.match(html, /No feedback response rate is reported/);
+  assert.match(html, /id="conference-feedback-chart-title"/);
+  assert.match(
+    html,
+    /Show the whole scale and the spread, not only a flattering mean/,
+  );
+  assert.match(
+    html,
+    /aria-label="Overall satisfaction: 4\.63 out of 5 from 30 responses"/,
+  );
+  assert.match(
+    html,
+    /aria-label="Value of the content: 4\.67 out of 5 from 30 responses"/,
+  );
+  assert.match(
+    html,
+    /aria-label="Organisation: 4\.73 out of 5 from 30 responses"/,
+  );
+  assert.match(html, /21 of 30 respondents as students or trainees/);
+  assert.match(
+    html,
+    /href="\/citations\/ai-healthcare-conference-operations-and-evaluation-2026-07-26\.md"/,
+  );
+  assert.doesNotMatch(html, /Tutorial release: v1\.3\.0/);
+  assertAppearsInOrder(html, [
+    "How this tutorial works",
+    "Active project",
+    "Choose a workshop track",
+    "Work one stage at a time",
+    "Turn registrations into an honest operating range",
+    "Optional, after the core stages",
+    "A student-led conference built from local relationships",
+    "Choose what you would do next",
+  ]);
+});
+
 test("renders the version history and canonical workshop links", async () => {
   const response = await render("/versions");
   assert.equal(response.status, 200);
@@ -232,6 +404,10 @@ test("renders the version history and canonical workshop links", async () => {
   assert.match(html, /agenticresearch\.omarchoudhry\.co\.uk/);
   assert.match(html, /interactivepaper\.omarchoudhry\.co\.uk/);
   assert.match(html, /annotate\.omarchoudhry\.co\.uk/);
+  assert.match(html, /conferencewithai\.omarchoudhry\.co\.uk/);
+  assert.match(html, /Workshop 04/);
+  assert.match(html, /In development/);
+  assert.match(html, /not part of\s+the reviewed v1\.3\.0 source snapshot/i);
   assert.match(html, /research-with-ai-v1\.3\.0-source\.zip/);
   assert.match(html, /32b46f3/);
   assert.match(html, /research-with-ai-v1\.2\.0-source\.zip/);
@@ -355,7 +531,7 @@ test("server-renders complete workshop metadata at every custom-domain root", as
       host: "agenticresearch.omarchoudhry.co.uk",
       title: "Agentic AI in Research",
       description:
-        "Take one research question from field mapping to an independently checked, reproducible workflow. Use agents for the work they are good at, and keep scientific decisions with the researcher.",
+        "Take one research question from field mapping to an independently checked, reproducible workflow. Use agents to search, build, test, and critique the work at meaningful decision points, while keeping scientific decisions with the researcher.",
       marker: "Write the research contract",
     },
     {
@@ -371,6 +547,13 @@ test("server-renders complete workshop metadata at every custom-domain root", as
       description:
         "Turn an expert annotation protocol into a tested local tool and a traceable dataset. The first-hand case audits frame-annotator for clip and timeline classification and surgical-annotator for masks, keypoints, and multi-task geometry.",
       marker: "Turn an annotation protocol into software requirements",
+    },
+    {
+      host: "conferencewithai.omarchoudhry.co.uk",
+      title: "Run an AI in Healthcare Conference",
+      description:
+        "Turn a local need into a safe, useful, and welcoming research event. Follow a first-hand Leeds AI Week case from purpose and partnerships through delivery, honest evaluation, and community follow-up.",
+      marker: "A student-led conference built from local relationships",
     },
   ];
 
@@ -499,7 +682,7 @@ test("keeps the legacy v1.2.0 annotation schema pinned", async () => {
   assert.equal(schema.properties.schema_version.const, "1.2.0");
 });
 
-test("pins the original synthetic asset used by the annotation demo", async () => {
+test("pins the synthetic asset used only by the separate annotation round-trip fixture", async () => {
   const asset = await readFile(
     new URL(
       "../public/worked-examples/annotation-synthetic-frame.svg",

@@ -14,6 +14,7 @@ body:
         - Agentic AI in Research
         - Building a Website for Your Research Using AI
         - Developing Custom Annotation Tools Using AI
+        - Run an AI in Healthcare Conference
         - Worked example or appendix
     validations:
       required: true

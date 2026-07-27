@@ -2,9 +2,11 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { agenticResearch } from "../lib/content/agentic.ts";
 import { annotationTools } from "../lib/content/annotation.ts";
+import { aiHealthcareConference } from "../lib/content/conference.ts";
 import { interactivePaper } from "../lib/content/paper.ts";
 import { agenticGuidance } from "../lib/content/guidance/agentic.ts";
 import { annotationGuidance } from "../lib/content/guidance/annotation.ts";
+import { conferenceGuidance } from "../lib/content/guidance/conference.ts";
 import { paperGuidance } from "../lib/content/guidance/paper.ts";
 import { routeNeighbours } from "../lib/workshop-navigation.ts";
 
@@ -12,6 +14,7 @@ const workshops = [
   { workshop: agenticResearch, guidance: agenticGuidance },
   { workshop: interactivePaper, guidance: paperGuidance },
   { workshop: annotationTools, guidance: annotationGuidance },
+  { workshop: aiHealthcareConference, guidance: conferenceGuidance },
 ];
 
 const urlSafeId = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -302,7 +305,15 @@ test("selected-route navigation follows the chosen sequence", () => {
     "paper",
   );
   assert.equal(fromPaper.previous?.id, "evidence");
-  assert.equal(fromPaper.next?.id, "release");
+  assert.equal(fromPaper.next?.id, "communicate");
+
+  const fromCommunicate = routeNeighbours(
+    agenticResearch,
+    orientation,
+    "communicate",
+  );
+  assert.equal(fromCommunicate.previous?.id, "paper");
+  assert.equal(fromCommunicate.next?.id, "release");
 
   const offRoute = routeNeighbours(
     agenticResearch,
@@ -311,6 +322,51 @@ test("selected-route navigation follows the chosen sequence", () => {
   );
   assert.equal(offRoute.previous?.id, "paper");
   assert.equal(offRoute.next?.id, "baseline");
+});
+
+test("agentic research keeps paper review recurring and human-owned", () => {
+  const reviewStage = agenticResearch.steps.find(
+    (stage) => stage.id === "communicate",
+  );
+  const reviewGuide = agenticGuidance.steps.communicate;
+
+  assert.ok(reviewStage);
+  assert.ok(reviewGuide);
+  assert.match(
+    reviewStage.summary,
+    /design, initial results, first complete draft, co-author review, pre-submission, and material revision/,
+  );
+  assert.match(
+    reviewStage.action,
+    /accepted, rejected, deferred, or left unresolved/,
+  );
+  assert.match(reviewStage.prompt, /high reasoning-effort mode/);
+  assert.match(reviewStage.prompt, /What this review may have misunderstood/);
+  assert.match(reviewStage.checkpoint, /human-owned disposition/);
+  assert.match(reviewStage.watchFor, /Never upload an unpublished or confidential draft/);
+  assert.match(reviewGuide.why, /Repeated, focused review/);
+  assert.ok(reviewGuide.terms.some((term) => term.label === "Issue ledger"));
+  assert.ok(
+    reviewGuide.tryNow.items.some((item) =>
+      /Record the human decision and rerun after revision/.test(item.label),
+    ),
+  );
+
+  for (const route of agenticGuidance.routes) {
+    const paperIndex = route.stepIds.indexOf("paper");
+    const reviewIndex = route.stepIds.indexOf("communicate");
+    const releaseIndex = route.stepIds.indexOf("release");
+    if (paperIndex >= 0) {
+      assert.ok(
+        reviewIndex > paperIndex,
+        `${route.id} must review after reading the paper`,
+      );
+    }
+    assert.ok(
+      reviewIndex >= 0 && releaseIndex > reviewIndex,
+      `${route.id} must review before release`,
+    );
+  }
 });
 
 test("annotation routes retain review and release testing controls", () => {

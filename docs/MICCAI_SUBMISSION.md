@@ -5,10 +5,11 @@ Official call: <https://miccai-sb.github.io/challenge>
 Check the official call and OpenReview entry again on the day of submission in
 case dates or fields change.
 
-## Three independent submissions
+## Three released submissions and one in development
 
 Prepare one package for each canonical tutorial. Do not rely on the shared
-homepage to supply required context.
+homepage to supply required context. The first three tutorials belong to the
+reviewed v1.3.0 release:
 
 1. **Agentic AI in Research:** a bounded, evidence-led route from question to
    checked computational release.
@@ -17,8 +18,21 @@ homepage to supply required context.
 3. **Developing Custom Annotation Tools Using AI:** a protocol-first route to a
    tested local tool and provenance-aware dataset.
 
+The fourth tutorial has a canonical route and hostname but is not part of
+v1.3.0:
+
+4. **Run an AI in Healthcare Conference:** a community-led route from purpose,
+   relationships, and programme design to safe delivery, denominator-aware
+   evaluation, and follow-up. Route: `/ai-healthcare-conference`. Canonical
+   hostname: `conferencewithai.omarchoudhry.co.uk`.
+
+Do not submit or cite the fourth tutorial as v1.3.0. Give it a version only
+after its content, citations, media record, tests, pilot, release evidence, and
+deployed canonical host have passed review.
+
 **Keywords:** agentic AI, research workflow, reproducibility, research
-communication, annotation tools, human oversight
+communication, annotation tools, community engagement, healthcare conference,
+human oversight
 
 ## Package for every submission
 
@@ -76,6 +90,44 @@ communication, annotation tools, human oversight
       public commit history, and LASK dataset record
 - [ ] Confirm no paper figure or repository screenshot is presented as an
       original teaching graphic
+
+## Additional conference tutorial gates
+
+- [ ] Keep the organiser's first-hand account separate from public listings,
+      public posts, feedback records, and independent evaluation
+- [ ] Verify the advertised and delivered programmes and explain every material
+      difference without presenting adaptation as failure
+- [ ] Show committee roles, primary responsibilities, backups, and the final
+      decision route without inferring membership from the group photograph
+- [ ] Reconcile unique registrations, accepted places, cancellations,
+      check-ins, walk-ins, organisers, speakers, and feedback respondents before
+      publishing attendance or response rates
+- [ ] Present the registration, RSVP, on-day, first-hand estimate, and feedback
+      records as a denominator ledger until a documented rule connects them
+- [ ] Keep the 30-response feedback denominator beside every rating and state
+      that voluntary respondents may not represent every attendee
+- [ ] Plot feedback means on the complete 0 to 5 scale and retain the observed
+      session-rating distributions rather than showing only headline means
+- [ ] Verify the approximate essay and poster entry totals against judging or
+      submission records before removing the word "about"
+- [ ] Check the venue, safety, accessibility, privacy, food, AV, photography,
+      and live escalation sections with the accountable people
+- [ ] Confirm that no attendee records, dietary details, accessibility
+      disclosures, private comments, or contact information enter a public
+      repository or unapproved AI service
+- [ ] Link the first-hand, operations and evaluation, and media records from the
+      tutorial and repository documentation
+- [ ] Verify each retained photograph against one of the two source posts,
+      remove exact duplicates, and record an authored alt text and current hash
+- [ ] State that Mohammad Tasfiq Jawaad's permission supports use in this
+      tutorial but does not create a general reuse licence
+- [ ] Keep rights-unresolved organiser material and any named certificate
+      example outside the public repository and site until their individual
+      rightsholder, subject, badge, QR, and personal-data checks are complete
+- [ ] Do not infer attendance, demographics, consent, or impact from the
+      photographs or LinkedIn engagement
+- [ ] Complete a cold-read learner pilot and a separate operational review with
+      someone who has delivered a comparable event
 
 ## Suggested wrapper structure
 

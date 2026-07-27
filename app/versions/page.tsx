@@ -41,13 +41,13 @@ export default function VersionsPage() {
         </header>
 
         <section className="versions-intro">
-          <h2>Three submissions, one shared method</h2>
+          <h2>Four tutorials, one shared method</h2>
           <p>
             Each workshop has its own canonical address and can be cited,
-            reviewed, and submitted independently. The shared release number
-            identifies the current content release. Canonical pages can change
-            in later releases, so keep the dated submission package when an
-            exact snapshot is required.
+            reviewed, and submitted independently. Three workshops are in the
+            reviewed v1.3.0 release. The conference tutorial is in active
+            development and will receive a version only after its content,
+            citations, and release evidence are complete.
           </p>
         </section>
 
@@ -65,7 +65,11 @@ export default function VersionsPage() {
                   <code>{release.canonicalHostname}</code>
                 </div>
                 <div>
-                  <small>{TUTORIAL_VERSION_LABEL}</small>
+                  <small>
+                    {release.status === "released"
+                      ? `v${release.version}`
+                      : "In development"}
+                  </small>
                   <a href={release.canonicalUrl}>
                     Open tutorial
                     <ArrowRight size={17} />
@@ -78,7 +82,25 @@ export default function VersionsPage() {
 
         <section className="release-notes">
           <div>
-            <p>Current release</p>
+            <p>In development</p>
+            <h2>Workshop 04</h2>
+            <time dateTime="2026-07-26">Started 2026-07-26</time>
+          </div>
+          <div>
+            <h3>Run an AI in Healthcare Conference</h3>
+            <p>
+              A fourth case-study-led tutorial is being developed from the AI
+              in Healthcare Conference at Leeds AI Week 2026. It is not part of
+              the reviewed v1.3.0 source snapshot and will remain clearly
+              labelled until its evidence, citations, permissions, and
+              implementation have been reviewed.
+            </p>
+          </div>
+        </section>
+
+        <section className="release-notes">
+          <div>
+            <p>Current released version</p>
             <h2>{TUTORIAL_VERSION_LABEL}</h2>
             <time dateTime={TUTORIAL_RELEASE_DATE}>
               Released {TUTORIAL_RELEASE_DATE}

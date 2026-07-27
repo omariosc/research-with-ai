@@ -12,18 +12,18 @@ export const annotationTools: Workshop = {
     "Finish with a versioned annotation specification, an offline application plan, a review workflow, provenance-aware exports, and an evaluation protocol.",
   duration: "10 stages · about 80 guided minutes",
   audience:
-    "Masters and PhD researchers who need a study-specific annotation workflow and can review generated code with a domain expert or research software colleague.",
+    "Masters and PhD researchers building study-specific annotation workflows with a domain expert or research software reviewer.",
   prerequisites: [
-    "A public, synthetic, or approved de-identified sample and a named data owner",
-    "A domain expert who can define labels, boundaries, uncertainty, and clinically meaningful errors",
-    "Basic familiarity with Git, Python environments, files, and command-line tests",
-    "Permission to run the chosen AI tools in the environment where the work will happen",
+    "One public, synthetic, or approved de-identified sample with a named data owner",
+    "A domain expert to define labels, boundaries, uncertainty, and meaningful errors",
+    "Basic Git, Python environment, file, and command-line testing knowledge",
+    "Permission to use the chosen AI tools in the working environment",
   ],
   outcomes: [
-    "Audit an existing annotation repository without confusing passing tests with study validity",
-    "Translate an expert protocol into stable identifiers, explicit geometry, uncertainty states, and schema rules",
-    "Specify and test a complete manual workflow that remains usable locally and offline",
-    "Introduce model suggestions only after manual calibration, with accept, edit, reject, and provenance records",
+    "Audit an annotation repository without mistaking passing tests for study validity",
+    "Translate expert rules into stable IDs, explicit geometry, uncertainty states, and schemas",
+    "Test a complete manual workflow that remains usable locally and offline",
+    "Add model suggestions only after manual calibration, recording accept, edit, reject, and provenance",
     "Design review and evaluation that respect clustered frames, repeated annotators, and a declared manual baseline",
   ],
   projectTime:
@@ -51,7 +51,7 @@ export const annotationTools: Workshop = {
       "Freeze a manual baseline and calibration set before measuring or enabling model assistance.",
     ],
     boundary:
-      "This is a code audit of a teaching prototype plus one synthetic serialization check. The review CSV preserves the fixture, but the YOLO example preserves only one box subset. The repository supports descriptions of features and public commit dates, but it does not independently establish where the first prototype began, how quickly it was used, or whether it produced a particular dataset. Those details belong in a clearly labelled first-hand account. Neither result provides evidence of annotation accuracy, usability, patient safety, or deployment readiness.",
+      "This audit covers teaching prototypes and one synthetic serialization check. The review CSV preserves that fixture, while YOLO preserves only its box. Public commits establish code history, not dates, speed, dataset use, or annotation quality. The labelled first-hand account is separate. Nothing here establishes usability, patient safety, or deployment readiness.",
     sources: [
       {
         title: "frame-annotator repository at the audited commit",

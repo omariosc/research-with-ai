@@ -2,6 +2,7 @@ const routes = [
   "/agentic-research",
   "/interactive-paper",
   "/annotation-tools",
+  "/ai-healthcare-conference",
 ];
 const submissionLimit = 4000;
 
