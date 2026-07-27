@@ -19,6 +19,7 @@ const hostRoutes: Record<string, string> = {
   "agenticresearch.omarchoudhry.co.uk": "/agentic-research",
   "interactivepaper.omarchoudhry.co.uk": "/interactive-paper",
   "annotate.omarchoudhry.co.uk": "/annotation-tools",
+  "conferencewithai.omarchoudhry.co.uk": "/ai-healthcare-conference",
 };
 
 export function HomeClient({ workshops }: { workshops: Workshop[] }) {
@@ -27,6 +28,7 @@ export function HomeClient({ workshops }: { workshops: Workshop[] }) {
     "agentic-research": 0,
     "interactive-paper": 0,
     "annotation-tools": 0,
+    "ai-healthcare-conference": 0,
   });
 
   const refresh = useCallback(() => {
@@ -75,8 +77,9 @@ export function HomeClient({ workshops }: { workshops: Workshop[] }) {
               Research with AI, without giving up scientific control.
             </h1>
             <p>
-              Three practical workshops for research workflows, project
-              websites, and custom annotation tools.
+              Four practical workshops for research workflows, project
+              websites, custom annotation tools, and community-led AI in
+              healthcare conferences.
             </p>
             <a className="text-link" href="#workshops">
               Choose a workshop
@@ -95,7 +98,7 @@ export function HomeClient({ workshops }: { workshops: Workshop[] }) {
         <section className="home-workshops" id="workshops">
           <div className="section-heading">
             <p>Start where the work is</p>
-            <h2>Three complete routes</h2>
+            <h2>Four complete routes</h2>
             <span>
               Each workshop saves progress locally on this web address and
               ends with an editable plan you can export.
@@ -249,7 +252,7 @@ export function SiteFooter() {
       <div>
         <a href={`${TUTORIAL_HOMEPAGE}/versions`}>Versions</a>
         <a href="https://omarchoudhry.co.uk">Portfolio</a>
-        <a href="https://github.com/omariosc">GitHub</a>
+        <a href="https://github.com/omariosc/research-with-ai">GitHub</a>
         <a href="https://miccai-sb.github.io/challenge">MICCAI MEC</a>
       </div>
     </footer>

@@ -396,6 +396,7 @@ export function clearBuilderDraft(
     "agentic-research": "agentic",
     "interactive-paper": "paper",
     "annotation-tools": "annotation",
+    "ai-healthcare-conference": "conference",
   };
   try {
     window.localStorage.removeItem(

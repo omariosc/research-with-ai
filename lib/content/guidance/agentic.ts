@@ -69,6 +69,18 @@ const official: Record<string, Source> = {
     title: "Authoring manuscripts with Quarto",
     url: "https://quarto.org/docs/manuscripts/authoring/jupyterlab.html",
   },
+  paperReviewTech: {
+    title: "Stanford Agentic Reviewer technical overview",
+    url: "https://paperreview.ai/tech-overview",
+  },
+  paperFeedback: {
+    title: "Can LLMs provide useful feedback on research papers?",
+    url: "https://doi.org/10.1056/AIoa2400196",
+  },
+  paperReviewBlindSpots: {
+    title: "Mind the Blind Spots",
+    url: "https://aclanthology.org/2025.emnlp-main.1805/",
+  },
   quartoWebsites: {
     title: "Creating a website with Quarto",
     url: "https://quarto.org/docs/websites/",
@@ -92,7 +104,7 @@ const official: Record<string, Source> = {
 };
 
 export const agenticGuidance: WorkshopGuidance = {
-  lastVerified: "2026-07-26",
+  lastVerified: "2026-07-27",
   phases: [
     {
       id: "bound",
@@ -121,7 +133,8 @@ export const agenticGuidance: WorkshopGuidance = {
     {
       id: "publish",
       title: "Communicate and release",
-      summary: "Connect every public claim to evidence and an archived release.",
+      summary:
+        "Review the paper before decisions harden, resolve concerns with evidence, and archive only the approved release.",
       stepIds: ["communicate", "release"],
     },
   ],
@@ -129,9 +142,10 @@ export const agenticGuidance: WorkshopGuidance = {
     {
       id: "orientation",
       title: "Research orientation",
-      description: "Learn the control points without running a full experiment.",
+      description:
+        "Learn the control points, including reviewer zero, without running a full experiment.",
       bestFor: "A first lab session or a new project discussion.",
-      stepIds: ["contract", "evidence", "paper", "release"],
+      stepIds: ["contract", "evidence", "paper", "communicate", "release"],
     },
     {
       id: "reproduction",
@@ -180,6 +194,7 @@ export const agenticGuidance: WorkshopGuidance = {
         "hypothesis",
         "hpc",
         "validation",
+        "communicate",
         "release",
       ],
     },
@@ -201,11 +216,13 @@ export const agenticGuidance: WorkshopGuidance = {
       tips: [
         {
           title: "Name the decision owner",
-          body: "Record who may approve data access, spending, submission, and release.",
+          body:
+            "Record who may approve data access, spending, design changes, reviewer suggestions, submission, and release.",
         },
         {
-          title: "Enforce the prose",
-          body: "Match contract limits with real permissions, quotas, and network rules.",
+          title: "Schedule review before it is expensive",
+          body:
+            "Plan critique before design lock, after initial results, on the first complete draft, before submission, and after material revisions.",
         },
       ],
       paths: [
@@ -600,8 +617,9 @@ export const agenticGuidance: WorkshopGuidance = {
       ],
       tips: [
         {
-          title: "Choose before held-out results",
-          body: "Timestamp the metric, comparison, exclusions, and falsifier first.",
+          title: "Review before held-out results",
+          body:
+            "Challenge the endpoint, comparator, leakage, exclusions, and falsifier, then timestamp the human-approved rule.",
         },
         {
           title: "Keep rejected options",
@@ -765,7 +783,8 @@ export const agenticGuidance: WorkshopGuidance = {
         },
         {
           title: "Separate uncertainty sources",
-          body: "Do not mix variation across seeds with variation across patients.",
+          body:
+            "Do not mix variation across seeds with variation across patients, and ask what alternative explanation still fits the result.",
         },
       ],
       paths: [
@@ -827,87 +846,110 @@ export const agenticGuidance: WorkshopGuidance = {
     },
     communicate: {
       why:
-        "Traceable figures and prose let readers follow each number back to data, code, exclusions, and uncertainty.",
+        "A rapid reviewer zero can expose a weak assumption while it is still cheap to correct. Repeated, focused review is more useful than one vague pre-submission prompt, but every concern still needs human evidence and a recorded decision.",
       terms: [
         {
-          label: "Provenance",
-          definition: "The recorded origin and processing history of an output.",
+          label: "Reviewer zero",
+          definition:
+            "An author-side critique performed before formal peer review to find questions, gaps, and inconsistencies.",
         },
         {
-          label: "Denominator",
-          definition: "The cases or observations underlying a reported quantity.",
+          label: "Issue ledger",
+          definition:
+            "A table recording each concern, its evidence, severity, human disposition, action, and closure status.",
         },
       ],
       tips: [
         {
-          title: "Plot from machine-readable results",
-          body: "Keep raw values, figure code, command, and output checksum together.",
+          title: "Review before decisions harden",
+          body:
+            "Critique the question and protocol, initial results, complete draft, submission candidate, and every material revision.",
         },
         {
-          title: "Link every number",
-          body: "Map numerical sentences to a file, table, or verified calculation.",
+          title: "Use focused passes",
+          body:
+            "Separate methods, statistics, novelty, reproducibility, reporting, clinical interpretation, and clarity instead of asking only for a score.",
         },
       ],
       paths: [
         {
           id: "communicate-hosted",
           mode: "hosted",
-          title: "Hosted scientific publishing",
-          bestFor: "Public results and rapid collaborative review.",
+          title: "Hosted high-reasoning reviewer",
+          bestFor: "Public or explicitly upload-permitted English manuscripts.",
           approach:
-            "Upload verified tables and source, then render a reviewable document.",
-          tradeoff: "Easy sharing, but source and drafts leave the device.",
-          dataBoundary: "Public manuscript source and approved result tables.",
+            "Use Stanford Agentic Reviewer for an arXiv-rich field, or give a capable approved model the full paper, supplement, venue rubric, and focused review prompt.",
+          tradeoff:
+            "Fast and repeatable, but the draft leaves the device and the reviewer can contain errors, miss specialist context, or underweight novelty.",
+          dataBoundary:
+            "Only a manuscript and evidence bundle that every owner permits to leave the approved environment.",
           network: "Internet required.",
-          cost: "Hosting, storage, or collaboration plan.",
-          hardware: "Browser plus hosted build runner.",
-          evidence: "Source revision, build log, rendered file, and output checksum.",
-          sources: [official.quartoManuscripts],
+          cost: "Free experimental tool or model subscription and usage.",
+          hardware: "Browser; no local accelerator required.",
+          evidence:
+            "Paper revision, tool and model version, rubric, prompt, exported review, verified sources, and resolved issue ledger.",
+          sources: [official.paperReviewTech, official.paperFeedback],
         },
         {
           id: "communicate-managed",
           mode: "managed",
-          title: "Institutional build pipeline",
-          bestFor: "Collaborative drafts containing approved sensitive context.",
+          title: "Institution-approved reviewer zero",
+          bestFor:
+            "Unpublished or sensitive drafts allowed inside an institutional AI environment.",
           approach:
-            "Render Quarto or LaTeX through managed version control and review.",
-          tradeoff: "Controlled collaboration, with pipeline maintenance.",
-          dataBoundary: "Source and permitted outputs stay institutional.",
-          network: "Internal repository and build services.",
-          cost: "Institutional storage and runner time.",
-          hardware: "Managed CPU runner.",
-          evidence: "Commit, environment, build log, figure inputs, and checksum.",
-          sources: [official.quartoManuscripts],
+            "Run separate methods, statistics, novelty, reporting, and clarity passes, then route the deduplicated ledger to co-authors and domain reviewers.",
+          tradeoff:
+            "Better governance and full-document access, with service, reviewer, and coordination overhead.",
+          dataBoundary:
+            "Manuscript, supplements, permitted results, and review history remain in the approved tenant.",
+          network: "Institutional services only.",
+          cost: "Managed model, storage, co-author, and specialist review time.",
+          hardware: "Approved endpoint or institutional inference server.",
+          evidence:
+            "Tenant record, model version, source revision, review passes, co-author dispositions, and closure check.",
+          sources: [official.paperFeedback, official.paperReviewBlindSpots],
         },
         {
           id: "communicate-local",
           mode: "local",
-          title: "Offline reproducible manuscript",
-          bestFor: "Private drafting and direct inspection of every artefact.",
+          title: "Offline multi-pass review",
+          bestFor: "Private drafts or disconnected work where no external upload is allowed.",
           approach:
-            "Render locally from committed result files and figure scripts.",
-          tradeoff: "Maximum inspection, but collaboration needs explicit exchange.",
-          dataBoundary: "Draft, data, and build products remain local.",
-          network: "None after tools and citations are installed.",
-          cost: "Open-source tools and local electricity.",
-          hardware: "Laptop with enough memory for the analysis.",
-          evidence: "Command, source commit, input hashes, alt text, and final checksum.",
-          sources: [official.quartoManuscripts, official.wcag],
+            "Run a permitted local model against the paper and reporting checklist, one review role at a time, then verify every useful concern manually.",
+          tradeoff:
+            "Keeps the draft local, but review depth depends on local model quality, context length, and supplied literature.",
+          dataBoundary: "Draft, evidence bundle, prompts, and reviews remain local.",
+          network: "None after the model, papers, and checklist are installed.",
+          cost: "Local hardware, electricity, author, and specialist review time.",
+          hardware: "Enough RAM or GPU memory for the selected local model and full context.",
+          evidence:
+            "Model digest, paper revision, local command, review outputs, source checks, and author dispositions.",
+          sources: [official.paperReviewBlindSpots, official.quartoManuscripts],
         },
       ],
       tryNow: {
-        intro: "Rebuild one figure and its numerical sentence.",
+        intro: "Review one decision-critical claim and resolve the concern.",
         items: [
-          { id: "communicate-try-1", label: "Use a machine-readable result file" },
-          { id: "communicate-try-2", label: "Check axes, units, and denominator" },
-          { id: "communicate-try-3", label: "Add alt text and provenance" },
+          {
+            id: "communicate-try-1",
+            label: "Run one focused review with an exact rubric",
+          },
+          {
+            id: "communicate-try-2",
+            label: "Verify the concern against source evidence",
+          },
+          {
+            id: "communicate-try-3",
+            label: "Record the human decision and rerun after revision",
+          },
         ],
-        evidence: "Keep the figure script, inputs, build command, and checksum.",
+        evidence:
+          "Keep the paper revision, prompt, reviewer output, evidence check, author disposition, and closure result.",
       },
     },
     release: {
       why:
-        "A release should preserve the exact approved artefacts, rights, environment, citation, provenance, and AI-use record.",
+        "A submission or release should preserve the exact approved manuscript, resolved review ledger, artefacts, rights, environment, citation, provenance, and AI-use record.",
       terms: [
         {
           label: "Immutable release",
@@ -920,12 +962,14 @@ export const agenticGuidance: WorkshopGuidance = {
       ],
       tips: [
         {
-          title: "Test the release candidate",
-          body: "Run the smoke test from a fresh clone before archiving.",
+          title: "Review the frozen candidate",
+          body:
+            "Rerun reviewer zero and the venue checklist against the exact paper, supplement, code, and figures that will be submitted.",
         },
         {
-          title: "Separate code from data rights",
-          body: "State access, licence, and restrictions for every released component.",
+          title: "Check changes really closed",
+          body:
+            "Confirm every accepted revision was made, every rejection has a reason, and no material edit introduced a new contradiction.",
         },
       ],
       paths: [
@@ -976,13 +1020,20 @@ export const agenticGuidance: WorkshopGuidance = {
         },
       ],
       tryNow: {
-        intro: "Audit the exact bundle that another researcher will receive.",
+        intro: "Audit the exact manuscript and bundle another person will receive.",
         items: [
-          { id: "release-try-1", label: "Test from a fresh clone" },
-          { id: "release-try-2", label: "Check licences and data access" },
-          { id: "release-try-3", label: "Add citation and AI-use records" },
+          {
+            id: "release-try-1",
+            label: "Reconcile the review ledger and venue checklist",
+          },
+          { id: "release-try-2", label: "Test code from a fresh clone" },
+          {
+            id: "release-try-3",
+            label: "Check rights, citations, and AI-use disclosure",
+          },
         ],
-        evidence: "Save the approved bundle checksum and archive receipt.",
+        evidence:
+          "Save the paper revision, final ledger, human approval, bundle checksum, and archive or submission receipt.",
       },
     },
   },

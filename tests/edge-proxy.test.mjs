@@ -96,6 +96,10 @@ test("each public root maps only to its intended upstream route", async () => {
       ["agenticresearch.omarchoudhry.co.uk", "/agentic-research"],
       ["interactivepaper.omarchoudhry.co.uk", "/interactive-paper"],
       ["annotate.omarchoudhry.co.uk", "/annotation-tools"],
+      [
+        "conferencewithai.omarchoudhry.co.uk",
+        "/ai-healthcare-conference",
+      ],
     ];
 
     for (const [hostname] of cases) {
@@ -159,4 +163,31 @@ test("unknown hostnames are rejected before any upstream request", async () => {
 
   assert.equal(response.status, 421);
   assert.match(await response.text(), /Unknown Research with AI hostname/);
+});
+
+test("public hosts redirect HTTP to HTTPS before any upstream request", async () => {
+  let upstreamCalls = 0;
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => {
+    upstreamCalls += 1;
+    return new Response("unexpected");
+  };
+
+  try {
+    const response = await worker.fetch(
+      new Request(
+        "http://conferencewithai.omarchoudhry.co.uk/plan?project=community",
+      ),
+      { SITE_ORIGIN },
+    );
+
+    assert.equal(response.status, 308);
+    assert.equal(
+      response.headers.get("location"),
+      "https://conferencewithai.omarchoudhry.co.uk/plan?project=community",
+    );
+    assert.equal(upstreamCalls, 0);
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
 });

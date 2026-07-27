@@ -63,36 +63,49 @@ export function WorkflowNavigator({
       className="workflow-guide"
     >
       <div className="workflow-guide-heading">
-        <p>Choose your route</p>
-        <h3 id="workflow-guide-title">Follow the whole lifecycle or focus first</h3>
+        <p>Choose a workshop track</p>
+        <h3 id="workflow-guide-title">
+          Follow the whole lifecycle or focus on what you need
+        </h3>
         <span>
-          The routes change the order of attention, not the scientific
-          standard. You can open any stage at any time.
+          A workshop track selects a subset of stages from the same lifecycle.
+          Every track keeps the beginning-to-end order and the same scientific
+          standard. You can still open any stage at any time.
         </span>
       </div>
 
-      <ol className="phase-map" aria-label="Beginning-to-end workflow">
-        {guidance.phases.map((phase, index) => (
-          <li key={phase.id}>
-            <span>{String(index + 1).padStart(2, "0")}</span>
-            <div>
-              <strong>{phase.title}</strong>
-              <p>{phase.summary}</p>
-            </div>
-            <small>
-              {phase.stepIds
-                .map(
-                  (id) =>
-                    workshop.steps.findIndex((step) => step.id === id) + 1,
-                )
-                .join(" · ")}
-            </small>
-          </li>
-        ))}
-      </ol>
+      <details className="phase-map-disclosure">
+        <summary>
+          <span>Optional lifecycle overview</span>
+          <strong>See how all stages fit into {guidance.phases.length} phases</strong>
+        </summary>
+        <ol
+          className="phase-map"
+          aria-label="Beginning-to-end lifecycle phases"
+        >
+          {guidance.phases.map((phase, index) => (
+            <li key={phase.id}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <div>
+                <strong>{phase.title}</strong>
+                <p>{phase.summary}</p>
+              </div>
+              <small>
+                Stages{" "}
+                {phase.stepIds
+                  .map(
+                    (id) =>
+                      workshop.steps.findIndex((step) => step.id === id) + 1,
+                  )
+                  .join(" and ")}
+              </small>
+            </li>
+          ))}
+        </ol>
+      </details>
 
       <fieldset className="route-chooser">
-        <legend>Pick the route closest to today&apos;s goal</legend>
+        <legend>Pick the workshop track closest to today&apos;s goal</legend>
         <div className="route-options">
           {guidance.routes.map((route) => (
             <label
@@ -117,18 +130,32 @@ export function WorkflowNavigator({
 
       <div className="selected-route">
         <div aria-live="polite" id="route-summary">
-          <span>{chosenRoute ? "Selected route" : "Suggested starting route"}</span>
+          <span>
+            {chosenRoute
+              ? "Selected workshop track"
+              : "Suggested workshop track"}
+          </span>
           <h4>{selectedRoute.title}</h4>
-          <p>{selectedRoute.description}</p>
+          <p>
+            {selectedRoute.description} This track includes{" "}
+            {selectedRoute.stepIds.length} of {workshop.steps.length} stages.
+          </p>
         </div>
         <ol>
-          {selectedRoute.stepIds.map((id, index) => {
-            const step = workshop.steps.find((candidate) => candidate.id === id);
+          {selectedRoute.stepIds.map((id) => {
+            const stageIndex = workshop.steps.findIndex(
+              (candidate) => candidate.id === id,
+            );
+            const step = workshop.steps[stageIndex];
             if (!step) return null;
             return (
               <li key={id}>
-                <button onClick={() => onSelect(step)} type="button">
-                  <span>{String(index + 1).padStart(2, "0")}</span>
+                <button
+                  aria-label={`Open Stage ${stageIndex + 1}: ${step.title}`}
+                  onClick={() => onSelect(step)}
+                  type="button"
+                >
+                  <span>{String(stageIndex + 1).padStart(2, "0")}</span>
                   {step.title}
                 </button>
               </li>
@@ -141,7 +168,7 @@ export function WorkflowNavigator({
           onClick={() => onStartRoute(selectedRoute)}
           type="button"
         >
-          Start this route
+          Open the first stage in this track
         </button>
       </div>
     </section>
@@ -169,20 +196,20 @@ export function StageFieldGuide({
     <details className="stage-field-guide">
       <summary className="stage-field-guide-summary">
         <div>
-          <p className="lesson-label">Stage field guide</p>
-          <strong>Compare approaches, terms and shortcuts</strong>
+          <p className="lesson-label">Optional stage guide</p>
+          <strong>Compare approaches, terms and researcher tips</strong>
         </div>
         <small>Guidance checked {lastVerified}</small>
       </summary>
       <section
-        aria-label="Compare approaches, terms and shortcuts"
+        aria-label="Optional approaches, terms and researcher tips"
         className="stage-field-guide-body"
       >
         <p className="field-guide-why">{guide.why}</p>
 
         <div className="field-guide-disclosures">
           <section aria-labelledby="terms-title">
-            <h4 id="terms-title">Terms in this stage</h4>
+            <h4 id="terms-title">Optional terms for this stage</h4>
             <div className="term-help-list">
               {guide.terms.map((term) => (
                 <details className="term-help" key={term.label}>
@@ -197,7 +224,7 @@ export function StageFieldGuide({
           </section>
 
           <details className="researcher-tricks">
-            <summary>Researcher tricks · {guide.tips.length}</summary>
+            <summary>Optional researcher tips · {guide.tips.length}</summary>
             <div>
               {guide.tips.map((tip) => (
                 <article key={tip.title}>
@@ -210,13 +237,13 @@ export function StageFieldGuide({
         </div>
 
         <fieldset className="path-chooser">
-          <legend>Alternatives and tradeoffs</legend>
+          <legend>Choose an approach for this stage</legend>
           <div className="path-chooser-help">
-            <ContextHelp label="alternatives and tradeoffs">
-              Each path must leave auditable evidence for the same decision and
-              human checkpoint. The exact files, services, and implementation
-              can differ. Paths without a link are design patterns to evaluate,
-              not claims about a particular product.
+            <ContextHelp label="approach choice">
+              Each approach must leave auditable evidence for the same decision
+              and human checkpoint. The exact files, services, and
+              implementation can differ. Approaches without a link are design
+              patterns to evaluate, not claims about a particular product.
             </ContextHelp>
           </div>
           <div className="path-options">
@@ -247,20 +274,17 @@ export function StageFieldGuide({
           id="path-selection-detail"
         >
           {selectedPath
-            ? `Selected path: ${selectedPath.title}. Open its details below.`
-            : "No path selected. Compare the three options, then choose the one that matches your data boundary."}
+            ? `Selected approach: ${selectedPath.title}. Review its details below.`
+            : "No approach selected. Compare the three options, then choose the one that matches your data boundary."}
         </p>
 
         {selectedPath ? (
-          <details
-            className="path-detail"
-            key={selectedPath.id}
-          >
-            <summary>
+          <section className="path-detail" key={selectedPath.id}>
+            <div className="path-detail-heading">
               <span>{pathModeLabels[selectedPath.mode]}</span>
               <strong>{selectedPath.title}</strong>
-              <small>Open operational details</small>
-            </summary>
+              <small>Selected approach details</small>
+            </div>
             <div className="path-detail-body">
               <p>{selectedPath.approach}</p>
               <dl>
@@ -302,18 +326,18 @@ export function StageFieldGuide({
                 </ul>
               ) : null}
             </div>
-          </details>
+          </section>
         ) : null}
 
         <details className="try-now">
           <summary>
-            <span>Try it now</span>
+            <span>Optional practice</span>
             <strong>{guide.tryNow.items.length} small checks</strong>
           </summary>
           <div>
             <p>{guide.tryNow.intro}</p>
             <fieldset>
-              <legend>Complete this short practice</legend>
+              <legend>Optional short practice</legend>
               {guide.tryNow.items.map((item) => (
                 <label key={item.id}>
                   <input

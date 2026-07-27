@@ -37,6 +37,8 @@ export const metadata: Metadata = {
     "medical imaging",
     "paper reproduction",
     "annotation tools",
+    "AI in healthcare conference",
+    "research community",
     "MICCAI",
   ],
   icons: {
@@ -47,7 +49,7 @@ export const metadata: Metadata = {
     type: "website",
     title: "Research with AI",
     description:
-      "Three practical workshops for research workflows, project websites, and custom annotation tools.",
+      "Four practical workshops for research workflows, project websites, custom annotation tools, and community-led AI in healthcare conferences.",
     images: [
       {
         url: "/research-with-ai-social.png",
@@ -61,7 +63,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Research with AI",
     description:
-      "Three practical workshops for research workflows, project websites, and custom annotation tools.",
+      "Four practical workshops for research workflows, project websites, custom annotation tools, and community-led AI in healthcare conferences.",
     images: ["/research-with-ai-social.png"],
   },
 };

@@ -35,6 +35,12 @@ const workshops: Array<{
     title: "Annotation tools",
     slug: "annotation-tools",
   },
+  {
+    href: WORKSHOP_RELEASES["ai-healthcare-conference"].canonicalUrl,
+    number: "4",
+    title: "AI healthcare conference",
+    slug: "ai-healthcare-conference",
+  },
 ];
 
 export function SiteNav({
@@ -46,9 +52,13 @@ export function SiteNav({
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const navRef = useRef<HTMLElement>(null);
   const wasOpenRef = useRef(false);
+  const versionLinkLabel =
+    active === "ai-healthcare-conference"
+      ? "Conference in development"
+      : `Tutorial ${TUTORIAL_VERSION_LABEL}`;
 
   useEffect(() => {
-    const mobileViewport = window.matchMedia("(max-width: 900px)");
+    const mobileViewport = window.matchMedia("(max-width: 1120px)");
 
     function closeDrawerOnDesktop(event: MediaQueryListEvent) {
       if (!event.matches) {
@@ -156,7 +166,7 @@ export function SiteNav({
             <strong>Research with AI</strong>
             <span>by Omar Choudhry</span>
           </a>
-          <p>Practical workshops for medical imaging researchers.</p>
+          <p>Practical workshops for researchers and research communities.</p>
         </div>
         <nav aria-label="Primary">
           <a
@@ -210,10 +220,14 @@ export function SiteNav({
             href={`${TUTORIAL_HOMEPAGE}/versions`}
             onClick={() => setOpen(false)}
           >
-            Tutorial {TUTORIAL_VERSION_LABEL}
+            {versionLinkLabel}
             <ArrowRight size={15} />
           </a>
-          <a href="https://github.com/omariosc" rel="noreferrer" target="_blank">
+          <a
+            href="https://github.com/omariosc/research-with-ai"
+            rel="noreferrer"
+            target="_blank"
+          >
             GitHub
             <ArrowRight size={15} />
           </a>

@@ -1,7 +1,8 @@
 export type WorkshopSlug =
   | "agentic-research"
   | "interactive-paper"
-  | "annotation-tools";
+  | "annotation-tools"
+  | "ai-healthcare-conference";
 
 export type Source = {
   title: string;
@@ -121,14 +122,14 @@ export type GlossaryItem = {
 
 export type Workshop = {
   slug: WorkshopSlug;
-  number: "01" | "02" | "03";
+  number: "01" | "02" | "03" | "04";
   shortTitle: string;
   title: string;
   navTitle: string;
   description: string;
   promise: string;
   duration: string;
-  accent: "blue" | "ochre" | "green";
+  accent: "blue" | "ochre" | "green" | "rose";
   startLabel: string;
   audience: string;
   prerequisites: string[];

@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0.0",
+  "created": "2026-07-27",
+  "sample_limit_per_tool": 3,
+  "selection_policy": {
+    "frame_annotator": "Only the first three sample images in canonical filename order are permitted. No later frame image is included.",
+    "surgical_annotator": "Three manually annotated, non-in-vivo keyframes from public LASK v1.0 Trial46 were selected to show different phases and visibility states."
+  },
+  "tools": [
+    {
+      "id": "frame-annotator",
+      "source_repository": "https://github.com/omariosc/frame-annotator",
+      "source_commit": "3e94ed03c1487331b8c041ca755421686b41d031",
+      "asset_licence": "MIT",
+      "annotation_status": "tutorial starter record, not a historical research annotation",
+      "annotation_path": "/worked-examples/annotation-showcase/frame-annotator/starter-annotations.json",
+      "annotation_sha256": "1ef19d0e7eb12a2d65bf7304e362ea5a88038fe170c4909e5fd0841cd5341983",
+      "samples": [
+        {
+          "id": "frame-0000",
+          "canonical_position": 1,
+          "filename": "frame_0000.png",
+          "image_path": "/worked-examples/annotation-showcase/frame-annotator/frame_0000.png",
+          "width": 320,
+          "height": 240,
+          "sha256": "0e270f6cd8b57ee6fd7983b84e46e6a16f349ebcad77ce7409410494762e943a"
+        },
+        {
+          "id": "frame-0001",
+          "canonical_position": 2,
+          "filename": "frame_0001.png",
+          "image_path": "/worked-examples/annotation-showcase/frame-annotator/frame_0001.png",
+          "width": 320,
+          "height": 240,
+          "sha256": "f70d7bd4f52fa91fe071c8260744ff376205134fa8d7eadf8e4776565830bb67"
+        },
+        {
+          "id": "frame-0002",
+          "canonical_position": 3,
+          "filename": "frame_0002.png",
+          "image_path": "/worked-examples/annotation-showcase/frame-annotator/frame_0002.png",
+          "width": 320,
+          "height": 240,
+          "sha256": "087f68912d227bada81eff67de4ac3e7d68dc2e4440b61f1173d12dd1a3e32c8"
+        }
+      ]
+    },
+    {
+      "id": "surgical-annotator",
+      "source_repository": "https://github.com/omariosc/frame-annotator",
+      "source_commit": "3e94ed03c1487331b8c041ca755421686b41d031",
+      "dataset": "LASK: A Dataset for Laparoscopic Skill and 7-DoF Kinematics, version 1.0",
+      "dataset_doi": "https://doi.org/10.5281/zenodo.20752651",
+      "dataset_licence": "CC BY 4.0",
+      "source_archive": "DatasetA_7DOF_train.zip",
+      "source_archive_md5": "59ec32280bfe2874209ce5c5603a7de1",
+      "source_video_member": "DatasetA_7DOF_train/videos/Trial46.mp4",
+      "released_annotation_member": "DatasetA_7DOF_train/annotations/Trial46.npz",
+      "native_annotation_status": "original surgical-annotator JSON; released mask and keypoint geometry cross-checked against Trial46.npz",
+      "samples": [
+        {
+          "id": "trial46-frame-0200",
+          "frame_index": 200,
+          "image_path": "/worked-examples/annotation-showcase/surgical-annotator/trial46_frame_0200.jpg",
+          "annotation_path": "/worked-examples/annotation-showcase/surgical-annotator/trial46_frame_0200.json",
+          "width": 1280,
+          "height": 720,
+          "image_sha256": "8af5bc7f36b35342109b84073b89f158de29200b1bdfc56c46a4d069ae2593b5",
+          "annotation_sha256": "f3a14b5f5c1c9d29e1d5ba166de6d8e6ba9ad727fe3716559c3f53c7407f44ef"
+        },
+        {
+          "id": "trial46-frame-1000",
+          "frame_index": 1000,
+          "image_path": "/worked-examples/annotation-showcase/surgical-annotator/trial46_frame_1000.jpg",
+          "annotation_path": "/worked-examples/annotation-showcase/surgical-annotator/trial46_frame_1000.json",
+          "width": 1280,
+          "height": 720,
+          "image_sha256": "f2e0b75b81246c152c7e2a155c86c9b3180791a4b83d3e7f0aac471bc688f92e",
+          "annotation_sha256": "8ef8d291d6a12403eb6c7f7eb31a725e270331b8e3a48f16a39de5677f984378"
+        },
+        {
+          "id": "trial46-frame-1800",
+          "frame_index": 1800,
+          "image_path": "/worked-examples/annotation-showcase/surgical-annotator/trial46_frame_1800.jpg",
+          "annotation_path": "/worked-examples/annotation-showcase/surgical-annotator/trial46_frame_1800.json",
+          "width": 1280,
+          "height": 720,
+          "image_sha256": "519af5c90080c605266a625a53929a21c08b64a212c7bca13b1e67a0b913fc8c",
+          "annotation_sha256": "6f5b8cca67b7ef64725778fdb03797ad74a3903b20a116cb9dd0072c0fdbded4"
+        }
+      ]
+    }
+  ],
+  "provenance_record": "/citations/annotation-showcase-media-2026-07-27.md"
+}

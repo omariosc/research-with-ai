@@ -327,11 +327,28 @@ test("reset removes only the builder for the current workshop", () => {
     [
       [builderKey("agentic", projectId), "{\"question\":\"one\"}"],
       [builderKey("paper", projectId), "{\"title\":\"two\"}"],
+      [builderKey("conference", projectId), "{\"title\":\"four\"}"],
     ],
     (store) => {
       clearBuilderDraft("agentic-research", projectId);
       assert.equal(store.has(builderKey("agentic", projectId)), false);
       assert.equal(store.has(builderKey("paper", projectId)), true);
+      assert.equal(store.has(builderKey("conference", projectId)), true);
+    },
+  );
+});
+
+test("conference reset removes only its own builder draft", () => {
+  const projectId = DEFAULT_PROJECT_ID;
+  withLocalStorage(
+    [
+      [builderKey("annotation", projectId), "{\"labels\":[]}"],
+      [builderKey("conference", projectId), "{\"title\":\"Leeds\"}"],
+    ],
+    (store) => {
+      clearBuilderDraft("ai-healthcare-conference", projectId);
+      assert.equal(store.has(builderKey("annotation", projectId)), true);
+      assert.equal(store.has(builderKey("conference", projectId)), false);
     },
   );
 });

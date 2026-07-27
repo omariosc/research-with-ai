@@ -7,12 +7,14 @@ const PUBLIC_HOSTS = new Set([
   "agenticresearch.omarchoudhry.co.uk",
   "interactivepaper.omarchoudhry.co.uk",
   "annotate.omarchoudhry.co.uk",
+  "conferencewithai.omarchoudhry.co.uk",
 ]);
 
 const WORKSHOP_ROOTS = new Map([
   ["agenticresearch.omarchoudhry.co.uk", "/agentic-research"],
   ["interactivepaper.omarchoudhry.co.uk", "/interactive-paper"],
   ["annotate.omarchoudhry.co.uk", "/annotation-tools"],
+  ["conferencewithai.omarchoudhry.co.uk", "/ai-healthcare-conference"],
 ]);
 
 const FORWARDED_REQUEST_HEADERS = new Set([
@@ -67,6 +69,12 @@ const worker = {
         status: 421,
         headers: { "content-type": "text/plain; charset=utf-8" },
       });
+    }
+
+    if (incoming.protocol !== "https:") {
+      const secureUrl = new URL(incoming);
+      secureUrl.protocol = "https:";
+      return Response.redirect(secureUrl.toString(), 308);
     }
 
     if (request.method !== "GET" && request.method !== "HEAD") {

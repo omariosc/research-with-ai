@@ -24,6 +24,10 @@
     {
       "pattern": "annotate.omarchoudhry.co.uk",
       "custom_domain": true
+    },
+    {
+      "pattern": "conferencewithai.omarchoudhry.co.uk",
+      "custom_domain": true
     }
   ]
 }

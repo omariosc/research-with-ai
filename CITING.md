@@ -2,7 +2,9 @@
 
 Use the platform citation when you refer to the software or the complete
 collection. Use an individual tutorial citation when your work relied mainly on
-one workshop.
+one workshop. Version 1.3.0 contains the three released tutorials listed below.
+The conference tutorial is in development and must not be cited as part of
+v1.3.0.
 
 The repository does not currently have a registered DOI. Do not use the LASK
 dataset DOI as the DOI for this platform or the annotation tutorial. LASK is a
@@ -34,6 +36,35 @@ Choudhry, O. (2026). *Developing Custom Annotation Tools Using AI* (Version
 1.3.0) [Interactive tutorial]. Research with AI.
 https://annotate.omarchoudhry.co.uk
 
+## Run an AI in Healthcare Conference (in development)
+
+This tutorial has a canonical URL but no released version. Until a reviewed
+release is published, describe it explicitly as in development:
+
+Choudhry, O. (2026). *Run an AI in Healthcare Conference* [Interactive
+tutorial in development]. Research with AI.
+https://conferencewithai.omarchoudhry.co.uk
+
+Do not add Version 1.3.0 to this citation. The Leeds AI Week case currently
+uses three separate evidence records:
+
+- [First-hand case-study record](public/citations/ai-healthcare-conference-first-hand-2026-07-26.md)
+  for the organiser account, panel purpose, workshop context, committee and
+  delivery lessons, and approximate competition entries
+- [Operations and evaluation record](public/citations/ai-healthcare-conference-operations-and-evaluation-2026-07-26.md)
+  for the aggregate workbook audit, denominator ledger, advertised and revised
+  programme, committee structure, logistics account, and feedback distributions
+- [Media and permission record](public/citations/ai-healthcare-conference-media-2026-07-26.md)
+  for the retained LinkedIn sources, project-specific permission, alt text,
+  hashes, excluded review material, and limits on what the images establish
+
+The first-hand record is not an independent evaluation. The operations record
+contains aggregates only; its identifiable source workbooks are not part of the
+repository. Permission for the LinkedIn photographs is specific to this
+tutorial and does not create a general reuse licence. Rights-unresolved
+organiser material and the named certificate example are not copied, linked or
+rendered in the public repository or site.
+
 ## Machine-readable formats
 
 - GitHub renders [CITATION.cff](CITATION.cff) for the complete platform.
@@ -41,6 +72,9 @@ https://annotate.omarchoudhry.co.uk
   platform and all three tutorials.
 - The site distribution includes the same bibliography at
   `public/citations/research-with-ai-v1.3.0.bib`.
+
+These v1.3.0 machine-readable files do not yet include the conference tutorial.
+Add it only as part of a separately reviewed release.
 
 If a version DOI is registered later, it should be added to the platform CFF
 and BibTeX record without replacing the canonical tutorial URLs.
