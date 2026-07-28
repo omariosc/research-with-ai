@@ -1,3 +1,6 @@
+"use client";
+
+import { useId, useRef, useState } from "react";
 import type {
   GuidePath,
   StoredWorkshopProgress,
@@ -7,7 +10,7 @@ import type {
   WorkshopStep,
   WorkshopStepGuide,
 } from "@/lib/types";
-import { ExternalLink } from "./Icons";
+import { Close, ExternalLink } from "./Icons";
 
 const pathModeLabels: Record<GuidePath["mode"], string> = {
   hosted: "Hosted service",
@@ -22,13 +25,65 @@ export function ContextHelp({
   children: string;
   label: string;
 }) {
+  const [open, setOpen] = useState(false);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const dialogId = useId();
+  const titleId = `${dialogId}-title`;
+  const descriptionId = `${dialogId}-description`;
+
+  function openHelp() {
+    const dialog = dialogRef.current;
+    if (!dialog?.open) {
+      dialog?.showModal();
+      setOpen(true);
+    }
+  }
+
+  function closeHelp() {
+    dialogRef.current?.close();
+  }
+
   return (
-    <details className="context-help">
-      <summary aria-label={`What does ${label} mean?`}>
+    <div className="context-help">
+      <button
+        aria-controls={dialogId}
+        aria-expanded={open}
+        aria-haspopup="dialog"
+        aria-label={`What does ${label} mean?`}
+        className="context-help-trigger"
+        onClick={openHelp}
+        ref={triggerRef}
+        type="button"
+      >
         <span aria-hidden="true">?</span>
-      </summary>
-      <p>{children}</p>
-    </details>
+      </button>
+      <dialog
+        aria-describedby={descriptionId}
+        aria-labelledby={titleId}
+        className="context-help-dialog"
+        id={dialogId}
+        onClose={() => {
+          setOpen(false);
+          triggerRef.current?.focus();
+        }}
+        ref={dialogRef}
+      >
+        <div className="context-help-dialog-card">
+          <div className="context-help-dialog-heading">
+            <strong id={titleId}>{label} help</strong>
+            <button
+              aria-label={`Close ${label} help`}
+              onClick={closeHelp}
+              type="button"
+            >
+              <Close size={17} />
+            </button>
+          </div>
+          <p id={descriptionId}>{children}</p>
+        </div>
+      </dialog>
+    </div>
   );
 }
 
@@ -74,11 +129,14 @@ export function WorkflowNavigator({
         </span>
       </div>
 
-      <details className="phase-map-disclosure">
-        <summary>
-          <span>Optional lifecycle overview</span>
+      <section
+        aria-labelledby="lifecycle-overview-title"
+        className="phase-map-section"
+      >
+        <div className="phase-map-heading">
+          <span id="lifecycle-overview-title">Lifecycle overview</span>
           <strong>See how all stages fit into {guidance.phases.length} phases</strong>
-        </summary>
+        </div>
         <ol
           className="phase-map"
           aria-label="Beginning-to-end lifecycle phases"
@@ -102,7 +160,7 @@ export function WorkflowNavigator({
             </li>
           ))}
         </ol>
-      </details>
+      </section>
 
       <fieldset className="route-chooser">
         <legend>Pick the workshop track closest to today&apos;s goal</legend>

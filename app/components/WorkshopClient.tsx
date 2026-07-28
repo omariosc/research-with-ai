@@ -866,11 +866,16 @@ function WorkshopPrimer({
         routeId={routeId}
         workshop={workshop}
       />
-      <details className="primer-readiness">
-        <summary>
-          <span>Preparation and full outcomes</span>
+      <section
+        aria-labelledby="preparation-outcomes-title"
+        className="primer-readiness"
+      >
+        <div className="primer-readiness-heading">
+          <span id="preparation-outcomes-title">
+            Preparation and full outcomes
+          </span>
           <strong>Check what you need before doing the whole lifecycle</strong>
-        </summary>
+        </div>
         <div className="primer-grid primer-grid-basics">
           <article>
             <h3>Prerequisites</h3>
@@ -889,7 +894,7 @@ function WorkshopPrimer({
             </ol>
           </article>
         </div>
-      </details>
+      </section>
     </section>
   );
 }
@@ -928,14 +933,16 @@ function CaseStudy({ workshop }: { workshop: Workshop }) {
       <div className="case-study-boundary">
         <strong>Claim boundary</strong>
         <p>{study.boundary}</p>
-        <div>
+        <ul>
           {study.sources.map((source) => (
-            <a href={source.url} key={source.url} rel="noreferrer" target="_blank">
-              {source.title}
-              <ExternalLink size={14} />
-            </a>
+            <li key={source.url}>
+              <a href={source.url} rel="noreferrer" target="_blank">
+                {source.title}
+                <ExternalLink size={14} />
+              </a>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );
@@ -1203,10 +1210,13 @@ function LessonPanel({
             </ul>
           </div>
 
-          <details className="video-cue">
-            <summary>Instructor cue</summary>
+          <section
+            aria-labelledby={`instructor-cue-${active.id}`}
+            className="video-cue"
+          >
+            <h3 id={`instructor-cue-${active.id}`}>Instructor cue</h3>
             <p>{active.videoCue}</p>
-          </details>
+          </section>
         </aside>
       </div>
 

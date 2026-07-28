@@ -203,6 +203,42 @@ test("renders the ten-stage agentic research workshop", async () => {
   );
 });
 
+test("keeps core orientation visible and renders help without layout disclosures", async () => {
+  const routes = [
+    "/agentic-research",
+    "/interactive-paper",
+    "/annotation-tools",
+    "/ai-healthcare-conference",
+  ];
+  const responses = await Promise.all(routes.map((route) => render(route)));
+
+  for (const [index, response] of responses.entries()) {
+    assert.equal(response.status, 200, routes[index]);
+    const html = await response.text();
+
+    assert.match(html, /<section[^>]*class="phase-map-section"/);
+    assert.match(html, />Lifecycle overview</);
+    assert.doesNotMatch(html, /Optional lifecycle overview/);
+    assert.doesNotMatch(
+      html,
+      /<details[^>]*class="phase-map-(?:section|disclosure)"/,
+    );
+
+    assert.match(html, /<section[^>]*class="primer-readiness"/);
+    assert.match(html, /Preparation and full outcomes/);
+    assert.doesNotMatch(html, /<details[^>]*class="primer-readiness"/);
+
+    assert.match(html, /<section[^>]*class="video-cue"/);
+    assert.match(html, />Instructor cue</);
+    assert.doesNotMatch(html, /<details[^>]*class="video-cue"/);
+
+    assert.match(html, /aria-haspopup="dialog"/);
+    assert.match(html, /<dialog[^>]*class="context-help-dialog"/);
+    assert.match(html, /aria-label="Close Evidence note help"/);
+    assert.doesNotMatch(html, /role="tooltip"/);
+  }
+});
+
 test("renders the website brief and annotation interactions", async () => {
   const [paperResponse, annotationResponse] = await Promise.all([
     render("/interactive-paper"),
