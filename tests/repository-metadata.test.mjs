@@ -222,6 +222,8 @@ test("README links the tutorials, evidence, screenshots, and citations", async (
     "public/citations/paper-demo-assets-2026-07-29.md",
     "public/citations/ai-healthcare-conference-operations-and-evaluation-2026-07-26.md",
     "public/worked-examples/model-container-service/README.md",
+    "public/audits/platform-release-v1.5.0-2026-07-29.md",
+    "public/releases/research-with-ai-v1.5.0-source.sha256",
     "public/audits/platform-release-v1.4.0-2026-07-27.md",
     "public/releases/research-with-ai-v1.4.0-source.zip",
     "public/releases/research-with-ai-v1.4.0-source.sha256",

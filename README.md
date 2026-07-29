@@ -189,6 +189,8 @@ conditions, and rights are recorded in the
 | Model container lab | Locked FastAPI service, synthetic model, Docker profile, tests, and deployment record | [Lab guide](public/worked-examples/model-container-service/README.md) |
 | Annotation specification | Immutable v1.5.0 JSON Schema used by the interactive builder | [Schema](public/schemas/annotation-spec-1.5.0.schema.json) |
 | Current release notes | Feature summary, evidence boundaries, and source record | [v1.5.0 notes](docs/releases/v1.5.0.md) |
+| Current release evidence | Rights, privacy boundaries, source checks, browser QA, and remaining human gates | [v1.5.0 audit](public/audits/platform-release-v1.5.0-2026-07-29.md) |
+| Current reviewed source snapshot | Immutable v1.5.0 source archive and digest | [GitHub release ZIP](https://github.com/omariosc/research-with-ai/releases/download/v1.5.0/research-with-ai-v1.5.0-source.zip) and [SHA-256](public/releases/research-with-ai-v1.5.0-source.sha256) |
 | Previous release evidence | Rights, claims, word counts, Docker acceptance, browser QA, and remaining human gates for v1.4.0 | [v1.4.0 audit](public/audits/platform-release-v1.4.0-2026-07-27.md) |
 | Previous reviewed source snapshot | Immutable v1.4.0 source archive and digest | [ZIP](public/releases/research-with-ai-v1.4.0-source.zip) and [SHA-256](public/releases/research-with-ai-v1.4.0-source.sha256) |
 

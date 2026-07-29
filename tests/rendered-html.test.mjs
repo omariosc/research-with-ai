@@ -553,6 +553,8 @@ test("renders the version history and canonical workshop links", async () => {
     html,
     /github\.com\/omariosc\/research-with-ai\/releases\/tag\/v1\.5\.0/,
   );
+  assert.match(html, /research-with-ai-v1\.5\.0-source\.zip/);
+  assert.match(html, /d3f4008/);
   assert.match(html, /Four complete tutorials and refreshed evidence/);
   assert.match(html, /research-with-ai-v1\.4\.0-source\.zip/);
   assert.match(html, /d72814d/);
@@ -562,6 +564,28 @@ test("renders the version history and canonical workshop links", async () => {
   assert.match(html, /a304472/);
   assert.match(html, /research-with-ai-v1\.1\.0-source\.zip/);
   assert.match(html, /bd3c4a2/);
+});
+
+test("keeps the reviewed v1.5 source snapshot digest pinned outside the site bundle", async () => {
+  const checksumUrl = new URL(
+    "../public/releases/research-with-ai-v1.5.0-source.sha256",
+    import.meta.url,
+  );
+  const checksumRecord = await readFile(checksumUrl, "utf8");
+  const digest =
+    "323646e81668be40abdc7b2c6c6e897f34fca39ea524116cddc7403cc209b180";
+  assert.equal(
+    checksumRecord,
+    `${digest}  research-with-ai-v1.5.0-source.zip\n`,
+  );
+  await assert.rejects(
+    access(
+      new URL(
+        "../public/releases/research-with-ai-v1.5.0-source.zip",
+        import.meta.url,
+      ),
+    ),
+  );
 });
 
 test("keeps the reviewed v1.4 source snapshot pinned without nested archives", async () => {
