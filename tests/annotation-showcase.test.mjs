@@ -24,12 +24,14 @@ const manifestUrl = new URL(
 );
 const manifest = JSON.parse(await readFile(manifestUrl, "utf8"));
 
-const expectedFrameFiles = [
-  "frame_0000.png",
-  "frame_0001.png",
-  "frame_0002.png",
-];
-const expectedFrameIds = ["frame-0000", "frame-0001", "frame-0002"];
+const expectedFrameFiles = Array.from(
+  { length: 10 },
+  (_, index) => `frame_${String(index).padStart(4, "0")}.png`,
+);
+const expectedFrameIds = Array.from(
+  { length: 10 },
+  (_, index) => `frame-${String(index).padStart(4, "0")}`,
+);
 const expectedSurgicalFrames = [200, 1000, 1800];
 const expectedSurgicalIds = [
   "trial46-frame-0200",
@@ -88,6 +90,18 @@ async function sha256(path) {
     .digest("hex");
 }
 
+function publicArtifactUrl(path) {
+  assert.match(path, /^\/(?:annotation-demos|worked-examples)\//);
+  assert.equal(path.includes(".."), false);
+  return new URL(`../public${path}`, import.meta.url);
+}
+
+async function artifactSha256(path) {
+  return createHash("sha256")
+    .update(await readFile(publicArtifactUrl(path)))
+    .digest("hex");
+}
+
 function assertPoint(point, width, height, label) {
   assert.ok(Array.isArray(point), `${label} must be an array`);
   assert.equal(point.length, 2, `${label} must contain x and y`);
@@ -99,19 +113,22 @@ function assertPoint(point, width, height, label) {
 }
 
 test("showcase manifest publishes exactly the two intended tools", () => {
-  assert.equal(manifest.schema_version, "1.0.0");
-  assert.equal(manifest.sample_limit_per_tool, 3);
+  assert.equal(manifest.schema_version, "1.1.0");
+  assert.deepEqual(manifest.sample_limits, {
+    frame_annotator: 10,
+    surgical_annotator: 3,
+  });
   assert.deepEqual(
     manifest.tools.map((entry) => entry.id),
     ["frame-annotator", "surgical-annotator"],
   );
   assert.match(
     manifest.selection_policy.frame_annotator,
-    /Only the first three sample images/,
+    /first ten sequential frames/,
   );
   assert.match(
     manifest.selection_policy.frame_annotator,
-    /No later frame image is included/,
+    /not the missing raw data\/color_images frames/,
   );
   assert.match(manifest.selection_policy.surgical_annotator, /LASK v1\.0/);
 
@@ -122,16 +139,17 @@ test("showcase manifest publishes exactly the two intended tools", () => {
     );
     assert.equal(
       entry.source_commit,
-      "3e94ed03c1487331b8c041ca755421686b41d031",
+      "0dcfc9e90dfd7867c58d3bc45f4508b19c4f4a5a",
     );
     assert.ok(entry.samples.length > 0);
-    assert.ok(entry.samples.length <= manifest.sample_limit_per_tool);
+    const limitKey = entry.id.replaceAll("-", "_");
+    assert.ok(entry.samples.length <= manifest.sample_limits[limitKey]);
   }
 });
 
-test("frame showcase enforces the first-three privacy allowlist", async () => {
+test("frame showcase enforces the authorised first-ten allowlist", async () => {
   const frameTool = tool("frame-annotator");
-  assert.equal(frameTool.samples.length, 3);
+  assert.equal(frameTool.samples.length, 10);
   assert.deepEqual(
     frameTool.samples.map((sample) => sample.id),
     expectedFrameIds,
@@ -142,7 +160,7 @@ test("frame showcase enforces the first-three privacy allowlist", async () => {
   );
   assert.deepEqual(
     frameTool.samples.map((sample) => sample.canonical_position),
-    [1, 2, 3],
+    Array.from({ length: 10 }, (_, index) => index + 1),
   );
   assert.deepEqual(
     frameTool.samples.map((sample) => sample.image_path),
@@ -153,11 +171,7 @@ test("frame showcase enforces the first-three privacy allowlist", async () => {
   );
   assert.deepEqual(
     frameTool.samples.map(({ width, height }) => [width, height]),
-    [
-      [320, 240],
-      [320, 240],
-      [320, 240],
-    ],
+    Array.from({ length: 10 }, () => [640, 480]),
   );
   assert.deepEqual(
     FRAME_SAMPLES.map(({ id, filename, imagePath }) => ({
@@ -179,7 +193,7 @@ test("frame showcase enforces the first-three privacy allowlist", async () => {
   assert.deepEqual(
     (await readdir(directory)).sort(),
     [...expectedFrameFiles, "starter-annotations.json"].sort(),
-    "the public frame directory must contain no later or undisclosed image",
+    "the public frame directory must contain only the ten authorised images",
   );
 
   for (const sample of frameTool.samples) {
@@ -198,7 +212,10 @@ test("frame starter annotation retains the native inclusive clip shape", async (
     await readFile(publicUrl(frameTool.annotation_path), "utf8"),
   );
   assert.deepEqual(starter, { clips: FRAME_STARTER_CLIPS });
-  assert.equal(frameTool.annotation_status, "tutorial starter record, not a historical research annotation");
+  assert.match(
+    frameTool.annotation_status,
+    /tutorial starter record reconstructed from the visible Controller Collision selection/,
+  );
 
   const allowedClasses = new Set(FRAME_CLASSES.map((entry) => entry.id));
   const occupiedFrames = new Set();
@@ -386,13 +403,15 @@ test("sample provenance names every published example and its claim boundary", a
     new URL(`../public${manifest.provenance_record}`, import.meta.url),
     "utf8",
   );
-  assert.match(provenance, /No later frame image is included/);
-  assert.match(provenance, /tutorial starter rather than research ground truth|three-frame teaching record/);
+  assert.match(provenance, /lossy presentation recovery/);
+  assert.match(provenance, /not a raw-frame recovery/);
+  assert.match(provenance, /explicitly approved publication/);
+  assert.match(provenance, /ten-frame teaching reconstruction/);
   assert.match(provenance, /CC BY 4\.0/);
   assert.match(provenance, /LASK visual labels are\s+manual/);
   assert.match(
     provenance,
-    /3e94ed03c1487331b8c041ca755421686b41d031/,
+    /0dcfc9e90dfd7867c58d3bc45f4508b19c4f4a5a/,
   );
   assert.match(provenance, /https:\/\/doi\.org\/10\.5281\/zenodo\.20752651/);
 
@@ -414,6 +433,60 @@ test("sample provenance names every published example and its claim boundary", a
         assert.ok(provenance.includes(hash), hash);
       }
     }
+  }
+});
+
+test("static demos keep every API interaction in the visitor browser", async () => {
+  const frameTool = tool("frame-annotator");
+  const surgicalTool = tool("surgical-annotator");
+  const frameRoot = new URL(
+    "../public/annotation-demos/frame-annotator/",
+    import.meta.url,
+  );
+  const surgicalRoot = new URL(
+    "../public/annotation-demos/surgical-annotator/",
+    import.meta.url,
+  );
+  const [frameHtml, frameAdapter, surgicalHtml, surgicalAdapter, surgicalMain] =
+    await Promise.all([
+      readFile(new URL("index.html", frameRoot), "utf8"),
+      readFile(new URL("demo-adapter.js", frameRoot), "utf8"),
+      readFile(new URL("index.html", surgicalRoot), "utf8"),
+      readFile(new URL("demo-adapter.js", surgicalRoot), "utf8"),
+      readFile(new URL("static/js/main.js", surgicalRoot), "utf8"),
+    ]);
+
+  assert.ok(
+    frameHtml.indexOf("./demo-adapter.js") <
+      frameHtml.indexOf("const CONFIG"),
+    "the frame adapter must load before the original application script",
+  );
+  assert.ok(
+    surgicalHtml.indexOf("./demo-adapter.js") <
+      surgicalHtml.indexOf("./static/js/main.js"),
+    "the surgical adapter must load before the original application script",
+  );
+
+  for (const adapter of [frameAdapter, surgicalAdapter]) {
+    assert.match(adapter, /window\.fetch = async function demoFetch/);
+    assert.match(adapter, /window\.localStorage/);
+    assert.match(adapter, /url\.pathname\.startsWith\("\/api\/"\)|url\.pathname === "\/api\/frames"/);
+    assert.doesNotMatch(adapter, /https?:\/\//);
+    assert.doesNotMatch(adapter, /navigator\.sendBeacon|XMLHttpRequest|WebSocket/);
+  }
+
+  assert.match(surgicalAdapter, /window\.EventSource = DemoEventSource/);
+  assert.match(surgicalMain, /__annotationDemoFrameUrl/);
+  assert.match(frameHtml, /Reset/);
+  assert.match(surgicalHtml, /Reset demo/);
+
+  for (const entry of [frameTool, surgicalTool]) {
+    assert.match(entry.preview_sha256, /^[a-f0-9]{64}$/);
+    assert.equal(
+      await artifactSha256(entry.preview_path),
+      entry.preview_sha256,
+      entry.preview_path,
+    );
   }
 });
 

@@ -7,12 +7,12 @@ export const agenticResearch: Workshop = {
   title: "Agentic AI in Research",
   navTitle: "Agentic research",
   description:
-    "Take one research question from field mapping to an independently checked, reproducible workflow. Use agents to search, build, test, and critique the work at meaningful decision points, while keeping scientific decisions with the researcher.",
+    "Take one research question from field mapping to an independently checked, reproducible workflow. Use agents to search, build, test, and critique, while researchers retain scientific decisions.",
   promise:
     "Finish with a research contract, a paper reproduction plan, an HPC-ready runbook, a verification record, a resolved paper-review ledger, and an AI-use statement.",
   duration: "10 stages · about 80 guided minutes",
   audience:
-    "Masters students, PhD researchers, clinicians, and research software practitioners who are new to agentic research workflows.",
+    "Masters students, PhD researchers, clinicians, and research software practitioners new to agentic workflows.",
   prerequisites: [
     "One research question, paper, or public repository to examine",
     "Basic familiarity with files, Git commits, and terminal commands",
@@ -28,7 +28,7 @@ export const agenticResearch: Workshop = {
     "Use repeated AI reviewer passes without surrendering scientific judgement",
   ],
   projectTime:
-    "A real paper reproduction usually takes several days to several weeks.",
+    "A paper reproduction often takes days or weeks.",
   quickRoute: ["contract", "paper", "communicate", "release"],
   accent: "blue",
   startLabel: "Write the research contract",

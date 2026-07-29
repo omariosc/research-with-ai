@@ -7,6 +7,21 @@ canonical links also appear on the website version page.
 
 No unreleased changes.
 
+## 1.5.0 - 2026-07-29
+
+- Added three source-backed live paper companions for the HTL real-time tool
+  detection paper, the 7-DoF LASK abstract, and the accepted BTPN paper.
+- Replaced the teaching recreations with static, browser-local adaptations of
+  the authentic frame-annotator and surgical-annotator interfaces.
+- Expanded the approved frame demonstration to the first ten sequential
+  Hamlyn presentation frames while retaining exactly three public LASK
+  surgical examples.
+- Added a collapsible workshop table of contents with position and completion
+  context.
+- Matched each continuation card to the destination workshop colour.
+- Fixed narrow text columns, overflow, and responsive layout behaviour across
+  mobile, tablet, and desktop viewports.
+
 ## 1.4.0 - 2026-07-27
 
 - Added public-repository screenshots with hashes and capture provenance.

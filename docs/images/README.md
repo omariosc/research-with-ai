@@ -1,19 +1,22 @@
 # Repository screenshot record
 
-These screenshots show the reviewed v1.4.0 interface. They were captured in
-Chrome on 27 July 2026 from a clean local build after all four tutorials were
-promoted to the same release. Desktop captures used a 1440 by 900 viewport.
-The mobile capture used a 390 by 844 viewport.
+These screenshots document the reviewed v1.5.0 interface. The workshop
+captures were made in Chrome on 27 July 2026, and the two exact annotation-tool
+captures were refreshed from the public static demos on 29 July 2026. The
+stored desktop images are 1440 by 900 pixels. The mobile capture used a 390 by
+844 viewport. The surgical interface was rendered at 1600 by 900 pixels, then
+proportionally fitted to the documented 1440 by 900 canvas so both sidebars and
+their complete controls remain visible.
 
 The captures use dark mode and the default empty project. The annotation
 captures retain each source tool's authentic light or dark working surface.
-They contain only the first three permitted frame-annotator examples and the
-three disclosed, public, non-in-vivo LASK v1.0 frames. The conference capture
-uses original interface graphics rather than organiser photographs. No patient
-data, private research material, credentials, browser chrome, or unresolved
-third-party media appear. The screenshots are project documentation covered by
-the repository's CC BY 4.0 content licence, with LASK attribution retained
-under CC BY 4.0.
+The frame-annotator demo contains the ten approved Hamlyn samples, and the
+surgical-annotator demo contains the three disclosed, public, non-in-vivo LASK
+v1.0 frames. The conference capture uses original interface graphics rather
+than organiser photographs. No patient data, private research material,
+credentials, browser chrome, or unresolved third-party media appear. The
+screenshots are project documentation covered by the repository's CC BY 4.0
+content licence, with LASK attribution retained under CC BY 4.0.
 
 | File | View | SHA-256 |
 | --- | --- | --- |
@@ -23,8 +26,8 @@ under CC BY 4.0.
 | `interactive-paper-container-lab.jpg` | Portable model-service lab, 1440 by 900 pixels | `8da6b7c2286cb8eef7ed169f5f145f0ea6a0983f14173fc2883a9500fcae5e4a` |
 | `interactive-paper-homepage-evidence.jpg` | Original Paper2Web prevalence graphic and method notes, 1440 by 900 pixels | `94c122362c21eda8215545fa2fe4c2a3ab0f590bebdaf2fe879daef2670d2009` |
 | `annotation-tools-lask-story.jpg` | Public outcomes from bounding boxes and the Hamlyn project through LASK and BTPN, 1440 by 900 pixels | `fed7ca745641df754411b56e2db349a1bb76edec65ca87d47690f6e6d0c594f3` |
-| `annotation-tools-frame-annotator.jpg` | First-three frame timeline and native exports, 1440 by 900 pixels | `4fd4d5c10a2e4caaeb1b4a6ae60450144d2f4709f35f059033ed09758d2cea90` |
-| `annotation-tools-surgical-annotator.jpg` | Three disclosed LASK annotations in the surgical geometry workflow, 1440 by 900 pixels | `e384d81b6fd99b0f4acc9614cc28ae44f8380065e05d08aa2673350aa3ec8244` |
+| `annotation-tools-frame-annotator.jpg` | Exact public frame-annotator interface with its ten-frame Hamlyn clip, timeline, classification controls, and keyboard workflow, 1440 by 900 pixels | `a9a44eb9b7cdc75ff127403573ee8c027eb4e4154c21e0fba51dac402f95c7fc` |
+| `annotation-tools-surgical-annotator.jpg` | Exact public surgical-annotator interface with one of three disclosed LASK annotations, two masks, shaft geometry, named keypoints, visibility controls, and both complete sidebars, 1440 by 900 pixels | `da13b0a43809fc8c4c59aa9bc77e28217fc92874a93b232e947bdd63dd923772` |
 | `ai-healthcare-conference-case-study.jpg` | Released conference operating principles and responsibility map, 1440 by 900 pixels | `910904476675348da81be843dbb44ce45f5b5fdcb7062753633c804984b38ba2` |
 | `mobile-overview.jpg` | Four-tutorial homepage at 390 by 844 pixels | `49cb969c2512b92de02eb75914c2dd60279814dbbd978ba49689312e70fbd72f` |
 

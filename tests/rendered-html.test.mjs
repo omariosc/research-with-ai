@@ -94,7 +94,7 @@ test("server-renders the platform overview and all four routes", async () => {
   assert.doesNotMatch(html, /Local, not encrypted/);
   assert.doesNotMatch(html, /Never enter patient data/);
   assert.match(html, /aria-label="Switch to dark mode"/);
-  assert.match(html, /v1\.4\.0/);
+  assert.match(html, /v1\.5\.0/);
   assert.match(html, /Skip to main content/);
   assert.match(html, /research-with-ai:theme/);
   assert.doesNotMatch(html, /Your site is taking shape|Building your site/);
@@ -113,7 +113,7 @@ test("renders the ten-stage agentic research workshop", async () => {
   assert.match(html, /Package, disclose, and release/);
   assert.match(html, /research_contract\.md/);
   assert.match(html, /Human checkpoint/);
-  assert.match(html, /Tutorial release: v1\.4\.0/);
+  assert.match(html, /Tutorial release: v1\.5\.0/);
   assert.match(html, /Active project/);
   assert.match(html, /My first project/);
   assert.match(html, /How this tutorial works/);
@@ -236,6 +236,56 @@ test("keeps core orientation visible and renders help without layout disclosures
     assert.match(html, /<dialog[^>]*class="context-help-dialog"/);
     assert.match(html, /aria-label="Close Evidence note help"/);
     assert.doesNotMatch(html, /role="tooltip"/);
+
+    assert.match(html, /aria-controls="workshop-toc-panel"/);
+    assert.match(html, /aria-label="On this workshop page"/);
+    assert.match(html, /id="overview"/);
+    assert.match(html, /id="how-it-works"/);
+    assert.match(html, /id="choose-track"/);
+    assert.match(html, /id="extended-learning"/);
+  }
+});
+
+test("continuation cards use the destination workshop colour", async () => {
+  const transitions = [
+    [
+      "/agentic-research",
+      "accent-ochre",
+      "https://interactivepaper.omarchoudhry.co.uk",
+      "Building a Website for Your Research",
+    ],
+    [
+      "/interactive-paper",
+      "accent-green",
+      "https://annotate.omarchoudhry.co.uk",
+      "Developing Custom Annotation Tools",
+    ],
+    [
+      "/annotation-tools",
+      "accent-rose",
+      "https://conferencewithai.omarchoudhry.co.uk",
+      "Run an AI in Healthcare Conference",
+    ],
+    [
+      "/ai-healthcare-conference",
+      "accent-blue",
+      "https://agenticresearch.omarchoudhry.co.uk",
+      "Agentic AI in Research",
+    ],
+  ];
+
+  for (const [route, accent, href, title] of transitions) {
+    const response = await render(route);
+    assert.equal(response.status, 200, route);
+    const html = await response.text();
+    assert.match(
+      html,
+      new RegExp(
+        `<a class="next-workshop ${accent}" href="${href.replaceAll(".", "\\.")}"`,
+      ),
+      route,
+    );
+    assert.ok(html.includes(title), `${route}: ${title}`);
   }
 });
 
@@ -284,27 +334,34 @@ test("renders the website brief and annotation interactions", async () => {
   assert.match(paper, /model-container-service\.zip/);
   assert.match(paper, /Port forwarding is not the deployment plan/);
   assert.match(annotation, /Developing Custom Annotation Tools Using AI/);
-  assert.match(annotation, /Two tools, two different annotation jobs/);
+  assert.match(annotation, /Two authentic interfaces, with safe public fixtures/);
   assert.match(annotation, /aria-label="Choose annotation tool"/);
   assert.match(annotation, /id="frame-annotator-tab"/);
   assert.match(annotation, /aria-controls="frame-annotator-panel"/);
   assert.match(annotation, /id="surgical-annotator-tab"/);
   assert.match(annotation, /aria-controls="surgical-annotator-panel"/);
-  assert.match(annotation, /Classify frame ranges on a timeline/);
-  assert.match(annotation, /Draw masks, lines, keypoints, and phases/);
   assert.match(
     annotation,
-    /These are exactly the first three permitted repository samples in canonical order/,
+    /Classify frame ranges on the original timeline interface/,
   );
-  assert.match(annotation, /frame_0000\.png/);
-  assert.match(annotation, /frame_0001\.png/);
-  assert.match(annotation, /frame_0002\.png/);
-  assert.match(annotation, /Reset starter/);
-  assert.match(annotation, /Local draft only/);
-  assert.match(annotation, /This is the real frame-annotator shape/);
+  assert.match(annotation, /Draw masks, shaft lines, keypoints, and phases/);
   assert.match(
     annotation,
-    /href="\/citations\/annotation-showcase-media-2026-07-27\.md"/,
+    /ten explicitly approved frames recovered from the author-owned Hamlyn presentation video/,
+  );
+  assert.match(
+    annotation,
+    /href="\/annotation-demos\/frame-annotator\/"/,
+  );
+  assert.match(
+    annotation,
+    /src="\/annotation-demos\/frame-annotator\/preview\.png"/,
+  );
+  assert.match(annotation, /Local save and reset/);
+  assert.match(annotation, /Public HEAD 0dcfc9e/);
+  assert.match(
+    annotation,
+    /href="\/citations\/annotation-showcase-media-2026-07-29\.md"/,
   );
   assert.match(annotation, /From a fast beta to the LASK workflow/);
   assert.match(annotation, /Open LASK v1\.0 on Zenodo/);
@@ -332,12 +389,12 @@ test("renders the website brief and annotation interactions", async () => {
   assert.doesNotMatch(annotation, /annotation-synthetic-frame\.svg/);
   assert.doesNotMatch(annotation, /A tiny annotation loop/);
   assert.match(annotation, /annotation-spec\.yaml/);
-  assert.match(annotation, /tutorial_version: &quot;1\.4\.0&quot;/);
-  assert.match(annotation, /schema_version: &quot;1\.4\.0&quot;/);
+  assert.match(annotation, /tutorial_version: &quot;1\.5\.0&quot;/);
+  assert.match(annotation, /schema_version: &quot;1\.5\.0&quot;/);
   assert.match(annotation, /origin: &quot;manual&quot;/);
   assert.match(
     annotation,
-    /href="\/schemas\/annotation-spec-1\.4\.0\.schema\.json"/,
+    /href="\/schemas\/annotation-spec-1\.5\.0\.schema\.json"/,
   );
   assert.match(annotation, /YOLO line exactly/);
   assert.match(annotation, /source_hash/);
@@ -368,7 +425,7 @@ test("renders the website brief and annotation interactions", async () => {
     "Active project",
     "Choose a workshop track",
     "Work one stage at a time",
-    "Two tools, two different annotation jobs",
+    "Two authentic interfaces, with safe public fixtures",
     "Turn an annotation protocol into software requirements",
     "Optional, after the core stages",
     "From a fast beta to the LASK workflow",
@@ -415,8 +472,8 @@ test("renders the ten-stage AI in healthcare conference workshop", async () => {
   assert.match(html, /How this tutorial works/);
   assert.match(html, /One project, one track, one stage at a time/);
   assert.match(html, /name="workshop-route"/);
-  assert.match(html, /Tutorial release: v1\.4\.0/);
-  assert.match(html, /Tutorial v1\.4\.0/);
+  assert.match(html, /Tutorial release: v1\.5\.0/);
+  assert.match(html, /Tutorial v1\.5\.0/);
   assert.match(html, /id="conference-committee-title"/);
   assert.match(html, /Conference co-chairs/);
   assert.match(html, /Financial officer/);
@@ -481,8 +538,8 @@ test("renders the version history and canonical workshop links", async () => {
   assert.match(html, /Version history \| Research with AI/);
   assert.match(html, /Current tutorials, clearly versioned\./);
   assert.match(html, /Current content release/);
-  assert.match(html, /v1\.4\.0/);
-  assert.match(html, /All four workshops are in\s+the reviewed v1\.4\.0 release/i);
+  assert.match(html, /v1\.5\.0/);
+  assert.match(html, /All four workshops are in\s+the reviewed v1\.5\.0 release/i);
   assert.match(html, /v1\.2\.0/);
   assert.match(html, /v1\.1\.0/);
   assert.match(html, /v1\.0\.0/);
@@ -490,8 +547,15 @@ test("renders the version history and canonical workshop links", async () => {
   assert.match(html, /interactivepaper\.omarchoudhry\.co\.uk/);
   assert.match(html, /annotate\.omarchoudhry\.co\.uk/);
   assert.match(html, /conferencewithai\.omarchoudhry\.co\.uk/);
-  assert.match(html, /Four complete tutorials and refreshed evidence/);
+  assert.match(html, /Live paper companions and authentic annotation tools/);
   assert.doesNotMatch(html, /Workshop 04|In development/);
+  assert.match(
+    html,
+    /github\.com\/omariosc\/research-with-ai\/releases\/tag\/v1\.5\.0/,
+  );
+  assert.match(html, /research-with-ai-v1\.5\.0-source\.zip/);
+  assert.match(html, /d3f4008/);
+  assert.match(html, /Four complete tutorials and refreshed evidence/);
   assert.match(html, /research-with-ai-v1\.4\.0-source\.zip/);
   assert.match(html, /d72814d/);
   assert.match(html, /research-with-ai-v1\.3\.0-source\.zip/);
@@ -500,6 +564,28 @@ test("renders the version history and canonical workshop links", async () => {
   assert.match(html, /a304472/);
   assert.match(html, /research-with-ai-v1\.1\.0-source\.zip/);
   assert.match(html, /bd3c4a2/);
+});
+
+test("keeps the reviewed v1.5 source snapshot digest pinned outside the site bundle", async () => {
+  const checksumUrl = new URL(
+    "../public/releases/research-with-ai-v1.5.0-source.sha256",
+    import.meta.url,
+  );
+  const checksumRecord = await readFile(checksumUrl, "utf8");
+  const digest =
+    "323646e81668be40abdc7b2c6c6e897f34fca39ea524116cddc7403cc209b180";
+  assert.equal(
+    checksumRecord,
+    `${digest}  research-with-ai-v1.5.0-source.zip\n`,
+  );
+  await assert.rejects(
+    access(
+      new URL(
+        "../public/releases/research-with-ai-v1.5.0-source.zip",
+        import.meta.url,
+      ),
+    ),
+  );
 });
 
 test("keeps the reviewed v1.4 source snapshot pinned without nested archives", async () => {
@@ -647,7 +733,7 @@ test("server-renders complete workshop metadata at every custom-domain root", as
       host: "agenticresearch.omarchoudhry.co.uk",
       title: "Agentic AI in Research",
       description:
-        "Take one research question from field mapping to an independently checked, reproducible workflow. Use agents to search, build, test, and critique the work at meaningful decision points, while keeping scientific decisions with the researcher.",
+        "Take one research question from field mapping to an independently checked, reproducible workflow. Use agents to search, build, test, and critique, while researchers retain scientific decisions.",
       marker: "Write the research contract",
     },
     {
@@ -668,7 +754,7 @@ test("server-renders complete workshop metadata at every custom-domain root", as
       host: "conferencewithai.omarchoudhry.co.uk",
       title: "Run an AI in Healthcare Conference",
       description:
-        "Turn a local need into a safe, useful, and welcoming research event. Follow a first-hand Leeds AI Week case from purpose and partnerships through delivery, honest evaluation, and community follow-up.",
+        "Build a safe, useful research event from a local need. Follow a first-hand Leeds AI Week case through delivery and evaluation.",
       marker: "A student-led conference built from local relationships",
     },
   ];
@@ -730,7 +816,7 @@ test("ships the current versioned annotation specification schema", async () => 
   const schema = JSON.parse(
     await readFile(
       new URL(
-        "../public/schemas/annotation-spec-1.4.0.schema.json",
+        "../public/schemas/annotation-spec-1.5.0.schema.json",
         import.meta.url,
       ),
       "utf8",
@@ -738,8 +824,8 @@ test("ships the current versioned annotation specification schema", async () => 
   );
 
   assert.equal(schema.$schema, "https://json-schema.org/draft/2020-12/schema");
-  assert.equal(schema.properties.tutorial_version.const, "1.4.0");
-  assert.equal(schema.properties.schema_version.const, "1.4.0");
+  assert.equal(schema.properties.tutorial_version.const, "1.5.0");
+  assert.equal(schema.properties.schema_version.const, "1.5.0");
   assert.equal(schema.properties.data.properties.raw_data_immutable.const, true);
   assert.deepEqual(
     schema.properties.data.properties.deidentification.properties.status.enum,
@@ -813,6 +899,21 @@ test("keeps the legacy v1.3.0 annotation schema pinned", async () => {
   assert.equal(schema.properties.schema_version.const, "1.3.0");
 });
 
+test("keeps the legacy v1.4.0 annotation schema pinned", async () => {
+  const schema = JSON.parse(
+    await readFile(
+      new URL(
+        "../public/schemas/annotation-spec-1.4.0.schema.json",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
+
+  assert.equal(schema.properties.tutorial_version.const, "1.4.0");
+  assert.equal(schema.properties.schema_version.const, "1.4.0");
+});
+
 test("pins the synthetic asset used only by the separate annotation round-trip fixture", async () => {
   const asset = await readFile(
     new URL(
@@ -831,7 +932,7 @@ test("generated annotation YAML parses and validates against its schema", async 
     render("/annotation-tools"),
     readFile(
       new URL(
-        "../public/schemas/annotation-spec-1.4.0.schema.json",
+        "../public/schemas/annotation-spec-1.5.0.schema.json",
         import.meta.url,
       ),
       "utf8",
@@ -844,8 +945,8 @@ test("generated annotation YAML parses and validates against its schema", async 
   assert.ok(match, "default annotation YAML should be rendered");
   const spec = parseYaml(decodeHtml(match[1]));
   const schema = JSON.parse(schemaText);
-  assert.equal(spec.tutorial_version, "1.4.0");
-  assert.equal(spec.schema_version, "1.4.0");
+  assert.equal(spec.tutorial_version, "1.5.0");
+  assert.equal(spec.schema_version, "1.5.0");
   const ajv = new Ajv2020({ allErrors: true, strict: true });
   addFormats(ajv);
   const validate = ajv.compile(schema);

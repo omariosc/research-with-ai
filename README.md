@@ -23,13 +23,13 @@ copyable prompts, explicit approval gates, runnable checks, source libraries,
 and exportable research records. It is designed as teaching material, not as a
 catalogue of AI products or a substitute for scientific judgement.
 
-> **Release status, checked 27 July 2026:** v1.4.0 is the reviewed release for
-> all four tutorials. It adds the AI in healthcare conference workshop,
-> faithful frame and surgical annotation demonstrations, the annotation
-> research-outcome chronology, the Paper2Web evidence panel, refreshed
-> screenshots, and consistent release and citation records. Use the
-> [v1.4.0 GitHub release](https://github.com/omariosc/research-with-ai/releases/tag/v1.4.0)
-> or its source snapshot when an exact stable artefact is required.
+> **Release status, checked 29 July 2026:** v1.5.0 is the reviewed release for
+> all four tutorials. It adds three source-backed live paper companions,
+> authentic browser-local frame and surgical annotation interfaces, a floating
+> workshop table of contents, destination-coloured continuation cards, and
+> responsive layout fixes. Use the
+> [v1.5.0 GitHub release](https://github.com/omariosc/research-with-ai/releases/tag/v1.5.0)
+> when an exact stable artefact is required.
 
 ## Choose a tutorial
 
@@ -88,20 +88,22 @@ and cited independently. The fourth tutorial uses the application route
   </tr>
   <tr>
     <td width="50%">
-      <a href="https://annotate.omarchoudhry.co.uk#demo">
-        <img src="docs/images/annotation-tools-frame-annotator.jpg" alt="Faithful browser adaptation of frame-annotator showing the first three permitted samples, an inclusive clip timeline, classification controls, and native JSON and CSV export.">
+      <a href="https://annotate.omarchoudhry.co.uk/annotation-demos/frame-annotator/">
+        <img src="docs/images/annotation-tools-frame-annotator.jpg" alt="Exact public frame-annotator interface showing its ten approved Hamlyn samples, inclusive clip timeline, classification controls, and original keyboard workflow.">
       </a>
       <br>
       <strong>frame-annotator</strong><br>
-      Mark an inclusive range once, classify it, then expand it to frame-level CSV.
+      Use the original tool interface to inspect a ten-frame clip, classify an
+      inclusive range, and work with its timeline and keyboard controls.
     </td>
     <td width="50%">
-      <a href="https://annotate.omarchoudhry.co.uk#demo">
-        <img src="docs/images/annotation-tools-surgical-annotator.jpg" alt="Faithful browser adaptation of surgical-annotator showing three original LASK Trial46 annotations with two masks, shaft lines, named keypoints, visibility states, phases, and local editing controls.">
+      <a href="https://annotate.omarchoudhry.co.uk/annotation-demos/surgical-annotator/">
+        <img src="docs/images/annotation-tools-surgical-annotator.jpg" alt="Exact public surgical-annotator interface showing one of three disclosed LASK Trial46 annotations with two masks, shaft lines, named keypoints, visibility states, and original editing controls.">
       </a>
       <br>
       <strong>surgical-annotator</strong><br>
-      Inspect and edit original masks, shaft lines, keypoints, visibility, and phases.
+      Use the original interface to inspect and edit three disclosed annotations,
+      including masks, shaft lines, keypoints, visibility, and phases.
     </td>
   </tr>
   <tr>
@@ -114,6 +116,46 @@ and cited independently. The fourth tutorial uses the application route
       A first-hand Leeds case with an advertised-versus-revised programme,
       committee roles, an aggregate denominator ledger, full-scale feedback
       charts, media boundaries, and a locally stored planning tool.
+    </td>
+  </tr>
+</table>
+
+### Live paper companions
+
+The website workshop now includes three complete outputs made from the authors'
+actual papers. Each page leads with the paper title, authors, and an original
+figure, then preserves the source abstract, section order, figures, captions,
+and tables. Interactive interpretation is kept visibly separate.
+
+<table>
+  <tr>
+    <td width="33%">
+      <a href="https://interactivepaper.omarchoudhry.co.uk/paper-demos/real-time-tool-detection">
+        <img src="public/paper-demos/screenshots/real-time-tool-detection-landing.webp" alt="Live companion for the published real-time laparoscopic tool detection paper, showing the paper title beside its original experimental pipeline figure and caption.">
+      </a>
+      <br>
+      <strong>Real-time tool detection</strong><br>
+      Published abstract, Figures 1 to 3, Tables 3 to 5, and an explicit
+      abstract-versus-table discrepancy.
+    </td>
+    <td width="33%">
+      <a href="https://interactivepaper.omarchoudhry.co.uk/paper-demos/lask-7dof">
+        <img src="public/paper-demos/screenshots/lask-7dof-landing.webp" alt="Live companion for the published LASK 7-DoF paper, showing the paper title beside its original data collection and annotation figure.">
+      </a>
+      <br>
+      <strong>LASK 7-DoF dataset</strong><br>
+      Published abstract and Figure 1, plus a clear separation between the
+      paper cohort, later research inventory and staged Zenodo release.
+    </td>
+    <td width="33%">
+      <a href="https://interactivepaper.omarchoudhry.co.uk/paper-demos/btpn">
+        <img src="public/paper-demos/screenshots/btpn-landing.webp" alt="Live companion for the accepted BTPN paper, showing the paper title beside its original architecture figure.">
+      </a>
+      <br>
+      <strong>Bayesian Temporal Pose Networks</strong><br>
+      Accepted-paper abstract, Figures 1 to 4, and direct crops of the complete
+      camera-ready Tables 1 and 2. The official proceedings link remains
+      clearly marked as coming soon.
     </td>
   </tr>
 </table>
@@ -137,29 +179,33 @@ conditions, and rights are recorded in the
 | BreastMNIST worked evidence pack | Pinned source files and independent prediction-artifact metric re-evaluation | [Live page](https://researchwithai.omarchoudhry.co.uk/worked-examples/medmnist-breast) |
 | Agentic science reading notes | Google Co-Scientist, AI Scientist v1 and v2, the related Nature study, and Medical AI Scientist | [Markdown](public/reading-notes/agentic-science-systems-2026-07-26.md) |
 | Annotation origin and outcomes record | MIUA bounding boxes, Hamlyn group project, public commits, LASK, BTPN, AI role, and media decision | [Markdown](public/audits/annotation-tool-origin-story-2026-07-26.md) |
-| Annotation showcase media record | Exact first-three privacy allowlist, LASK attribution, image and native-annotation hashes, transformations, and claim boundaries | [Markdown](public/citations/annotation-showcase-media-2026-07-27.md) |
+| Annotation showcase media record | Ten authorised Hamlyn presentation frames, three public LASK examples, frontend source, hashes, transformations, and claim boundaries | [Markdown](public/citations/annotation-showcase-media-2026-07-29.md) |
 | Annotation export audit | Canonical JSON, review CSV round trip, YOLO subset, and declared information loss | [Markdown](public/audits/annotation-round-trip-2026-07-26.md) |
 | Paper2Web homepage evidence | Published counts, 11.1% calculation, sampling boundary, chart decision, and reuse limits | [Markdown](public/citations/paper2web-project-homepage-evidence-2026-07-27.md) |
+| Live paper companion assets | HTL, LASK, and BTPN figure provenance, rights, transformations, hashes, and publication boundaries | [Markdown](public/citations/paper-demo-assets-2026-07-29.md) |
 | Conference first-hand record | Organiser account for the CDT panel, digital pathology workshop, and approximate essay and poster entries | [Markdown](public/citations/ai-healthcare-conference-first-hand-2026-07-26.md) |
 | Conference operations and evaluation record | Aggregate workbook audit, advertised and revised programme, committee structure, logistics account, feedback distributions, and unresolved denominators | [Markdown](public/citations/ai-healthcare-conference-operations-and-evaluation-2026-07-26.md) |
 | Conference media and permission record | LinkedIn source posts, project-specific permission, retained photographs, alt text, and evidential limits | [Markdown](public/citations/ai-healthcare-conference-media-2026-07-26.md) |
 | Model container lab | Locked FastAPI service, synthetic model, Docker profile, tests, and deployment record | [Lab guide](public/worked-examples/model-container-service/README.md) |
-| Annotation specification | Immutable v1.4.0 JSON Schema used by the interactive builder | [Schema](public/schemas/annotation-spec-1.4.0.schema.json) |
-| Release evidence | Rights, claims, word counts, Docker acceptance, browser QA, and remaining human gates | [v1.4.0 audit](public/audits/platform-release-v1.4.0-2026-07-27.md) |
-| Reviewed source snapshot | Source archive generated from the recorded feature commit | [ZIP](public/releases/research-with-ai-v1.4.0-source.zip) and [SHA-256](public/releases/research-with-ai-v1.4.0-source.sha256) |
+| Annotation specification | Immutable v1.5.0 JSON Schema used by the interactive builder | [Schema](public/schemas/annotation-spec-1.5.0.schema.json) |
+| Current release notes | Feature summary, evidence boundaries, and source record | [v1.5.0 notes](docs/releases/v1.5.0.md) |
+| Current release evidence | Rights, privacy boundaries, source checks, browser QA, and remaining human gates | [v1.5.0 audit](public/audits/platform-release-v1.5.0-2026-07-29.md) |
+| Current reviewed source snapshot | Immutable v1.5.0 source archive and digest | [GitHub release ZIP](https://github.com/omariosc/research-with-ai/releases/download/v1.5.0/research-with-ai-v1.5.0-source.zip) and [SHA-256](public/releases/research-with-ai-v1.5.0-source.sha256) |
+| Previous release evidence | Rights, claims, word counts, Docker acceptance, browser QA, and remaining human gates for v1.4.0 | [v1.4.0 audit](public/audits/platform-release-v1.4.0-2026-07-27.md) |
+| Previous reviewed source snapshot | Immutable v1.4.0 source archive and digest | [ZIP](public/releases/research-with-ai-v1.4.0-source.zip) and [SHA-256](public/releases/research-with-ai-v1.4.0-source.sha256) |
 
 ## Citation
 
 For the complete platform:
 
-> Choudhry, O. (2026). *Research with AI Tutorial Platform* (Version 1.4.0)
+> Choudhry, O. (2026). *Research with AI Tutorial Platform* (Version 1.5.0)
 > [Software and interactive tutorial collection].
 > https://researchwithai.omarchoudhry.co.uk
 
 GitHub can format the platform citation from [CITATION.cff](CITATION.cff).
 [CITING.md](CITING.md) provides separate human-readable citations for all four
 tutorials. [CITATIONS.bib](CITATIONS.bib) provides five copy-ready BibTeX
-records for the v1.4.0 platform and its four released tutorials. No DOI is
+records for the v1.5.0 platform and its four released tutorials. No DOI is
 claimed for this repository. The
 [LASK DOI](https://doi.org/10.5281/zenodo.20752651) identifies the dataset, not
 this platform or the annotation tutorial.

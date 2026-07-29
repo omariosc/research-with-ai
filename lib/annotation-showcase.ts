@@ -29,27 +29,83 @@ export const FRAME_SAMPLES: readonly FrameSample[] = [
     imagePath:
       "/worked-examples/annotation-showcase/frame-annotator/frame_0002.png",
   },
+  {
+    id: "frame-0003",
+    filename: "frame_0003.png",
+    imagePath:
+      "/worked-examples/annotation-showcase/frame-annotator/frame_0003.png",
+  },
+  {
+    id: "frame-0004",
+    filename: "frame_0004.png",
+    imagePath:
+      "/worked-examples/annotation-showcase/frame-annotator/frame_0004.png",
+  },
+  {
+    id: "frame-0005",
+    filename: "frame_0005.png",
+    imagePath:
+      "/worked-examples/annotation-showcase/frame-annotator/frame_0005.png",
+  },
+  {
+    id: "frame-0006",
+    filename: "frame_0006.png",
+    imagePath:
+      "/worked-examples/annotation-showcase/frame-annotator/frame_0006.png",
+  },
+  {
+    id: "frame-0007",
+    filename: "frame_0007.png",
+    imagePath:
+      "/worked-examples/annotation-showcase/frame-annotator/frame_0007.png",
+  },
+  {
+    id: "frame-0008",
+    filename: "frame_0008.png",
+    imagePath:
+      "/worked-examples/annotation-showcase/frame-annotator/frame_0008.png",
+  },
+  {
+    id: "frame-0009",
+    filename: "frame_0009.png",
+    imagePath:
+      "/worked-examples/annotation-showcase/frame-annotator/frame_0009.png",
+  },
 ] as const;
 
 export const FRAME_CLASSES = [
   {
-    id: "positive",
-    name: "Positive",
+    id: "0",
+    name: "Safe",
     color: "#28a745",
-    shortcut: "1",
-    description: "Positive class",
+    shortcut: "0",
+    description: "No safety concerns",
   },
   {
-    id: "negative",
-    name: "Negative",
+    id: "1a",
+    name: "Improper Posture",
     color: "#dc3545",
-    shortcut: "2",
-    description: "Negative class",
+    shortcut: "a",
+    description: "Unsafe: improper posture",
+  },
+  {
+    id: "1b",
+    name: "Hyperextension",
+    color: "#dc3545",
+    shortcut: "b",
+    description: "Unsafe: hyperextension",
+  },
+  {
+    id: "1c",
+    name: "Controller Collision",
+    color: "#dc3545",
+    shortcut: "c",
+    description: "Unsafe: controller collision",
   },
 ] as const;
 
 export const FRAME_STARTER_CLIPS: readonly FrameClip[] = [
-  { start: 0, end: 1, class: "positive" },
+  { start: 0, end: 9, class: "1c" },
 ] as const;
 
 export function cloneValue<T>(value: T): T {

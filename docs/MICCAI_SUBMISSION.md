@@ -9,7 +9,7 @@ case dates or fields change.
 
 Prepare one package for each canonical tutorial. Do not rely on the shared
 homepage to supply required context. All four tutorials belong to the reviewed
-v1.4.0 release:
+v1.5.0 release:
 
 1. **Agentic AI in Research:** a bounded, evidence-led route from question to
    checked computational release.
@@ -23,7 +23,7 @@ v1.4.0 release:
    evaluation, and follow-up. Route: `/ai-healthcare-conference`. Canonical
    hostname: `conferencewithai.omarchoudhry.co.uk`.
 
-Use the v1.4.0 citation and release evidence for every package. The conference
+Use the v1.5.0 citation and release evidence for every package. The conference
 tutorial is released, while its learner pilot, video, transcript, final
 submission wrapper, and any unresolved attendance reconciliation remain named
 submission tasks rather than completed claims.
@@ -88,6 +88,22 @@ human oversight
       public commit history, and LASK dataset record
 - [ ] Confirm no paper figure or repository screenshot is presented as an
       original teaching graphic
+- [ ] Open all three live paper companions and verify each reported value,
+      figure caption, rights statement, long description, and claim boundary
+- [ ] Confirm the BTPN companion says the official paper link is coming soon
+      and exposes no private manuscript, review, response, or source bundle
+- [ ] Confirm the paper-companion landing screenshots were captured from the
+      reviewed release rather than designed as mock-ups
+- [ ] Open both static annotation demos and confirm every API request stays in
+      the browser-local adapter
+- [ ] Confirm the frame demo exposes only the ten authorised Hamlyn
+      presentation frames and the surgical demo exposes exactly three public
+      LASK examples
+- [ ] Confirm the Hamlyn frames are described as a lossy presentation recovery,
+      not as missing raw prototype frames
+- [ ] Test the floating table of contents, progress context, Escape handling,
+      destination colours, and horizontal overflow at mobile, tablet, and
+      desktop widths
 
 ## Additional conference tutorial gates
 

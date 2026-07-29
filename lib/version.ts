@@ -1,8 +1,8 @@
 import type { WorkshopSlug } from "@/lib/types";
 
-export const TUTORIAL_VERSION = "1.4.0";
+export const TUTORIAL_VERSION = "1.5.0";
 export const TUTORIAL_VERSION_LABEL = `v${TUTORIAL_VERSION}`;
-export const TUTORIAL_RELEASE_DATE = "2026-07-27";
+export const TUTORIAL_RELEASE_DATE = "2026-07-29";
 export const TUTORIAL_HOMEPAGE =
   "https://researchwithai.omarchoudhry.co.uk";
 

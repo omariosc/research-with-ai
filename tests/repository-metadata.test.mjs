@@ -14,13 +14,13 @@ test("platform and tutorial citations agree on titles, version, and URLs", async
   const [cffText, bib, publicBib] = await Promise.all([
     file("CITATION.cff", "utf8"),
     file("CITATIONS.bib", "utf8"),
-    file("public/citations/research-with-ai-v1.4.0.bib", "utf8"),
+    file("public/citations/research-with-ai-v1.5.0.bib", "utf8"),
   ]);
   const cff = YAML.parse(cffText);
 
   assert.equal(cff["cff-version"], "1.2.0");
-  assert.equal(cff.version, "1.4.0");
-  assert.equal(cff["date-released"], "2026-07-27");
+  assert.equal(cff.version, "1.5.0");
+  assert.equal(cff["date-released"], "2026-07-29");
   assert.equal(cff.url, "https://researchwithai.omarchoudhry.co.uk");
   assert.equal(
     cff["repository-code"],
@@ -54,6 +54,17 @@ test("platform and tutorial citations agree on titles, version, and URLs", async
   }
 });
 
+test("keeps the immutable v1.4 citation snapshot separate", async () => {
+  const legacyBib = await file(
+    "public/citations/research-with-ai-v1.4.0.bib",
+    "utf8",
+  );
+
+  assert.equal(legacyBib.match(/^@misc\{/gm)?.length, 5);
+  assert.match(legacyBib, /Version 1\.4\.0, released 27 July 2026/);
+  assert.doesNotMatch(legacyBib, /Version 1\.5\.0/);
+});
+
 test("keeps the immutable v1.3 citation snapshot separate", async () => {
   const legacyBib = await file(
     "public/citations/research-with-ai-v1.3.0.bib",
@@ -77,11 +88,11 @@ test("repository screenshots remain pinned to the reviewed interface", async () 
     "docs/images/agentic-research-workspace.jpg":
       "646a262854fc702dce13a43b46c7e2c0a416d449e26fd10592342dfe288dc4eb",
     "docs/images/annotation-tools-frame-annotator.jpg":
-      "4fd4d5c10a2e4caaeb1b4a6ae60450144d2f4709f35f059033ed09758d2cea90",
+      "a9a44eb9b7cdc75ff127403573ee8c027eb4e4154c21e0fba51dac402f95c7fc",
     "docs/images/annotation-tools-lask-story.jpg":
       "fed7ca745641df754411b56e2db349a1bb76edec65ca87d47690f6e6d0c594f3",
     "docs/images/annotation-tools-surgical-annotator.jpg":
-      "e384d81b6fd99b0f4acc9614cc28ae44f8380065e05d08aa2673350aa3ec8244",
+      "da13b0a43809fc8c4c59aa9bc77e28217fc92874a93b232e947bdd63dd923772",
     "docs/images/interactive-paper-container-lab.jpg":
       "8da6b7c2286cb8eef7ed169f5f145f0ea6a0983f14173fc2883a9500fcae5e4a",
     "docs/images/interactive-paper-homepage-evidence.jpg":
@@ -206,14 +217,18 @@ test("README links the tutorials, evidence, screenshots, and citations", async (
     "docs/images/annotation-tools-surgical-annotator.jpg",
     "public/reading-notes/agentic-science-systems-2026-07-26.md",
     "public/audits/annotation-tool-origin-story-2026-07-26.md",
-    "public/citations/annotation-showcase-media-2026-07-27.md",
+    "public/citations/annotation-showcase-media-2026-07-29.md",
     "public/citations/paper2web-project-homepage-evidence-2026-07-27.md",
+    "public/citations/paper-demo-assets-2026-07-29.md",
     "public/citations/ai-healthcare-conference-operations-and-evaluation-2026-07-26.md",
     "public/worked-examples/model-container-service/README.md",
+    "public/audits/platform-release-v1.5.0-2026-07-29.md",
+    "public/releases/research-with-ai-v1.5.0-source.sha256",
     "public/audits/platform-release-v1.4.0-2026-07-27.md",
     "public/releases/research-with-ai-v1.4.0-source.zip",
     "public/releases/research-with-ai-v1.4.0-source.sha256",
-    "public/schemas/annotation-spec-1.4.0.schema.json",
+    "public/schemas/annotation-spec-1.5.0.schema.json",
+    "docs/releases/v1.5.0.md",
     "CITATION.cff",
     "CITATIONS.bib",
     "CITING.md",
@@ -231,6 +246,7 @@ test("repository documentation has no broken relative file links", async () => {
     "docs/images/README.md",
     "docs/releases/v1.3.0.md",
     "docs/releases/v1.4.0.md",
+    "docs/releases/v1.5.0.md",
   ];
 
   for (const path of markdownFiles) {

@@ -1,6 +1,6 @@
 # Video recording plan
 
-The reviewed v1.4.0 plan covers four focused tutorials from the same visual
+The reviewed v1.5.0 plan covers four focused tutorials from the same visual
 system. Each recording should begin with a real problem, show one useful
 failure or correction, and end with a file the viewer can keep.
 
@@ -79,7 +79,11 @@ Target length: 10 to 15 minutes.
    claim limit.
 9. Test keyboard navigation, mobile layout, links, downloads, and image
    alternatives.
-10. Attempt one applied scenario, then deploy the reviewed commit.
+10. Open the three generated live companions and trace one reported value,
+    figure, caption, rights decision, and limitation back to its source record.
+11. Explain why the BTPN proceedings link remains “coming soon” and why the
+    private manuscript, reviews, and response are absent.
+12. Attempt one applied scenario, then deploy the reviewed commit.
 
 ## Video 3: Build a Custom Annotation Tool with AI
 
@@ -88,24 +92,30 @@ Target length: 12 to 18 minutes.
 1. Show the original frames and write the annotation protocol before coding.
 2. Select the local offline, assisted labelling, or private team route and
    explain the data boundary that rules the other paths in or out.
-3. Distinguish the repository's frame-annotator and surgical-annotator
-   tools.
+3. Open the authentic static frame-annotator and surgical-annotator interfaces
+   and distinguish the jobs they support.
 4. Show the pinned audit, including passing core tests and uncovered surgical
    assumptions.
 5. Complete the specification builder and export valid `annotation-spec.yaml`.
-6. Implement the chosen route with synthetic fixtures. For a custom build,
-   generate a minimal keyboard-first local workflow.
-7. Use the embedded demo to label phase, box, and point data.
-8. Export the two-record fixture to review CSV, reimport it, and state which
-   canonical fields the chosen export would lose.
-9. For the local or offline route, run with network access disabled.
-10. Add assisted suggestions only after calibration and the manual baseline.
-11. Show that the annotator must accept or reject each suggestion.
-12. Attempt an agreement scenario and show the clustered analysis decision.
+6. Explain why the frame demo uses ten approved, sequential, lossy Hamlyn
+   presentation frames rather than claiming they are the missing raw frames.
+7. Use the frame interface to edit an inclusive clip and export its native
+   browser-local record.
+8. Use the surgical interface to inspect and edit the three disclosed public
+   LASK examples, including masks, shaft lines, keypoints, visibility, and
+   phases.
+9. Show that Save, Backup, and Reset remain browser-local and that model
+   services and server-side writes are unavailable.
+10. Export the canonical fixture to review CSV, reimport it, and state which
+    fields the chosen export would lose.
+11. For the local or offline route, run with network access disabled.
+12. Add assisted suggestions only after calibration and the manual baseline.
+13. Show that the annotator must accept or reject each suggestion.
+14. Attempt an agreement scenario and show the clustered analysis decision.
 
 ## Video 4: Run an AI in Healthcare Conference
 
-Released in v1.4.0.
+Released in v1.4.0 and retained in v1.5.0.
 
 Target length: 12 to 18 minutes.
 
@@ -149,7 +159,7 @@ Target length: 12 to 18 minutes.
 
 ## One-minute finalist cut
 
-The v1.4.0 finalist cut uses one sentence and one visual for each released
+The v1.5.0 finalist cut uses one sentence and one visual for each released
 workshop:
 
 - Research agents can search, inspect, execute, and draft, but the researcher

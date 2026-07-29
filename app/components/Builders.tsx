@@ -944,7 +944,7 @@ export function AnnotationSpecBuilder({
   const output = useMemo(
     () => `tutorial_version: ${yamlQuote(TUTORIAL_VERSION)}
 tutorial_canonical_url: ${yamlQuote(WORKSHOP_RELEASES["annotation-tools"].canonicalUrl)}
-schema_version: "1.4.0"
+schema_version: ${yamlQuote(TUTORIAL_VERSION)}
 project:
   name: ${yamlQuote(form.project)}
 data:
@@ -1026,7 +1026,7 @@ exports:
   - "dataset_manifest"
   - "task_specific_training_format"
 validation:
-  json_schema: "annotation-spec-1.4.0.schema.json"
+  json_schema: ${yamlQuote(`annotation-spec-${TUTORIAL_VERSION}.schema.json`)}
   round_trip_required: true
   protocol_locked_before_reliability_sample: true`,
     [annotatorCount, form, uniqueLabels, uniqueTasks],
@@ -1204,9 +1204,9 @@ validation:
             </ul>
             <a
               download
-              href="/schemas/annotation-spec-1.4.0.schema.json"
+              href={`/schemas/annotation-spec-${TUTORIAL_VERSION}.schema.json`}
             >
-              Download the v1.4 JSON Schema
+              Download the {TUTORIAL_VERSION_LABEL} JSON Schema
             </a>
           </div>
         </div>

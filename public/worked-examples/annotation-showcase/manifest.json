@@ -1,54 +1,133 @@
 {
-  "schema_version": "1.0.0",
-  "created": "2026-07-27",
-  "sample_limit_per_tool": 3,
+  "schema_version": "1.1.0",
+  "created": "2026-07-29",
+  "sample_limits": {
+    "frame_annotator": 10,
+    "surgical_annotator": 3
+  },
   "selection_policy": {
-    "frame_annotator": "Only the first three sample images in canonical filename order are permitted. No later frame image is included.",
+    "frame_annotator": "The author explicitly approved publication of the first ten sequential frames recovered from the Hamlyn presentation video. They retain the presentation overlays and are not the missing raw data/color_images frames.",
     "surgical_annotator": "Three manually annotated, non-in-vivo keyframes from public LASK v1.0 Trial46 were selected to show different phases and visibility states."
   },
   "tools": [
     {
       "id": "frame-annotator",
       "source_repository": "https://github.com/omariosc/frame-annotator",
-      "source_commit": "3e94ed03c1487331b8c041ca755421686b41d031",
-      "asset_licence": "MIT",
-      "annotation_status": "tutorial starter record, not a historical research annotation",
+      "source_commit": "0dcfc9e90dfd7867c58d3bc45f4508b19c4f4a5a",
+      "source_licence": "MIT",
+      "static_demo_path": "/annotation-demos/frame-annotator/",
+      "preview_path": "/annotation-demos/frame-annotator/preview.png",
+      "preview_sha256": "31cf3415a379dc9d8a1b53530fad3ba7f378a5fcf48799ceb680e1ac13899f7f",
+      "asset_rights": "author-owned media; explicit publication approval from Omar Choudhry on 2026-07-29",
+      "source_container": "Group Project.pptx",
+      "source_container_sha256": "a12982546b8b1666859b09d7f7096c3a473e926c36eedeefc70edc2a3a7aee11",
+      "embedded_media_member": "ppt/media/media1.mp4",
+      "embedded_media_sha256": "3a19c9a349ec4b48a76cc38744f82656b55906add831f85c5213db3b1fb5c587",
+      "recovery_status": "lossy presentation-video decode at the source 5 fps; existing Clip 2, Excessive Force Applied, and class-selection overlays retained; not raw data/color_images",
+      "annotation_status": "tutorial starter record reconstructed from the visible Controller Collision selection; not an original annotation output file",
       "annotation_path": "/worked-examples/annotation-showcase/frame-annotator/starter-annotations.json",
-      "annotation_sha256": "1ef19d0e7eb12a2d65bf7304e362ea5a88038fe170c4909e5fd0841cd5341983",
+      "annotation_sha256": "fdd24f0b97385f801c95e98599f843edb5e227e67ca8293e163b822942f1517f",
       "samples": [
         {
           "id": "frame-0000",
           "canonical_position": 1,
           "filename": "frame_0000.png",
           "image_path": "/worked-examples/annotation-showcase/frame-annotator/frame_0000.png",
-          "width": 320,
-          "height": 240,
-          "sha256": "0e270f6cd8b57ee6fd7983b84e46e6a16f349ebcad77ce7409410494762e943a"
+          "width": 640,
+          "height": 480,
+          "sha256": "b9135360c32d2beb99bc92fc5758a69a10b9ca9a5237c52db468b0205e9a1ab1"
         },
         {
           "id": "frame-0001",
           "canonical_position": 2,
           "filename": "frame_0001.png",
           "image_path": "/worked-examples/annotation-showcase/frame-annotator/frame_0001.png",
-          "width": 320,
-          "height": 240,
-          "sha256": "f70d7bd4f52fa91fe071c8260744ff376205134fa8d7eadf8e4776565830bb67"
+          "width": 640,
+          "height": 480,
+          "sha256": "63640edccefa31e3e702ddcd1d810f61994089d129eaeaced669870875a847f6"
         },
         {
           "id": "frame-0002",
           "canonical_position": 3,
           "filename": "frame_0002.png",
           "image_path": "/worked-examples/annotation-showcase/frame-annotator/frame_0002.png",
-          "width": 320,
-          "height": 240,
-          "sha256": "087f68912d227bada81eff67de4ac3e7d68dc2e4440b61f1173d12dd1a3e32c8"
+          "width": 640,
+          "height": 480,
+          "sha256": "4012f237ad83084e9a9890689c2ba1ed52cf99c3f3cfee18cf1b45c40dd55f25"
+        },
+        {
+          "id": "frame-0003",
+          "canonical_position": 4,
+          "filename": "frame_0003.png",
+          "image_path": "/worked-examples/annotation-showcase/frame-annotator/frame_0003.png",
+          "width": 640,
+          "height": 480,
+          "sha256": "cc23e9008189d8733d45f8a762f0d8c5bd5df8044f16d4bffdd654783885b76b"
+        },
+        {
+          "id": "frame-0004",
+          "canonical_position": 5,
+          "filename": "frame_0004.png",
+          "image_path": "/worked-examples/annotation-showcase/frame-annotator/frame_0004.png",
+          "width": 640,
+          "height": 480,
+          "sha256": "820506b7668c3a95c5deae66d19f8ddff46b1e6a25da262012d656925274b01e"
+        },
+        {
+          "id": "frame-0005",
+          "canonical_position": 6,
+          "filename": "frame_0005.png",
+          "image_path": "/worked-examples/annotation-showcase/frame-annotator/frame_0005.png",
+          "width": 640,
+          "height": 480,
+          "sha256": "bf84be6e098d8d73b1233ba0b9c79be0d17be109b2dbd2c25809b620716cb5aa"
+        },
+        {
+          "id": "frame-0006",
+          "canonical_position": 7,
+          "filename": "frame_0006.png",
+          "image_path": "/worked-examples/annotation-showcase/frame-annotator/frame_0006.png",
+          "width": 640,
+          "height": 480,
+          "sha256": "6c2ce254198b41c5bc8f3397c3e7c4487436b0f9930a0751eaac8cd6500182ab"
+        },
+        {
+          "id": "frame-0007",
+          "canonical_position": 8,
+          "filename": "frame_0007.png",
+          "image_path": "/worked-examples/annotation-showcase/frame-annotator/frame_0007.png",
+          "width": 640,
+          "height": 480,
+          "sha256": "f938948fec27a22e448e846f4b633edb53fb3ef2c844a2f71aec513d3f2eb7d0"
+        },
+        {
+          "id": "frame-0008",
+          "canonical_position": 9,
+          "filename": "frame_0008.png",
+          "image_path": "/worked-examples/annotation-showcase/frame-annotator/frame_0008.png",
+          "width": 640,
+          "height": 480,
+          "sha256": "9d9b983be35af5fcf2d9a8db9d9536eb0ccc399484bff7db4570ca31c5ca1931"
+        },
+        {
+          "id": "frame-0009",
+          "canonical_position": 10,
+          "filename": "frame_0009.png",
+          "image_path": "/worked-examples/annotation-showcase/frame-annotator/frame_0009.png",
+          "width": 640,
+          "height": 480,
+          "sha256": "a6208111a7af8ac8984437c2cbebfd42b5bdaf03c002309fb9678a2fd1809a2a"
         }
       ]
     },
     {
       "id": "surgical-annotator",
       "source_repository": "https://github.com/omariosc/frame-annotator",
-      "source_commit": "3e94ed03c1487331b8c041ca755421686b41d031",
+      "source_commit": "0dcfc9e90dfd7867c58d3bc45f4508b19c4f4a5a",
+      "source_licence": "MIT",
+      "static_demo_path": "/annotation-demos/surgical-annotator/",
+      "preview_path": "/annotation-demos/surgical-annotator/preview.png",
+      "preview_sha256": "a763fa1b706e0718b96d7f4773c32ecf2b92b0ae5405d5bf61c9b203ff638bd6",
       "dataset": "LASK: A Dataset for Laparoscopic Skill and 7-DoF Kinematics, version 1.0",
       "dataset_doi": "https://doi.org/10.5281/zenodo.20752651",
       "dataset_licence": "CC BY 4.0",
@@ -91,5 +170,5 @@
       ]
     }
   ],
-  "provenance_record": "/citations/annotation-showcase-media-2026-07-27.md"
+  "provenance_record": "/citations/annotation-showcase-media-2026-07-29.md"
 }

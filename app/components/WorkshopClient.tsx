@@ -54,6 +54,7 @@ import {
 } from "./Icons";
 import { PrivacyNote } from "./PrivacyNote";
 import { ProjectWorkspace } from "./ProjectWorkspace";
+import { PaperDemoGallery } from "./PaperDemoGallery";
 import { SiteNav } from "./SiteNav";
 import { SiteFooter } from "./HomeClient";
 import {
@@ -67,6 +68,7 @@ import {
   WorkflowNavigator,
   routeProgress,
 } from "./WorkshopGuidance";
+import { WorkshopToc, type WorkshopTocEntry } from "./WorkshopToc";
 
 function toggleItem(items: string[], id: string) {
   return items.includes(id)
@@ -154,6 +156,27 @@ export function WorkshopClient({ workshop }: { workshop: Workshop }) {
     "annotation-tools": "Build annotation specification",
     "ai-healthcare-conference": "Build conference plan",
   }[workshop.slug];
+  const tocEntries = useMemo<ReadonlyArray<WorkshopTocEntry>>(
+    () => [
+      { id: "overview", label: "Overview" },
+      { id: "how-it-works", label: "How this tutorial works" },
+      { id: "project-workspace", label: "Your project" },
+      { id: "choose-track", label: "Choose a track" },
+      { id: "workbench", label: "Core stages" },
+      ...(workshop.slug === "annotation-tools"
+        ? [{ id: "demo", label: "Authentic tool demos" }]
+        : []),
+      { id: "builder", label: builderLabel },
+      ...(workshop.slug === "interactive-paper"
+        ? [{ id: "live-paper-demos", label: "Live paper websites" }]
+        : []),
+      { id: "extended-learning", label: "Worked examples" },
+      { id: "applied-check", label: "Applied check" },
+      { id: "glossary", label: "Glossary" },
+      { id: "sources", label: "Sources" },
+    ],
+    [builderLabel, workshop.slug],
+  );
   const release = workshopRelease(workshop.slug);
   const tutorialStatus =
     release.status === "released"
@@ -440,6 +463,14 @@ This export records the workshop checklist, not proof that the scientific checks
         type="application/ld+json"
       />
       <SiteNav active={workshop.slug} />
+      <WorkshopToc
+        activeStage={active.title}
+        completed={currentRoute.completed}
+        entries={tocEntries}
+        percent={currentRoute.percent}
+        total={currentRoute.total}
+        trackTitle={currentRoute.route.title}
+      />
       <main className="workshop-main" id="main-content">
         <header className="workshop-topbar">
           <div>
@@ -469,7 +500,7 @@ This export records the workshop checklist, not proof that the scientific checks
           </div>
         </header>
 
-        <section className="workshop-hero">
+        <section className="workshop-hero" id="overview">
           <div className="workshop-number">{workshop.number}</div>
           <div className="workshop-hero-copy">
             <h1>{workshop.title}</h1>
@@ -715,10 +746,13 @@ This export records the workshop checklist, not proof that the scientific checks
           />
         ) : null}
         {workshop.slug === "interactive-paper" ? (
-          <PaperSiteBuilder
-            key={`${activeProject.id}:${builderRevision}`}
-            projectId={activeProject.id}
-          />
+          <>
+            <PaperSiteBuilder
+              key={`${activeProject.id}:${builderRevision}`}
+              projectId={activeProject.id}
+            />
+            <PaperDemoGallery />
+          </>
         ) : null}
         {workshop.slug === "annotation-tools" ? (
           <div key={`${activeProject.id}:${builderRevision}`}>
@@ -736,6 +770,7 @@ This export records the workshop checklist, not proof that the scientific checks
         <section
           aria-labelledby="extended-learning-title"
           className="extended-learning-heading"
+          id="extended-learning"
         >
           <p>Optional, after the core stages</p>
           <h2 id="extended-learning-title">
@@ -807,6 +842,7 @@ function TutorialOrienter() {
     <section
       aria-labelledby="tutorial-orienter-title"
       className="tutorial-orienter"
+      id="how-it-works"
     >
       <div>
         <p>How this tutorial works</p>
@@ -849,7 +885,11 @@ function WorkshopPrimer({
   workshop: Workshop;
 }) {
   return (
-    <section className="workshop-primer" aria-labelledby="primer-title">
+    <section
+      className="workshop-primer"
+      aria-labelledby="primer-title"
+      id="choose-track"
+    >
       <div className="primer-heading">
         <p>Choose a workshop track</p>
         <h2 id="primer-title">Start with today&apos;s goal</h2>
@@ -1411,18 +1451,22 @@ function NextWorkshop({ current }: { current: Workshop["slug"] }) {
     {
       slug: "agentic-research",
       title: "Agentic AI in Research",
+      accent: "blue",
     },
     {
       slug: "interactive-paper",
       title: "Building a Website for Your Research",
+      accent: "ochre",
     },
     {
       slug: "annotation-tools",
       title: "Developing Custom Annotation Tools",
+      accent: "green",
     },
     {
       slug: "ai-healthcare-conference",
       title: "Run an AI in Healthcare Conference",
+      accent: "rose",
     },
   ] as const;
   const index = routes.findIndex((route) => route.slug === current);
@@ -1430,7 +1474,7 @@ function NextWorkshop({ current }: { current: Workshop["slug"] }) {
 
   return (
     <a
-      className="next-workshop"
+      className={`next-workshop accent-${next.accent}`}
       href={WORKSHOP_RELEASES[next.slug].canonicalUrl}
     >
       <span>Continue to the next workshop</span>
