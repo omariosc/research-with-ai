@@ -17,7 +17,7 @@ const GALLERY_ITEMS: ReadonlyArray<{
     screenshot:
       "/paper-demos/screenshots/real-time-tool-detection-landing.webp",
     screenshotAlt:
-      "Landing page for the real-time laparoscopic tool detection paper companion, with the paper title, publication status, claim boundary, and reported key metrics",
+      "Landing page for the real-time laparoscopic tool detection paper companion, with the paper title, publication status, scope, and reported key metrics",
     kicker: "Published benchmark",
     boundary:
       "The explorer rearranges published table values. It does not run the detector or resolve the paper's abstract and Table 5 discrepancy.",
@@ -55,11 +55,9 @@ export function PaperDemoGallery() {
           Live websites made from real papers
         </h2>
         <span>
-          These are not generic templates with placeholder claims. Each
-          companion was assembled from Omar&apos;s paper, figures, tables, and
-          public project records, then checked against the source. Open one to
-          inspect the method, reported evidence, limitations, provenance, and
-          interactive controls.
+          Each companion uses the paper&apos;s own figures, tables, captions,
+          results, and public project records. Open one to explore the method,
+          reported evidence, source notes, and interactive controls.
         </span>
       </div>
 
@@ -111,7 +109,7 @@ export function PaperDemoGallery() {
                   ))}
                 </dl>
                 <aside>
-                  <strong>Claim boundary</strong>
+                  <strong>How to read this page</strong>
                   <p>{item.boundary}</p>
                 </aside>
                 <div className="paper-demo-gallery-actions">

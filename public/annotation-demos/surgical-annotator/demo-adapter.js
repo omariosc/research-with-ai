@@ -12,7 +12,7 @@
     const trialName = "Trial46";
     const trialId = `${datasetName}/${trialName}`;
     const frames = [200, 1000, 1800];
-    const storagePrefix = "research-with-ai:surgical-annotator-demo:v1:";
+    const storagePrefix = "research-with-ai:surgical-annotator-demo:v2:";
     const nativeFetch = window.fetch.bind(window);
     const seedCache = new Map();
 
@@ -69,6 +69,50 @@
         return JSON.parse(JSON.stringify(value));
     }
 
+    function emptyStarter(frameIdx, seed) {
+        const visibility = {
+            mask: 1,
+            lines: 1,
+            joint: 1,
+            ee_tip: 1,
+            ee_left: 1,
+            ee_right: 1
+        };
+        return {
+            ...seed,
+            frame_idx: frameIdx,
+            tool1_mask: [],
+            tool2_mask: [],
+            tool1_lines: {top: [], bottom: []},
+            tool2_lines: {top: [], bottom: []},
+            tool1_joint: [],
+            tool1_ee_tip: [],
+            tool1_ee_left: [],
+            tool1_ee_right: [],
+            tool2_joint: [],
+            tool2_ee_tip: [],
+            tool2_ee_left: [],
+            tool2_ee_right: [],
+            tool1_visibility: clone(visibility),
+            tool2_visibility: clone(visibility),
+            pegs: [],
+            pegboard: {},
+            phase: {
+                tool1: "",
+                tool2: "",
+                coarse: "",
+                fine: "",
+                cycle_index: 0,
+                active_tool: 0,
+                events: []
+            },
+            skipped: false,
+            exclude: false,
+            broken: false,
+            last_modified: null
+        };
+    }
+
     function jsonResponse(value, status = 200) {
         return new Response(JSON.stringify(value), {
             status,
@@ -92,7 +136,10 @@
                     .then((response) => response.json())
             );
         }
-        return clone(await seedCache.get(frameIdx));
+        const seed = clone(await seedCache.get(frameIdx));
+        return frameIdx === frames[frames.length - 1]
+            ? emptyStarter(frameIdx, seed)
+            : seed;
     }
 
     async function annotationForFrame(frameIdx) {
@@ -116,17 +163,17 @@
             trial_id: trialId,
             trial_name: trialName,
             total: frames.length,
-            completed: frames.length,
+            completed: frames.length - 1,
             skipped: 0,
             excluded: 0,
             negative: 0,
             partial: 0,
             broken: 0,
-            remaining: 0,
-            percentage: 100,
+            remaining: 1,
+            percentage: 66.7,
             phase_total: frames.length,
-            phase_completed: frames.length,
-            phase_percentage: 100,
+            phase_completed: frames.length - 1,
+            phase_percentage: 66.7,
             peg_total: frames.length,
             peg_completed: 0,
             peg_percentage: 0
@@ -163,14 +210,14 @@
         if (path === "/datasets/progress") {
             return jsonResponse([{
                 name: datasetName,
-                percentage: 100,
+                percentage: 66.7,
                 trials: [progressRecord()]
             }]);
         }
         if (path.startsWith(`/datasets/${datasetName}/refresh_progress`)) {
             return jsonResponse({
                 name: datasetName,
-                percentage: 100,
+                percentage: 66.7,
                 trials: [progressRecord()]
             });
         }
@@ -197,7 +244,7 @@
             return jsonResponse({
                 "200": "completed",
                 "1000": "completed",
-                "1800": "completed"
+                "1800": "none"
             });
         }
         if (path.endsWith("/phase_summary")) {

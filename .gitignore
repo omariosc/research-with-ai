@@ -45,3 +45,4 @@ next-env.d.ts
 /outputs/
 /work/
 /edge-proxy/worker-configuration.d.ts
+/output/

@@ -81,7 +81,7 @@ const paperCases = [
       "Main test benchmark",
       "Jetson FP16",
       "Captions and source details remain attached",
-      "Complete tables with their provenance stated below",
+      "Tables with their original captions and source details",
     ],
   },
   {
@@ -208,8 +208,8 @@ test("server-renders all three source-bounded paper companions", async () => {
     assert.match(html, /Claim boundaries/);
     assert.match(html, /What the evidence says, and what this page does/);
     assert.match(html, /Interactive layer<\/dt><dd>Rearranges reported evidence only/);
-    assert.match(html, /What this companion does not prove/);
-    assert.match(html, /AI-assisted conversion, human-reviewed evidence/);
+    assert.match(html, /How to read this companion/);
+    assert.match(html, /Built with AI, checked against the paper/);
     assert.match(html, /type="application\/ld\+json"/);
     assert.ok(
       html.includes(`"url":"${canonical}"`),

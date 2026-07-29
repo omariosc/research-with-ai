@@ -404,7 +404,7 @@ Then audit your own review. Mark each concern supported, ambiguous, or probably 
     eyebrow: "First-hand metric verification",
     title: "One table row, traced from paper to released predictions",
     context:
-      "A coding agent accelerated the trace of the BreastMNIST ResNet-18 28-pixel result through the paper, dataset, prediction archive, metric definition, and historical training code. A human reviewer chose the claim boundary and checked each source, checksum, and recalculation.",
+      "A coding agent helped me trace the BreastMNIST ResNet-18 28-pixel result through the paper, dataset, prediction archive, metric definition, and historical training code. I then checked every source, checksum, and recalculation before deciding what the example could honestly show.",
     expected:
       "Recover the two reported cells at the paper's precision, while keeping gaps in training and artefact provenance visible.",
     observed: [

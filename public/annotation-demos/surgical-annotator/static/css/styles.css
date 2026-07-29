@@ -42,6 +42,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    overflow-x: hidden;
     flex-shrink: 0;
 }
 
@@ -147,10 +148,15 @@ select:disabled {
 }
 
 .progress-details {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3px 8px;
     font-size: 0.75rem;
     color: var(--text-secondary);
+}
+
+.progress-details span:nth-child(even) {
+    text-align: right;
 }
 
 /* Navigation */
@@ -232,7 +238,7 @@ button:disabled {
 /* Two-column tool layout */
 .tools-columns {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
 }
 
@@ -246,7 +252,8 @@ button:disabled {
 }
 
 .tools-columns .vis-select {
-    min-width: 50px;
+    width: 100%;
+    min-width: 0;
 }
 
 .tools-columns .vis-label {
@@ -486,8 +493,13 @@ kbd {
     margin-top: 15px;
     padding-top: 15px;
     border-top: 1px solid var(--border-color);
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
+}
+
+#resetDemoBtn {
+    grid-column: 1 / -1;
 }
 
 .save-btn {
@@ -2568,4 +2580,82 @@ select option.has-progress {
 .guide-table th {
     background: var(--bg-panel);
     font-weight: 600;
+}
+
+/* Keep the original three-column workspace on larger screens, then stack the
+   same controls below the canvas when a phone cannot fit both sidebars. */
+@media (max-width: 720px) {
+    html,
+    body {
+        width: 100%;
+        min-height: 100%;
+    }
+
+    body {
+        height: auto;
+        min-height: 100vh;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .app-container {
+        width: 100%;
+        height: auto;
+        min-height: 100vh;
+        flex-direction: column;
+        overflow-x: hidden;
+    }
+
+    .canvas-area {
+        order: 1;
+        width: 100%;
+        height: min(58vh, 500px);
+        min-height: 360px;
+        flex: none;
+    }
+
+    .sidebar {
+        width: 100%;
+        max-width: 100%;
+        flex: none;
+        overflow-x: hidden;
+        overflow-y: visible;
+    }
+
+    .sidebar-left {
+        order: 2;
+        border-top: 1px solid var(--border-color);
+        border-right: 0;
+    }
+
+    .sidebar-right {
+        order: 3;
+        border-top: 1px solid var(--border-color);
+        border-left: 0;
+    }
+
+    .zoom-controls {
+        top: 12px;
+        right: 12px;
+        gap: 5px;
+        padding: 6px 8px;
+    }
+
+    .current-tool {
+        top: 58px;
+        max-width: calc(100% - 24px);
+        text-align: center;
+    }
+
+    .instructions {
+        top: 105px;
+        width: calc(100% - 24px);
+        max-width: 360px;
+        text-align: center;
+    }
+
+    .guide-modal-content {
+        width: calc(100% - 24px);
+        max-height: calc(100vh - 24px);
+    }
 }

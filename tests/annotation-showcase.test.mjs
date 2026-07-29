@@ -406,7 +406,11 @@ test("sample provenance names every published example and its claim boundary", a
   assert.match(provenance, /lossy presentation recovery/);
   assert.match(provenance, /not a raw-frame recovery/);
   assert.match(provenance, /explicitly approved publication/);
-  assert.match(provenance, /ten-frame teaching reconstruction/);
+  assert.match(provenance, /nine labelled starting frames plus one empty practice frame/);
+  assert.match(
+    provenance,
+    /clears the\s+annotations from frame 1800 at runtime/,
+  );
   assert.match(provenance, /CC BY 4\.0/);
   assert.match(provenance, /LASK visual labels are\s+manual/);
   assert.match(
@@ -447,13 +451,21 @@ test("static demos keep every API interaction in the visitor browser", async () 
     "../public/annotation-demos/surgical-annotator/",
     import.meta.url,
   );
-  const [frameHtml, frameAdapter, surgicalHtml, surgicalAdapter, surgicalMain] =
+  const [
+    frameHtml,
+    frameAdapter,
+    surgicalHtml,
+    surgicalAdapter,
+    surgicalMain,
+    surgicalCss,
+  ] =
     await Promise.all([
       readFile(new URL("index.html", frameRoot), "utf8"),
       readFile(new URL("demo-adapter.js", frameRoot), "utf8"),
       readFile(new URL("index.html", surgicalRoot), "utf8"),
       readFile(new URL("demo-adapter.js", surgicalRoot), "utf8"),
       readFile(new URL("static/js/main.js", surgicalRoot), "utf8"),
+      readFile(new URL("static/css/styles.css", surgicalRoot), "utf8"),
     ]);
 
   assert.ok(
@@ -476,6 +488,17 @@ test("static demos keep every API interaction in the visitor browser", async () 
   }
 
   assert.match(surgicalAdapter, /window\.EventSource = DemoEventSource/);
+  assert.match(frameAdapter, /clips: \[\{start: 0, end: 8, class: "1c"\}\]/);
+  assert.match(surgicalAdapter, /function emptyStarter/);
+  assert.match(surgicalAdapter, /"1800": "none"/);
+  assert.match(surgicalAdapter, /completed: frames\.length - 1/);
+  assert.match(surgicalCss, /overflow-x: hidden/);
+  assert.match(surgicalCss, /#resetDemoBtn\s*\{\s*grid-column: 1 \/ -1;/);
+  assert.match(surgicalCss, /@media \(max-width: 720px\)/);
+  assert.match(surgicalCss, /\.app-container\s*\{[\s\S]*?flex-direction: column;/);
+  assert.match(surgicalCss, /\.canvas-area\s*\{[\s\S]*?order: 1;/);
+  assert.match(surgicalCss, /\.sidebar-left\s*\{[\s\S]*?order: 2;/);
+  assert.match(surgicalCss, /\.sidebar-right\s*\{[\s\S]*?order: 3;/);
   assert.match(surgicalMain, /__annotationDemoFrameUrl/);
   assert.match(frameHtml, /Reset/);
   assert.match(surgicalHtml, /Reset demo/);

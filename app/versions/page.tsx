@@ -99,9 +99,9 @@ export default function VersionsPage() {
                 the authentic frame-annotator and surgical-annotator interfaces
               </li>
               <li>
-                Expanded the approved frame demonstration to ten sequential
-                Hamlyn presentation frames while retaining exactly three public
-                LASK surgical examples
+                Expanded the frame demonstration to ten sequential Hamlyn
+                presentation frames while retaining exactly three public LASK
+                surgical examples
               </li>
               <li>
                 Added a collapsible workshop table of contents with progress
@@ -134,8 +134,8 @@ export default function VersionsPage() {
                 href="https://github.com/omariosc/research-with-ai/releases/download/v1.5.0/research-with-ai-v1.5.0-source.zip"
               >
                 reviewed v1.5.0 source snapshot
-              </a>{" "}
-              from feature commit <code>d3f4008</code>, with its{" "}
+              </a>
+              , with its{" "}
               <a href="/releases/research-with-ai-v1.5.0-source.sha256">
                 SHA-256 record
               </a>
@@ -177,8 +177,8 @@ export default function VersionsPage() {
                 href="/releases/research-with-ai-v1.4.0-source.zip"
               >
                 reviewed v1.4.0 source snapshot
-              </a>{" "}
-              from feature commit <code>d72814d</code>, with its{" "}
+              </a>
+              , with its{" "}
               <a href="/releases/research-with-ai-v1.4.0-source.sha256">
                 SHA-256 record
               </a>
@@ -216,8 +216,8 @@ export default function VersionsPage() {
                 href="/releases/research-with-ai-v1.3.0-source.zip"
               >
                 reviewed v1.3.0 source snapshot
-              </a>{" "}
-              from commit <code>32b46f3</code>, with its{" "}
+              </a>
+              , with its{" "}
               <a href="/releases/research-with-ai-v1.3.0-source.sha256">
                 SHA-256 record
               </a>
@@ -265,8 +265,8 @@ export default function VersionsPage() {
                 href="/releases/research-with-ai-v1.2.0-source.zip"
               >
                 reviewed v1.2.0 source snapshot
-              </a>{" "}
-              from commit <code>a304472</code>, with its{" "}
+              </a>
+              , with its{" "}
               <a href="/releases/research-with-ai-v1.2.0-source.sha256">
                 SHA-256 record
               </a>
@@ -300,8 +300,8 @@ export default function VersionsPage() {
                 href="/releases/research-with-ai-v1.1.0-source.zip"
               >
                 reviewed v1.1.0 source snapshot
-              </a>{" "}
-              from commit <code>bd3c4a2</code>, with its{" "}
+              </a>
+              , with its{" "}
               <a href="/releases/research-with-ai-v1.1.0-source.sha256">
                 SHA-256 record
               </a>

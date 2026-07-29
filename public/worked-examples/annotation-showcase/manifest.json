@@ -26,7 +26,7 @@
       "recovery_status": "lossy presentation-video decode at the source 5 fps; existing Clip 2, Excessive Force Applied, and class-selection overlays retained; not raw data/color_images",
       "annotation_status": "tutorial starter record reconstructed from the visible Controller Collision selection; not an original annotation output file",
       "annotation_path": "/worked-examples/annotation-showcase/frame-annotator/starter-annotations.json",
-      "annotation_sha256": "fdd24f0b97385f801c95e98599f843edb5e227e67ca8293e163b822942f1517f",
+      "annotation_sha256": "cf0a554d95dcade011e236f3c24a52d5d8db68861e2918712d617f0da4a27d54",
       "samples": [
         {
           "id": "frame-0000",

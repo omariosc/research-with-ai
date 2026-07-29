@@ -211,12 +211,27 @@ export function HomeClient({ workshops }: { workshops: Workshop[] }) {
           </div>
           <div>
             <p>
+              These tutorials grew from projects I have actually worked on.
               The research and website routes share a{" "}
               <a href={`${TUTORIAL_HOMEPAGE}/worked-examples/medmnist-breast`}>
                 BreastMNIST evidence pack
               </a>{" "}
-              that recalculates released predictions, records a real repository
-              finding, and keeps the limits visible. The annotation route uses{" "}
+              that recalculates released predictions and works through a real
+              repository finding. The website route also includes live
+              companions for my{" "}
+              <Link href="/paper-demos/real-time-tool-detection">
+                real-time tool-detection paper
+              </Link>
+              ,{" "}
+              <Link href="/paper-demos/lask-7dof">
+                7-DoF laparoscopic dataset
+              </Link>
+              , and{" "}
+              <Link href="/paper-demos/btpn">BTPN paper</Link>, using the
+              papers&apos; own figures, tables, and results.
+            </p>
+            <p>
+              The annotation route lets you try both{" "}
               <a
                 href="https://github.com/omariosc/frame-annotator"
                 rel="noreferrer"
@@ -224,12 +239,29 @@ export function HomeClient({ workshops }: { workshops: Workshop[] }) {
               >
                 frame-annotator
               </a>{" "}
-              as a second honest case, including what still needs hardening.
+              and the{" "}
+              <Link href="/annotation-demos/surgical-annotator/">
+                surgical annotator
+              </Link>{" "}
+              I used while building LASK. The conference route follows the real{" "}
+              <Link href="/ai-healthcare-conference">
+                AI in Healthcare Conference
+              </Link>{" "}
+              we ran during{" "}
+              <a
+                href="https://www.leedsaiweek.co.uk/ai-in-healthcare"
+                rel="noreferrer"
+                target="_blank"
+              >
+                Leeds AI Week
+              </a>
+              , from planning and promotion through to attendance and feedback.
             </p>
             <p>
-              AI helped research, structure, implement, and test this material.
-              Every substantive recommendation is linked to a source, and Omar
-              remains responsible for the tutorial and its examples.
+              I used AI to help research, structure, implement, and test the
+              material. The examples, decisions, and lessons come from the work
+              itself, with source links alongside anything readers may want to
+              inspect further.
             </p>
           </div>
         </section>

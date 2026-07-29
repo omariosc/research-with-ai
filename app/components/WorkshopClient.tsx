@@ -962,7 +962,7 @@ function CaseStudy({ workshop }: { workshop: Workshop }) {
           </ul>
         </article>
         <article>
-          <span>What follows from the evidence</span>
+          <span>What I changed</span>
           <ul>
             {study.changes.map((item) => (
               <li key={item}>{item}</li>
@@ -971,7 +971,7 @@ function CaseStudy({ workshop }: { workshop: Workshop }) {
         </article>
       </div>
       <div className="case-study-boundary">
-        <strong>Claim boundary</strong>
+        <strong>What this example covers</strong>
         <p>{study.boundary}</p>
         <ul>
           {study.sources.map((source) => (

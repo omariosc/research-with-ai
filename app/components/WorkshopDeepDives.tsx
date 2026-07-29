@@ -556,8 +556,8 @@ function AnnotationOriginStory({
         <p>First-hand build story</p>
         <h2 id="annotation-origin-title">From a fast beta to the LASK workflow</h2>
         <span>
-          Public records and first-hand links stay separate, so experience is
-          useful without being presented as independent evidence.
+          The first version solved a small group project. I kept expanding it
+          as later datasets demanded richer annotations and a faster workflow.
         </span>
       </div>
 
@@ -571,23 +571,24 @@ function AnnotationOriginStory({
             memorable labels, then exported frame records from marked runs.
           </p>
           <small>
-            Author account. Public records verify the setting and labels; no
-            timing study is claimed.
+            Those familiar labels, keyboard shortcuts, and range controls let
+            me work quickly using my own muscle memory.
           </small>
         </article>
         <article>
           <span>Public software record</span>
           <h3>The tool grew around repeated actions</h3>
           <p>
-            Public commits show keyboard-first ranges and JSON/CSV export, then
-            masks, keypoints, shaft lines, copy-prior, and batch triage in the
-            local surgical-annotator.
+            The first tool made range labelling quick with keyboard controls
+            and JSON/CSV export. I later built surgical-annotator for masks,
+            keypoints, shaft lines, copying the previous frame, and batch
+            triage.
           </p>
           <SourceLink href="https://github.com/omariosc/frame-annotator/commit/deb7d43a2b6ff93ac1ac5a33c2f00028d7833823">
-            Open the beta commit
+            See the first frame tool
           </SourceLink>
           <SourceLink href="https://github.com/omariosc/frame-annotator/commit/461615a71beabeaa0ed67120a883cf4ce900d7b1">
-            Open the larger-tool integration
+            See how it grew into surgical-annotator
           </SourceLink>
         </article>
       </div>
@@ -599,8 +600,8 @@ function AnnotationOriginStory({
             <h3>What the annotation work enabled</h3>
           </div>
           <p>
-            This joins public outcomes with Omar&apos;s labelled first-hand
-            account. It does not claim that one tool caused every result.
+            The workflow grew from a small group project into larger annotation
+            efforts, a public dataset, and an accepted MICCAI paper.
           </p>
         </div>
 
@@ -635,9 +636,6 @@ function AnnotationOriginStory({
               <SourceLink href="https://www.imperial.ac.uk/a-z-research/hamlyn-centre/events-and-global-engagement/hamlyn-winter-school-on-surgical-imaging-and-vision/">
                 Open the Winter School record
               </SourceLink>
-              <small>
-                Title and counts: author-controlled public record and archive.
-              </small>
             </div>
           </li>
           <li>
@@ -645,9 +643,9 @@ function AnnotationOriginStory({
             <div>
               <h4>The beta became inspectable and reusable</h4>
               <p>
-                The first public commit preserved keyboard-first ranges,
-                exports, and the A, B, C safety taxonomy, making the method
-                reusable.
+                When I published the beta, I kept the keyboard-first ranges,
+                exports, and the A, B, C safety taxonomy so that other
+                researchers could inspect and reuse the workflow.
               </p>
               <SourceLink href="https://github.com/omariosc/frame-annotator/blob/deb7d43a2b6ff93ac1ac5a33c2f00028d7833823/examples/surgical_safety.yaml">
                 Inspect the original configuration
@@ -681,7 +679,8 @@ function AnnotationOriginStory({
                 Open the BTPN companion repository
               </SourceLink>
               <small>
-                Author-reported acceptance. No proceedings DOI is claimed yet.
+                I will add the official proceedings page when MICCAI publishes
+                it.
               </small>
             </div>
           </li>
@@ -690,23 +689,27 @@ function AnnotationOriginStory({
 
       <div className="ai-role-ledger">
         <div>
-          <p>What AI helped with</p>
+          <p>How I used AI</p>
           <ul>
-            <li>Implementation, shortcuts, exports, tests, and documentation.</li>
+            <li>
+              AI helped me implement shortcuts, exports, tests, and
+              documentation.
+            </li>
           </ul>
         </div>
         <div>
-          <p>What remained human-owned</p>
+          <p>What I decided and reviewed</p>
           <ul>
             <li>
-              Protocol, uncertainty rules, working rhythm, quality checks, and
-              released manual labels.
+              I defined the protocol and uncertainty rules, shaped the working
+              rhythm, checked quality, and reviewed the manual labels.
             </li>
           </ul>
         </div>
         <p>
-          Commit trailers record AI coding assistance; released LASK visual
-          labels remain manual.
+          The AI support was mainly in the software and documentation. The
+          visual labels released with LASK were annotated and reviewed
+          manually.
         </p>
       </div>
 
@@ -719,9 +722,10 @@ function AnnotationOriginStory({
         <div className="deep-dive-download">
           <FileText size={22} />
           <div>
-            <strong>Origin and evidence note</strong>
+            <strong>Build notes and source links</strong>
             <p>
-              The longer source record, claim boundaries, and media decision.
+              The longer story, source links, and notes on how the public
+              examples were prepared.
             </p>
             <a
               download

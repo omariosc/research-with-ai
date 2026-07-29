@@ -309,7 +309,7 @@ For each count, record its definition, source, exclusions, duplicate rule, recon
 
 ## AI-use record
 
-Record the AI tool, task, inputs, information withheld, output used, human reviewer and any decision that changed. AI can draft scenarios and checklists. People remain responsible for relationships, money, access, safety, privacy and public claims.
+Record the AI tool, task, inputs, information withheld, output used, human reviewer and any decision that changed. AI can draft scenarios and checklists. Your organising team still makes the final decisions about relationships, money, access, safety, privacy and public claims.
 `,
     [
       baseAttendance,

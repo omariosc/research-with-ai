@@ -18,6 +18,12 @@ credentials, browser chrome, or unresolved third-party media appear. The
 screenshots are project documentation covered by the repository's CC BY 4.0
 content licence, with LASK attribution retained under CC BY 4.0.
 
+The four `mec-2026/` captures were made in light mode on 29 July 2026 for the
+submission PDFs. They show the current v1.5.0 BreastMNIST evidence states,
+paper-review lifecycle, conference programme comparison, and aggregate
+denominator ledger. The conference captures contain no attendee photographs,
+names, contact details, or private feedback.
+
 | File | View | SHA-256 |
 | --- | --- | --- |
 | `research-with-ai-overview.jpg` | Four-tutorial homepage, 1440 by 900 pixels | `cf7ccc2713f6228050afa0520594514ce8f2e665c95edb669b97aae870dd7175` |
@@ -30,6 +36,10 @@ content licence, with LASK attribution retained under CC BY 4.0.
 | `annotation-tools-surgical-annotator.jpg` | Exact public surgical-annotator interface with one of three disclosed LASK annotations, two masks, shaft geometry, named keypoints, visibility controls, and both complete sidebars, 1440 by 900 pixels | `da13b0a43809fc8c4c59aa9bc77e28217fc92874a93b232e947bdd63dd923772` |
 | `ai-healthcare-conference-case-study.jpg` | Released conference operating principles and responsibility map, 1440 by 900 pixels | `910904476675348da81be843dbb44ce45f5b5fdcb7062753633c804984b38ba2` |
 | `mobile-overview.jpg` | Four-tutorial homepage at 390 by 844 pixels | `49cb969c2512b92de02eb75914c2dd60279814dbbd978ba49689312e70fbd72f` |
+| `mec-2026/agentic-medmnist-claims.jpg` | Current BreastMNIST reported, recalculated, and not-reproduced claim states, 1512 by 771 pixels | `a3fe0d0607ffd0356c0c7462f9feb8a3fb847099c18804c6150f988889595334` |
+| `mec-2026/agentic-paper-review.jpg` | Current six-point paper-review lifecycle and two permitted review routes, 1512 by 771 pixels | `4edd0055a95e34c9288dcb5a31e44a381cbcec782c5f0654e962f98aac88781d` |
+| `mec-2026/conference-programme.jpg` | Current advertised-versus-revised programme comparison, 1512 by 771 pixels | `04a3e11448049ef99ed680dda808ca7489ad03eb30cdf0e4eb82427eade3bc63` |
+| `mec-2026/conference-denominator.jpg` | Current aggregate denominator ledger and feedback framing, 1512 by 771 pixels | `7add58f45a3ac78845562c8fe9847787758c2ca9bfb89162ef8101f55b39b1a3` |
 
 The repository test suite verifies these hashes so documentation cannot silently
 drift away from the reviewed release.

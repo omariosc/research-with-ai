@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ExternalLink } from "./Icons";
 
 type ShowcaseMode = "frame" | "surgical";
@@ -12,14 +12,14 @@ const DEMOS = {
     summary: "Classify frame ranges on the original timeline interface",
     heading: "Use the actual Hamlyn prototype workflow",
     description:
-      "The static demo preserves the original frame-annotator HTML, styling, timeline, classification controls, and keyboard shortcuts. It opens with ten explicitly approved frames recovered from the author-owned Hamlyn presentation video.",
+      "This demo keeps the frame-annotator layout, timeline, classification controls, and keyboard shortcuts I used for our Hamlyn Winter School project. It opens with ten frames from my project presentation so you can try the same quick, keyboard-led workflow.",
     preview: "/annotation-demos/frame-annotator/preview.png",
     href: "/annotation-demos/frame-annotator/",
     previewAlt:
       "Original frame-annotator interface showing a Hamlyn robotics frame, clip timeline, classification controls, and keyboard shortcuts",
     sample: "10 Hamlyn frames",
-    rights: "Author approved",
-    boundary: "Lossy presentation recovery with existing overlays",
+    rights: "From my Hamlyn project presentation",
+    boundary: "Presentation frames with their existing overlays",
   },
   surgical: {
     number: "02",
@@ -27,14 +27,14 @@ const DEMOS = {
     summary: "Draw masks, shaft lines, keypoints, and phases",
     heading: "Open the interface used to build LASK",
     description:
-      "This is the original surgical-annotator frontend with its native canvas, tool panels, keybinds, visibility states, phase controls, and JSON view. The browser adapter exposes only three verified public LASK Trial46 examples.",
+      "This is the surgical-annotator interface I built for masks, tool-shaft lines, keypoints, visibility, and surgical phases. It opens with three examples from LASK Trial46 so you can try the same canvas, controls, shortcuts, and JSON view.",
     preview: "/annotation-demos/surgical-annotator/preview.png",
     href: "/annotation-demos/surgical-annotator/",
     previewAlt:
       "Original surgical-annotator interface showing a public LASK frame with masks, shaft lines, keypoints, and the native side panels",
     sample: "3 LASK Trial46 frames",
     rights: "CC BY 4.0",
-    boundary: "Public fixtures only, no private trials",
+    boundary: "Masks, keypoints, shaft lines, and phase labels",
   },
 } as const;
 
@@ -79,16 +79,22 @@ export function AnnotationShowcase() {
   const [mode, setMode] = useState<ShowcaseMode>("frame");
   const demo = DEMOS[mode];
 
+  useEffect(() => {
+    Object.values(DEMOS).forEach(({ preview }) => {
+      const image = new window.Image();
+      image.src = preview;
+    });
+  }, []);
+
   return (
     <section className="annotation-showcase" id="demo">
       <div className="section-heading section-heading-wide">
         <p>Try the tools as they were built</p>
-        <h2>Two authentic interfaces, with safe public fixtures</h2>
+        <h2>Two original interfaces, ready to try</h2>
         <span>
-          Each screenshot opens a browser-only edition of Omar&apos;s original
-          open-source frontend. The server layer is replaced with a local
-          fixture adapter, so edits stay in your browser and Reset restores the
-          disclosed examples.
+          Each screenshot opens a browser version of the interface I built.
+          There is nothing to install: your edits stay in the browser, and
+          Reset brings back the starting examples.
         </span>
       </div>
 
@@ -107,25 +113,25 @@ export function AnnotationShowcase() {
         </li>
         <li>
           <span>4</span>
-          Save a local draft or reset the fixtures
+          Save a local draft or reset the examples
         </li>
       </ol>
 
       <div className="annotation-showcase-source-strip">
         <div>
-          <span>Original frontend</span>
-          <strong>omariosc/frame-annotator</strong>
-          <small>Public HEAD 0dcfc9e · MIT</small>
+          <span>The tools I built</span>
+          <strong>frame-annotator + surgical-annotator</strong>
+          <small>Original layouts, controls, and keyboard workflows</small>
         </div>
         <div>
-          <span>Public fixture boundary</span>
+          <span>Examples you can try</span>
           <strong>10 Hamlyn · 3 LASK</strong>
-          <small>Explicit author approval · CC BY 4.0</small>
+          <small>Project presentation frames · LASK CC BY 4.0</small>
         </div>
         <div>
-          <span>Browser behaviour</span>
+          <span>Runs in your browser</span>
           <strong>Local save and reset</strong>
-          <small>No upload, account, model call, or write-back</small>
+          <small>No account, upload, or model call needed</small>
         </div>
       </div>
 
@@ -145,7 +151,7 @@ export function AnnotationShowcase() {
       >
         <div className="annotation-showcase-panel-intro">
           <div>
-            <p>Authentic static demo</p>
+            <p>Live browser demo</p>
             <h3>{demo.heading}</h3>
           </div>
           <p>{demo.description}</p>
@@ -168,6 +174,7 @@ export function AnnotationShowcase() {
           <img
             alt={demo.previewAlt}
             height={827}
+            key={demo.preview}
             src={demo.preview}
             style={{
               display: "block",
@@ -188,9 +195,9 @@ export function AnnotationShowcase() {
             <small>{demo.rights}</small>
           </div>
           <div>
-            <span>Publication boundary</span>
+            <span>What is shown</span>
             <strong>{demo.boundary}</strong>
-            <small>See the linked provenance record</small>
+            <small>Source and dataset links are below</small>
           </div>
           <div>
             <span>Open the complete interface</span>
@@ -210,7 +217,7 @@ export function AnnotationShowcase() {
           rel="noreferrer"
           target="_blank"
         >
-          Inspect the pinned source <ExternalLink size={14} />
+          Inspect the source code <ExternalLink size={14} />
         </a>
         <a
           href="https://doi.org/10.5281/zenodo.20752651"
@@ -220,7 +227,7 @@ export function AnnotationShowcase() {
           Open LASK v1.0 <ExternalLink size={14} />
         </a>
         <a href="/citations/annotation-showcase-media-2026-07-29.md">
-          Read the fixture provenance
+          See how the examples were prepared
         </a>
       </footer>
     </section>

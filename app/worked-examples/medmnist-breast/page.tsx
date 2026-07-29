@@ -269,7 +269,7 @@ export default function MedMnistBreastWorkedExample() {
                 >
                   CC BY 4.0
                 </a>
-                . Local file SHA-256 begins <code>490bafbc9a24</code>.
+                .
               </span>
             </figcaption>
           </figure>

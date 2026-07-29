@@ -8,13 +8,13 @@
 (function installFrameDemoAdapter() {
     "use strict";
 
-    const storageKey = "research-with-ai:frame-annotator-demo:v1";
+    const storageKey = "research-with-ai:frame-annotator-demo:v2";
     const frames = Array.from(
         {length: 10},
         (_, index) => `frame_${String(index).padStart(4, "0")}.png`
     );
     const starter = {
-        clips: [{start: 0, end: 9, class: "1c"}]
+        clips: [{start: 0, end: 8, class: "1c"}]
     };
     const nativeFetch = window.fetch.bind(window);
 

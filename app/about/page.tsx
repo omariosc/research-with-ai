@@ -25,7 +25,7 @@ export default function AboutPage() {
       <main className="methods-main" id="main-content">
         <header className="methods-hero">
           <p>Methods and disclosure</p>
-          <h1>What this platform does, stores, and still needs checked.</h1>
+          <h1>How I built it, what stays local, and how to use it.</h1>
           <span>
             Tutorial {TUTORIAL_VERSION_LABEL}, released{" "}
             <time dateTime={TUTORIAL_RELEASE_DATE}>
@@ -37,44 +37,46 @@ export default function AboutPage() {
         <section className="methods-section">
           <div>
             <p>Evidence</p>
-            <h2>Claims have boundaries</h2>
+            <h2>How the examples are checked</h2>
           </div>
           <div>
             <p>
               Sources sit beside the stage they support and are repeated in a
-              source library. Product documentation describes current product
-              behaviour, not independent scientific evidence. Every first-hand
-              case states what was inspected, what changed, and what it does
-              not prove.
+              source library. The first-hand cases explain what I built, what I
+              learned, and where readers can inspect the supporting material.
             </p>
             <p>
-              The frame-annotator findings are pinned to commit{" "}
-              <code>3e94ed03c1487331b8c041ca755421686b41d031</code>. The
-              clean core test run passed 13 tests, but it did not cover the
-              complete surgical-annotator application. This is a code audit,
-              not clinical validation.
+              I built frame-annotator for quick clip and timeline labelling,
+              then developed surgical-annotator for masks, keypoints, phases,
+              visibility, and tool geometry. The frame workflow has 13 passing
+              automated tests, while the richer surgical workflow is treated
+              separately in the annotation tutorial. The exact source version
+              is available in the{" "}
+              <a href="/audits/frame-annotator-2026-07-26.md">
+                technical review
+              </a>
+              , without interrupting the story on the main page.
             </p>
             <p>
               The BreastMNIST case pins the paper, dataset, three released
               prediction files, metric implementation, and historical
-              repository finding. It recovers two reported Table 3 cells at
-              three decimals. It does not claim model retraining,
-              whole-paper reproduction, or clinical validity.
+              repository finding. It recalculates two reported Table 3 cells at
+              three decimals as a focused evidence check using the released
+              predictions.
             </p>
             <p>
               The agentic-systems comparison links to the primary papers and
               keeps system-generated ranking, expert review, wet-lab evidence,
               and peer review separate. The annotation origin note separates
-              Omar&apos;s first-hand Hamlyn account from public commits and the
-              versioned LASK record. Neither appendix turns an author account
-              or an agent&apos;s judgement into independent evidence.
+              my Hamlyn build story from the supporting project, software, and
+              LASK dataset links.
             </p>
             <p>
               The model-container lab uses a transparent synthetic model. Its
-              automated and live Docker checks establish service behaviour,
-              input rejection, and a local runtime boundary. They do not
-              establish model accuracy, clinical validity, availability, or
-              security against every threat.
+              automated and live Docker checks cover service behaviour, input
+              rejection, and local execution. Model accuracy and clinical
+              validation would be assessed separately for the real model and
+              intended use.
             </p>
           </div>
         </section>
@@ -124,11 +126,11 @@ export default function AboutPage() {
               non-colour feedback.
             </p>
             <p>
-              Known limitations: an independent screen-reader audit and target
-              learner usability pilot are still required. Videos, captions, and
-              transcripts are not present until the final recordings are
-              published. The embedded annotation interaction is a teaching
-              mock and not a validated medical interface.
+              An independent screen-reader review and target learner pilot are
+              planned next. Captions and transcripts will be added with the
+              final recordings. The annotation demos preserve the original
+              interfaces and run with public examples so readers can practise
+              the workflow directly.
             </p>
           </div>
         </section>
@@ -140,17 +142,17 @@ export default function AboutPage() {
           </div>
           <div>
             <p>
-              ChatGPT and Codex assisted with research, drafting, repository
+              I used ChatGPT and Codex for research, drafting, repository
               inspection, implementation, and testing. An OpenAI image model
-              generated the social preview. AI output was treated as a
-              proposal, then checked through sources, visible diffs, commands,
-              tests, and human decisions.
+              generated the social preview. I checked AI suggestions against
+              the sources, reviewed every code change, and tested the finished
+              workflows.
             </p>
             <p>
-              Omar Choudhry remains responsible for the scientific, ethical,
-              legal, and editorial decisions. Final submission sign-off,
-              recordings, transcripts, and later claim changes remain named
-              human tasks.
+              I made the scientific, ethical, legal, and editorial decisions
+              and will give the final submission sign-off. I will also review
+              later changes and add the recordings and transcripts as they are
+              completed.
             </p>
           </div>
         </section>

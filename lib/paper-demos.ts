@@ -434,7 +434,7 @@ export const paperDemos: Record<PaperDemoSlug, PaperDemo> = {
         href: "https://doi.org/10.1049/htl2.70045",
       },
       {
-        label: "Claim boundary",
+        label: "What this page covers",
         detail:
           "Numbers shown here are transcribed from the article. No inference, retraining, or clinical validation was performed for this website.",
       },

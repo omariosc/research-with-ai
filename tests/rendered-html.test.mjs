@@ -334,7 +334,7 @@ test("renders the website brief and annotation interactions", async () => {
   assert.match(paper, /model-container-service\.zip/);
   assert.match(paper, /Port forwarding is not the deployment plan/);
   assert.match(annotation, /Developing Custom Annotation Tools Using AI/);
-  assert.match(annotation, /Two authentic interfaces, with safe public fixtures/);
+  assert.match(annotation, /Two original interfaces, ready to try/);
   assert.match(annotation, /aria-label="Choose annotation tool"/);
   assert.match(annotation, /id="frame-annotator-tab"/);
   assert.match(annotation, /aria-controls="frame-annotator-panel"/);
@@ -347,7 +347,7 @@ test("renders the website brief and annotation interactions", async () => {
   assert.match(annotation, /Draw masks, shaft lines, keypoints, and phases/);
   assert.match(
     annotation,
-    /ten explicitly approved frames recovered from the author-owned Hamlyn presentation video/,
+    /ten frames from my project presentation/,
   );
   assert.match(
     annotation,
@@ -358,7 +358,7 @@ test("renders the website brief and annotation interactions", async () => {
     /src="\/annotation-demos\/frame-annotator\/preview\.png"/,
   );
   assert.match(annotation, /Local save and reset/);
-  assert.match(annotation, /Public HEAD 0dcfc9e/);
+  assert.match(annotation, /Original layouts, controls, and keyboard workflows/);
   assert.match(
     annotation,
     /href="\/citations\/annotation-showcase-media-2026-07-29\.md"/,
@@ -376,7 +376,10 @@ test("renders the website brief and annotation interactions", async () => {
   assert.match(annotation, /The beta became inspectable and reusable/);
   assert.match(annotation, /BTPN carried the labels into an accepted paper/);
   assert.match(annotation, /accepted to MICCAI 2026/);
-  assert.match(annotation, /No proceedings DOI is claimed yet/);
+  assert.match(
+    annotation,
+    /add the official proceedings page when MICCAI publishes it/,
+  );
   assert.match(
     annotation,
     /href="https:\/\/eprints\.whiterose\.ac\.uk\/id\/eprint\/230457\/"/,
@@ -385,7 +388,7 @@ test("renders the website brief and annotation interactions", async () => {
     annotation,
     /href="https:\/\/github\.com\/omariosc\/BTPN"/,
   );
-  assert.match(annotation, /Author account/);
+  assert.match(annotation, /What I decided and reviewed/);
   assert.doesNotMatch(annotation, /annotation-synthetic-frame\.svg/);
   assert.doesNotMatch(annotation, /A tiny annotation loop/);
   assert.match(annotation, /annotation-spec\.yaml/);
@@ -425,7 +428,7 @@ test("renders the website brief and annotation interactions", async () => {
     "Active project",
     "Choose a workshop track",
     "Work one stage at a time",
-    "Two authentic interfaces, with safe public fixtures",
+    "Two original interfaces, ready to try",
     "Turn an annotation protocol into software requirements",
     "Optional, after the core stages",
     "From a fast beta to the LASK workflow",
@@ -483,10 +486,10 @@ test("renders the ten-stage AI in healthcare conference workshop", async () => {
   assert.match(html, /Advertised web agenda/);
   assert.match(html, /Workshop 2: TBA/);
   assert.match(html, /Did not run/);
-  assert.match(html, /organiser joined the final panel/i);
+  assert.match(html, /I joined and covered the removed workshop/i);
   assert.match(html, /Swipe sideways to see the decision record/);
   assert.match(html, /id="conference-denominator-ledger-title"/);
-  assert.match(html, /135 rows/);
+  assert.match(html, /135 registrations/);
   assert.match(html, /67 marked HERE/);
   assert.match(html, /about 74/);
   assert.match(html, /30 responses/);
@@ -494,7 +497,6 @@ test("renders the ten-stage AI in healthcare conference workshop", async () => {
     html,
     /aria-label="Of 178 RSVP response rows, 78 were accepted, 6 declined and 94 had no response\."/,
   );
-  assert.match(html, /No feedback response rate is reported/);
   assert.match(html, /id="conference-feedback-chart-title"/);
   assert.match(
     html,
@@ -512,7 +514,7 @@ test("renders the ten-stage AI in healthcare conference workshop", async () => {
     html,
     /aria-label="Organisation: 4\.73 out of 5 from 30 responses"/,
   );
-  assert.match(html, /21 of 30 respondents as students or trainees/);
+  assert.match(html, /Most respondents were students or trainees/);
   assert.match(
     html,
     /href="\/citations\/ai-healthcare-conference-operations-and-evaluation-2026-07-26\.md"/,
@@ -554,16 +556,13 @@ test("renders the version history and canonical workshop links", async () => {
     /github\.com\/omariosc\/research-with-ai\/releases\/tag\/v1\.5\.0/,
   );
   assert.match(html, /research-with-ai-v1\.5\.0-source\.zip/);
-  assert.match(html, /d3f4008/);
   assert.match(html, /Four complete tutorials and refreshed evidence/);
   assert.match(html, /research-with-ai-v1\.4\.0-source\.zip/);
-  assert.match(html, /d72814d/);
   assert.match(html, /research-with-ai-v1\.3\.0-source\.zip/);
-  assert.match(html, /32b46f3/);
   assert.match(html, /research-with-ai-v1\.2\.0-source\.zip/);
-  assert.match(html, /a304472/);
   assert.match(html, /research-with-ai-v1\.1\.0-source\.zip/);
-  assert.match(html, /bd3c4a2/);
+  assert.match(html, /SHA-256 record/);
+  assert.doesNotMatch(html, /d3f4008|d72814d|32b46f3|a304472|bd3c4a2/);
 });
 
 test("keeps the reviewed v1.5 source snapshot digest pinned outside the site bundle", async () => {
@@ -747,7 +746,7 @@ test("server-renders complete workshop metadata at every custom-domain root", as
       host: "annotate.omarchoudhry.co.uk",
       title: "Developing Custom Annotation Tools Using AI",
       description:
-        "Turn an expert annotation protocol into a tested local tool and a traceable dataset. The first-hand case audits frame-annotator for clip and timeline classification and surgical-annotator for masks, keypoints, and multi-task geometry.",
+        "Turn an expert annotation protocol into a tested local tool and a traceable dataset. Follow how I built frame-annotator for fast timeline classification, then expanded the workflow with surgical-annotator for masks, keypoints, and tool geometry.",
       marker: "Turn an annotation protocol into software requirements",
     },
     {

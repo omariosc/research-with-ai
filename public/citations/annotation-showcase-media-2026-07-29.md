@@ -65,15 +65,15 @@ The demo therefore starts from a separately authored
 `starter-annotations.json`. It reconstructs the visible Controller Collision
 selection as one inclusive clip:
 
-- status: ten-frame teaching reconstruction
-- native record shape: `{"clips":[{"start":0,"end":9,"class":"1c"}]}`
+- status: nine labelled starting frames plus one empty practice frame
+- native record shape: `{"clips":[{"start":0,"end":8,"class":"1c"}]}`
 - SHA-256:
-  `fdd24f0b97385f801c95e98599f843edb5e227e67ca8293e163b822942f1517f`
+  `cf0a554d95dcade011e236f3c24a52d5d8db68861e2918712d617f0da4a27d54`
 
 The record uses the tool's native clip structure and surgical-safety taxonomy.
-It is not an original annotation output, source ground truth, or independent
-evidence that every recovered frame was judged to contain a controller
-collision. It is included so the authentic interface opens in a usable state.
+The tenth frame is deliberately left empty so visitors can add a label
+themselves. The record is included so the interface opens in a useful starting
+state while keeping one frame ready for practice.
 
 ## Surgical annotator examples
 
@@ -129,6 +129,11 @@ native `surgical-annotator` record for that frame. The JSON files were not
 reconstructed from the public NPZ. Their mask and keypoint arrays were compared
 with `Trial46.npz` and matched within float32 rounding, with a maximum observed
 difference below 0.00006 pixels.
+
+The browser demo uses the first two records as starting examples and clears the
+annotations from frame 1800 at runtime. The original frame 1800 JSON remains in
+this evidence pack, while the live interface gives visitors an empty final
+frame to annotate themselves.
 
 The public NPZ carries the released masks, keypoints, and visibility data. The
 native JSON also retains working fields such as shaft lines and phase labels.

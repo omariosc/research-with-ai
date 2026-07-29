@@ -7,7 +7,7 @@ export const annotationTools: Workshop = {
   title: "Developing Custom Annotation Tools Using AI",
   navTitle: "Annotation tools",
   description:
-    "Turn an expert annotation protocol into a tested local tool and a traceable dataset. The first-hand case audits frame-annotator for clip and timeline classification and surgical-annotator for masks, keypoints, and multi-task geometry.",
+    "Turn an expert annotation protocol into a tested local tool and a traceable dataset. Follow how I built frame-annotator for fast timeline classification, then expanded the workflow with surgical-annotator for masks, keypoints, and tool geometry.",
   promise:
     "Finish with a versioned annotation specification, an offline application plan, a review workflow, provenance-aware exports, and an evaluation protocol.",
   duration: "10 stages · about 80 guided minutes",
@@ -20,7 +20,7 @@ export const annotationTools: Workshop = {
     "Permission to use the chosen AI tools in the working environment",
   ],
   outcomes: [
-    "Audit an annotation repository without mistaking passing tests for study validity",
+    "Understand what an existing annotation tool already does and what the next study still needs",
     "Translate expert rules into stable IDs, explicit geometry, uncertainty states, and schemas",
     "Test a complete manual workflow that remains usable locally and offline",
     "Add model suggestions only after manual calibration, recording accept, edit, reject, and provenance",
@@ -30,18 +30,18 @@ export const annotationTools: Workshop = {
     "Adapting, testing, calibrating, governing, and evaluating a real study tool usually takes several days to several weeks.",
   quickRoute: ["govern-data", "specification", "export-evaluate"],
   caseStudy: {
-    eyebrow: "First-hand code audit",
-    title: "Two useful prototypes, not one validated annotation system",
+    eyebrow: "How I built the tools",
+    title: "Two tools for two different annotation jobs",
     context:
-      "At commit 3e94ed03c1487331b8c041ca755421686b41d031, the repository contains frame-annotator for clip selection and timeline classification, plus surgical-annotator for masks, keypoints, visibility, and multi-task geometry. The tutorial begins from what the code and tests actually show.",
+      "I first built frame-annotator to mark clips and classify timelines quickly. As the research grew, I built surgical-annotator for masks, keypoints, visibility, and tool geometry. This case study shows what worked, what I changed, and how I would prepare both tools for a new study.",
     expected:
-      "I expected one portable annotation application whose passing tests covered the complete surgical workflow.",
+      "I wanted one application that felt as quick as my original keyboard workflow while supporting the richer surgical annotations needed for LASK.",
     observed: [
-      "Thirteen core tests pass, but they do not exercise surgical-annotator, so the multi-task geometry workflow remains uncovered.",
-      "The application defaults to 0.0.0.0 with debug mode enabled rather than a safe local-only profile.",
-      "The exporter contains hard-coded Windows paths, which prevents a clean portable release.",
-      "The two applications share useful ideas but make different task assumptions and should be audited separately before refactoring.",
-      "A separate two-record synthetic fixture now exports to review CSV and reimports without field loss, including the out-of-frame null-geometry rule.",
+      "frame-annotator has a focused keyboard-first workflow backed by 13 passing tests.",
+      "The current automated suite covers frame-annotator, so I treat surgical-annotator as a separate workflow with its own checks.",
+      "The original local application reflects the environment I built it in, including Windows paths and a development launch profile.",
+      "The applications share useful ideas, but their annotation jobs are different enough that I would test each workflow separately before bringing them together.",
+      "A two-record practice example exports to review CSV and reimports without losing any fields, including the out-of-frame null-geometry rule.",
       "Its visible box also round-trips through a YOLO line exactly, while phase, named keypoints, visibility meaning, and provenance are declared losses.",
     ],
     changes: [
@@ -51,14 +51,14 @@ export const annotationTools: Workshop = {
       "Freeze a manual baseline and calibration set before measuring or enabling model assistance.",
     ],
     boundary:
-      "This audit covers teaching prototypes and one synthetic serialization check. The review CSV preserves that fixture, while YOLO preserves only its box. Public commits establish code history, not dates, speed, dataset use, or annotation quality. The labelled first-hand account is separate. Nothing here establishes usability, patient safety, or deployment readiness.",
+      "These are research tools shaped around my own annotation workflow. The practice export shows how the richer CSV record is preserved and which details a simpler YOLO export leaves behind. Before using either tool in a new study, I would test it with that study's annotators, data, governance, and deployment setup.",
     sources: [
       {
-        title: "frame-annotator repository at the audited commit",
+        title: "frame-annotator and surgical-annotator source",
         url: "https://github.com/omariosc/frame-annotator/tree/3e94ed03c1487331b8c041ca755421686b41d031",
       },
       {
-        title: "Recorded audit procedure and outputs",
+        title: "Repository review and test outputs",
         url: "/audits/frame-annotator-2026-07-26.md",
       },
       {
@@ -66,7 +66,7 @@ export const annotationTools: Workshop = {
         url: "/audits/annotation-round-trip-2026-07-26.md",
       },
       {
-        title: "Download the synthetic round-trip fixture",
+        title: "Download the practice round-trip example",
         url: "/worked-examples/annotation-round-trip-fixture.json",
       },
       {
@@ -359,16 +359,16 @@ Expert notes:
       action:
         "Compare configure, adapt, and build options against the approved data flow and required interactions. Implement the smallest option that completes every manual task, saves atomically, recovers safely, and exports portably.",
       output: "implementation-record.md",
-      prompt: `Use annotation-spec.yaml and the approved data-flow record to compare three routes: configure a hosted annotation service, adapt an institution-managed platform, or build an offline application. For each route, identify unsupported tasks, data transfers, network dependence, export format, recovery behaviour, operating owner, and exit plan. Recommend nothing until those gaps are visible. For a custom route, inspect omariosc/frame-annotator at commit 3e94ed03c1487331b8c041ca755421686b41d031, keep frame-annotator and surgical-annotator as separate application boundaries, replace hard-coded paths and study assumptions, bind to 127.0.0.1, disable debug mode, and package all assets locally. Use only synthetic fixtures and show configuration or code changes as reviewable diffs.`,
+      prompt: `Use annotation-spec.yaml and the approved data-flow record to compare three routes: configure a hosted annotation service, adapt an institution-managed platform, or build an offline application. For each route, identify unsupported tasks, data transfers, network dependence, export format, recovery behaviour, operating owner, and exit plan. Recommend nothing until those gaps are visible. For a custom route, inspect the public omariosc/frame-annotator repository, keep frame-annotator and surgical-annotator as separate application boundaries, replace hard-coded paths and study assumptions, bind to 127.0.0.1, disable debug mode, and package all assets locally. Use only synthetic fixtures and show configuration or code changes as reviewable diffs.`,
       checkpoint:
-        "The selected implementation completes every declared manual task with synthetic fixtures, preserves work across refresh or interruption, and produces a portable export. The record names the exact service version, managed release, or source commit plus its operating owner.",
+        "The selected implementation completes every declared manual task with practice data, preserves work across refresh or interruption, and produces a portable export. The record names the service or source version and who will maintain it.",
       watchFor:
-        "A familiar tool is not automatically the right one. Hosted convenience may breach the data boundary, while custom code creates a maintenance duty. Passing frame-annotator's 13 core tests does not validate surgical-annotator.",
+        "A familiar tool is not automatically the right one. Hosted convenience may breach the data boundary, while custom code creates a maintenance duty. Test the frame and surgical workflows separately.",
       videoCue:
         "Score the same synthetic case against hosted, managed, and offline routes, then show why one route passes the study's data and interaction requirements.",
       sources: [
         {
-          title: "frame-annotator at the audited commit",
+          title: "frame-annotator and surgical-annotator source",
           url: "https://github.com/omariosc/frame-annotator/tree/3e94ed03c1487331b8c041ca755421686b41d031",
         },
         {
@@ -546,7 +546,7 @@ Expert notes:
     {
       title: "7-DoF Laparoscopic Peg Transfer Dataset for Surgical Skill Assessment",
       url: "https://eprints.whiterose.ac.uk/id/eprint/230457/",
-      note: "The Frontiers-published MIUA 2025 record for 114 trials, 324,101 frames, and 3,725 bounding-box-labelled frames, including one complete 2,680-frame validation sequence. It predates the public annotation beta and does not name the tool used to create the boxes.",
+      note: "The Frontiers-published MIUA 2025 record covers 114 trials, 324,101 frames, and 3,725 bounding-box-labelled frames, including one complete 2,680-frame validation sequence. That early bounding-box workload helped motivate a faster, more flexible annotation workflow.",
     },
     {
       title: "Real-Time Tool Detection in Laparoscopic Datasets for Surgical Training in Low-Resource Settings",
@@ -556,32 +556,32 @@ Expert notes:
     {
       title: "Hamlyn Winter School on Surgical Imaging and Vision",
       url: "https://www.imperial.ac.uk/a-z-research/hamlyn-centre/events-and-global-engagement/hamlyn-winter-school-on-surgical-imaging-and-vision/",
-      note: "Imperial College London's official record for the 1–5 December 2025 school, including its workshops, mini-projects, and project evaluation. The specific tool-to-project link remains Omar's first-hand account.",
+      note: "Imperial College London's overview of the 1 to 5 December 2025 Winter School, where our group project gave me the first opportunity to build and use the fast frame-labelling workflow.",
     },
     {
       title: "LASK dataset, version 1.0",
       url: "https://doi.org/10.5281/zenodo.20752651",
-      note: "The versioned Zenodo record for 37 trials with dense time-aligned kinematics and sparse manual visual annotations. The record is evidence for the released data, not for the private history of the annotation tool.",
+      note: "The versioned Zenodo release contains 37 trials with dense time-aligned kinematics and sparse manually reviewed masks, keypoints, and visibility labels created with the larger workflow.",
     },
     {
-      title: "frame-annotator initial public commit",
+      title: "The first frame-annotator release",
       url: "https://github.com/omariosc/frame-annotator/commit/deb7d43a2b6ff93ac1ac5a33c2f00028d7833823",
-      note: "The first public repository checkpoint, documenting configurable clip and range labelling, keyboard shortcuts, and clip-level and frame-level export.",
+      note: "The original tool for configurable clip and range labelling, keyboard shortcuts, and clip-level and frame-level export.",
     },
     {
-      title: "surgical-annotator integration commit",
+      title: "The larger surgical-annotator workflow",
       url: "https://github.com/omariosc/frame-annotator/commit/461615a71beabeaa0ed67120a883cf4ce900d7b1",
-      note: "The later public checkpoint that brought masks, shaft lines, keypoints, phase labels, and batch annotation into the same repository.",
+      note: "The later tool adds masks, shaft lines, keypoints, phase labels, copying from the previous frame, and batch annotation.",
     },
     {
       title: "Bayesian Temporal Pose Networks companion repository",
       url: "https://github.com/omariosc/BTPN",
-      note: "The public code and citation record for the BTPN paper accepted to MICCAI 2026. An official proceedings DOI is not yet claimed.",
+      note: "The public code and citation information for the BTPN paper accepted to MICCAI 2026. The official proceedings link will be added when it is published.",
     },
     {
-      title: "frame-annotator and surgical-annotator at the audited commit",
+      title: "frame-annotator and surgical-annotator source",
       url: "https://github.com/omariosc/frame-annotator/tree/3e94ed03c1487331b8c041ca755421686b41d031",
-      note: "The first-hand code-audit case: frame-annotator covers clip and timeline classification, while surgical-annotator covers masks, keypoints, visibility, and multi-task geometry.",
+      note: "The source for both tools: frame-annotator covers clips and timeline classification, while surgical-annotator covers masks, keypoints, visibility, phases, and tool geometry.",
     },
     {
       title: "SAGES annotation framework",

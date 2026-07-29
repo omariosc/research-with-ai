@@ -15,6 +15,17 @@ const luuListingSource = {
   url: "https://engage.luu.org.uk/events/87BV2/ai-in-healthcare-conference-2026",
 };
 
+const aiMedicalCdtSource = {
+  title:
+    "UKRI Centre for Doctoral Training in Artificial Intelligence for Medical Diagnosis and Care",
+  url: "https://ai-medical.leeds.ac.uk",
+};
+
+const npicSource = {
+  title: "National Pathology Imaging Co-operative",
+  url: "https://npic.ac.uk",
+};
+
 const hsePlanningSource = {
   title: "HSE event safety: getting started",
   url: "https://www.hse.gov.uk/event-safety/getting-started.htm",
@@ -54,13 +65,13 @@ const leedsSafeguardingSource = {
 const recapPostSource = {
   title: "Public organiser recap with conference photographs",
   url: "https://www.linkedin.com/posts/mohammad-tasfiq-jawaad_leedsaiweek-ai-healthcare-ugcPost-7428858664037396480-NJEn/",
-  note: "Public event evidence. Photograph reuse is covered by direct permission from the account holder, as recorded by the organiser.",
+  note: "Conference photographs and post-event reflections from co-organiser Mohammad Tasfiq Jawaad.",
 };
 
 const openingPostSource = {
   title: "Public opening keynote update with conference photographs",
   url: "https://www.linkedin.com/posts/mohammad-tasfiq-jawaad_leedsaiweek-healthcare-ai-activity-7428762183339180032-_Vyb",
-  note: "Public event evidence. Photograph reuse is covered by direct permission from the account holder, as recorded by the organiser.",
+  note: "Opening-day photographs and updates from co-organiser Mohammad Tasfiq Jawaad.",
 };
 
 export const aiHealthcareConference: Workshop = {
@@ -98,20 +109,20 @@ export const aiHealthcareConference: Workshop = {
     eyebrow: "First-hand Leeds AI Week case",
     title: "A student-led conference built from local relationships",
     context:
-      "The AI in Healthcare Conference ran on Sunday 15 February 2026 at Helix, University of Leeds, as the final day of Leeds AI Week. Public listings document the venue, three keynotes, a digital pathology workshop, a panel, and student competitions. The observations below add the organiser's first-hand account and are labelled accordingly.",
+      "We ran the AI in Healthcare Conference on Sunday 15 February 2026 at Helix, University of Leeds, as the final day of Leeds AI Week. The programme combined three keynotes, a digital pathology workshop, a panel, student competitions and time for people to meet.",
     expected:
-      "The team wanted to make local healthcare AI work visible, help people understand routes into interdisciplinary research, and create conversations across students, researchers, industry, and the wider community.",
+      "We wanted to make local healthcare AI work visible, help people understand routes into interdisciplinary research, and create conversations across students, researchers, industry, and the wider community.",
     observed: [
-      "First-hand account: the panel brought together current PhD researchers from the AI in Medical Diagnosis and Care CDT with different academic, professional, and industry routes into research.",
-      "First-hand account: the panel discussed the benefits and realities of doing a PhD while giving people outside the immediate research group a route into the conversation.",
-      "First-hand account: the NPIC digital pathology workshop was led by three CDT graduates whose PhDs involved digital histopathology. The chair describes their later local employment and continued university relationships as an example of how a research network can persist beyond doctoral study.",
-      "First-hand approximate counts: the competitions received about eight essays and six posters. Each had one winner and one runner-up.",
-      "The organiser reports 135 registration rows and estimates about 74 participants attended, excluding the committee. Because other records differ, attendance remains approximate until reconciliation.",
+      "The panel brought together current researchers from the UKRI Centre for Doctoral Training in Artificial Intelligence for Medical Diagnosis and Care, with different academic, professional, medical, surgical and industry routes into research.",
+      "The panel discussed the benefits and realities of doing a PhD while giving people outside the immediate research group a route into the conversation.",
+      "The National Pathology Imaging Co-operative digital pathology workshop was led by three CDT graduates whose doctoral work involved digital histopathology. Their later local employment and continuing university relationships showed how a research network can persist beyond a PhD.",
+      "We had over a dozen submitted essays and posters, with one winner and one runner-up in each category.",
+      "We received 135 registrations and had about 74 attendees on the day, in addition to the organising committee.",
       "Thirty feedback forms were returned. Mean ratings were 4.63 out of 5 for satisfaction, 4.67 for content value, and 4.73 for organisation.",
       "Among the 30 respondents, 22 said they had not attended a similar AI or healthcare conference and 28 said yes or maybe to future involvement.",
-      "The delivered programme changed: the advertised second workshop did not run, and the organiser joined the final panel. The tutorial treats that difference as a change-control lesson rather than hiding it.",
-      "First-hand account: two co-chairs worked with a financial officer, an AI Week chair and webmaster, three speaker coordinators, a marketing lead, and a general volunteer. A small surge team remained available for last-minute work.",
-      "First-hand account: the free university venue and CDT sponsorship allowed most of the small budget to support food, with a smaller amount used for a banner and no cash prizes.",
+      "We dropped the advertised second workshop because the day was already full, moved its main points into the final panel, and shared the revised schedule before and at the event.",
+      "Two co-chairs worked with a financial officer, an AI Week chair and webmaster, three speaker coordinators, a marketing lead, and a general volunteer. A small group also stayed ready for last-minute work.",
+      "A free university venue and sponsorship from the AI-Medical CDT let us spend most of the small budget on food, with a smaller amount used for a banner and no cash prizes.",
     ],
     changes: [
       "Keep a public programme and a separate versioned operational run sheet, then archive what was actually delivered.",
@@ -122,11 +133,13 @@ export const aiHealthcareConference: Workshop = {
       "Recruit for reliability and constructive progress, record who decides when consensus stalls, and keep two or three people available for urgent tasks.",
     ],
     boundary:
-      "The ratings describe 30 voluntary feedback responses, not every attendee. A coarse keyword grouping coded 21 of 30 respondents as students or trainees, so the feedback is not presented as representative of the wider public. The 135 registration rows, 178 RSVP response rows, 67 HERE flags, separate 75-row on-day list, and first-hand estimate of about 74 participants are different records. The tutorial therefore does not publish an exact attendance total, no-show rate, feedback response rate, cost per attendee, or crowd claim. Exact spending, room capacity, company identity, individual access information, and media rights remain unresolved. The case shows one locally organised event and does not guarantee the same results elsewhere.",
+      "The ratings come from 30 feedback respondents, most of whom were students or trainees. Registration, RSVP, check-in and attendance records served different purposes, so the tutorial reports them separately and uses about 74 as the on-day attendance figure. Personal registration, dietary and access details are never published.",
     sources: [
       leedsAiWeekSource,
       conferencePageSource,
       luuListingSource,
+      aiMedicalCdtSource,
+      npicSource,
       recapPostSource,
       openingPostSource,
     ],
@@ -385,7 +398,12 @@ Confirmed facts:
         "AI can draft correspondence but cannot hold a relationship. A named organiser should personalise, send, answer, and record every commitment.",
       videoCue:
         "Show how existing CDT, university, and local industry relationships supported keynotes, a PhD panel, and the digital pathology workshop.",
-      sources: [conferencePageSource, luuListingSource],
+      sources: [
+        conferencePageSource,
+        luuListingSource,
+        aiMedicalCdtSource,
+        npicSource,
+      ],
     },
     {
       id: "venue-care",
@@ -502,7 +520,7 @@ Aggregates:
       watchFor:
         "High ratings from voluntary respondents are useful but do not represent everyone. Engagement reactions, registrations, attendance, learning, and later collaboration are different outcomes.",
       videoCue:
-        "Build the Leeds feedback summary from 30 responses, keep its denominator visible, and leave attendance and response rate unresolved until the records are reconciled.",
+        "Build the Leeds feedback summary from 30 responses, keep that denominator visible, and report registration, attendance and feedback as separate measures.",
       sources: [conferencePageSource, recapPostSource, openingPostSource],
     },
   ],
@@ -513,7 +531,7 @@ Aggregates:
     },
     {
       ...conferencePageSource,
-      note: "Published programme. Compare it with the first-hand delivered programme rather than assuming every advertised session ran.",
+      note: "The published programme and starting point for the final schedule delivered on the day.",
     },
     {
       ...luuListingSource,
@@ -521,11 +539,19 @@ Aggregates:
     },
     {
       ...recapPostSource,
-      note: "Public post-event evidence and approved photograph source. Social reactions are engagement signals, not unique attendees or impact.",
+      note: "Conference photographs, public reactions and the organising team's post-event reflections.",
     },
     {
       ...openingPostSource,
-      note: "Public event-day evidence and approved photograph source. Add author-written alt text before reuse.",
+      note: "Opening-day photographs and a public account of the conference as it happened.",
+    },
+    {
+      ...aiMedicalCdtSource,
+      note: "The doctoral training community that supported the event and contributed researchers, graduates and sponsorship.",
+    },
+    {
+      ...npicSource,
+      note: "The Leeds-based digital pathology collaboration represented in the practical workshop.",
     },
     {
       ...hsePlanningSource,

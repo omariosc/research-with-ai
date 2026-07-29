@@ -97,6 +97,14 @@ test("repository screenshots remain pinned to the reviewed interface", async () 
       "8da6b7c2286cb8eef7ed169f5f145f0ea6a0983f14173fc2883a9500fcae5e4a",
     "docs/images/interactive-paper-homepage-evidence.jpg":
       "94c122362c21eda8215545fa2fe4c2a3ab0f590bebdaf2fe879daef2670d2009",
+    "docs/images/mec-2026/agentic-medmnist-claims.jpg":
+      "a3fe0d0607ffd0356c0c7462f9feb8a3fb847099c18804c6150f988889595334",
+    "docs/images/mec-2026/agentic-paper-review.jpg":
+      "4edd0055a95e34c9288dcb5a31e44a381cbcec782c5f0654e962f98aac88781d",
+    "docs/images/mec-2026/conference-denominator.jpg":
+      "7add58f45a3ac78845562c8fe9847787758c2ca9bfb89162ef8101f55b39b1a3",
+    "docs/images/mec-2026/conference-programme.jpg":
+      "04a3e11448049ef99ed680dda808ca7489ad03eb30cdf0e4eb82427eade3bc63",
     "docs/images/mobile-overview.jpg":
       "49cb969c2512b92de02eb75914c2dd60279814dbbd978ba49689312e70fbd72f",
     "docs/images/research-with-ai-overview.jpg":

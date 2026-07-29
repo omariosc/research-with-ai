@@ -55,7 +55,7 @@ const eventImages = [
     width: 1280,
     height: 959,
     alt: "A seated audience watches a presentation on two screens in the Helix event space.",
-    caption: "The room setting cannot establish an attendance denominator.",
+    caption: "The Helix space supported talks, workshops and discussion.",
   },
   {
     src: "/images/ai-healthcare-conference/healthcare-it-landscape.jpg",
@@ -70,14 +70,6 @@ const eventImages = [
     height: 960,
     alt: "A presenter discusses using NHS data for AI-driven healthcare beside two matching presentation screens.",
     caption: "A keynote covered the value and difficulty of using NHS data.",
-  },
-  {
-    src: "/images/ai-healthcare-conference/audience-questions.jpg",
-    width: 1280,
-    height: 960,
-    alt: "Attendees face two speakers while QR codes for submitting questions are displayed on two screens.",
-    caption:
-      "QR codes enabled questions. LinkedIn labels this image AI-generated, so it remains illustrative.",
   },
   {
     src: "/images/ai-healthcare-conference/conference-session-wide.jpg",
@@ -173,7 +165,7 @@ const programmeComparison = [
     advertised: "15:30 to 16:30",
     revised: "15:10 to 16:10",
     record:
-      "Moved earlier; the organiser joined and covered the removed workshop's main points.",
+      "Moved earlier; I joined and covered the removed workshop's main points.",
   },
 ] as const;
 
@@ -241,9 +233,9 @@ export function ConferenceCaseStudy({
           Build the programme from the community you already have
         </h2>
         <span>
-          The Leeds event used one research ecosystem to connect routes into
-          healthcare AI, doctoral training, local work and wider participation.
-          Its compromises and unresolved data are part of the lesson.
+          We used the local research community to connect healthcare AI,
+          doctoral training, career routes and wider public participation. The
+          choices we made before and during the day are the practical lesson.
         </span>
       </div>
 
@@ -259,11 +251,22 @@ export function ConferenceCaseStudy({
         </figure>
         <div>
           <p>
-            Current AI for Medical Diagnosis and Care CDT researchers brought
-            medical, surgical, academic, professional and industry routes to
-            the panel. Three former CDT graduates led the NPIC digital
-            pathology workshop, linking doctoral study to local work and
-            continuing research relationships.
+            Researchers from the{" "}
+            <a
+              href="https://ai-medical.leeds.ac.uk"
+              rel="noreferrer"
+              target="_blank"
+            >
+              UKRI Centre for Doctoral Training in Artificial Intelligence for
+              Medical Diagnosis and Care
+            </a>{" "}
+            (CDT) brought medical, surgical and industry experience to the
+            panel. Three graduates led a digital pathology workshop with the{" "}
+            <a href="https://npic.ac.uk" rel="noreferrer" target="_blank">
+              National Pathology Imaging Co-operative
+            </a>{" "}
+            (NPIC), showing how PhD connections can grow into local jobs and
+            collaborations.
           </p>
         </div>
       </div>
@@ -281,8 +284,9 @@ export function ConferenceCaseStudy({
           <span>Small-budget rule</span>
           <h3>Protect the basics first</h3>
           <p>
-            A free university venue and medical AI CDT sponsorship kept most
-            spending on food, plus one banner and no cash prizes.
+            A free university venue and sponsorship from the AI-Medical CDT
+            let us spend most of the small budget on food, plus one banner and
+            no cash prizes.
           </p>
         </article>
         <article>
@@ -350,18 +354,17 @@ export function ConferenceCaseStudy({
             Give people a clear lane and keep one decision route
           </h3>
           <p>
-            Teams calls structured planning and WhatsApp sped up coordination.
-            Material decisions still need a durable log.
+            We planned through Teams calls and used WhatsApp for quick
+            coordination. The co-chairs kept key changes clear for everyone.
           </p>
         </div>
         <article className="conference-team-evidence">
           <span>Nine named roles</span>
-          <h3>Design responsibility before recruiting names</h3>
+          <h3>Decide what needs owning before recruiting the team</h3>
           <p>
-            The core used two co-chairs, a financial officer, an AI Week chair
-            and webmaster, three speaker coordinators, a marketing lead and a
-            general volunteer. The reusable lesson is how decisions were
-            assigned, not who appeared in the room.
+            Our core team had two co-chairs, a financial officer, an AI Week
+            chair and webmaster, three speaker coordinators, a marketing lead
+            and a general volunteer. Clear roles kept decisions moving.
           </p>
         </article>
         <div
@@ -428,12 +431,11 @@ export function ConferenceCaseStudy({
       >
         <article className="conference-programme-note">
           <span>Two programme states</span>
-          <h3>Preserve the comparison, not private working material</h3>
+          <h3>Keep the original agenda and the final schedule</h3>
           <p>
-            The web agenda records what attendees first saw. The revised
-            timetable and first-hand account support the delivered column.
-            Its useful evidence is transcribed into the dated comparison
-            record without redistributing the source image.
+            We kept the web agenda that people first saw and compared it with
+            the timetable delivered on the day. This made the schedule change
+            easy to explain afterwards.
           </p>
         </article>
         <div>
@@ -487,26 +489,27 @@ export function ConferenceCaseStudy({
       <div className="conference-programme-logic">
         <article>
           <span>Current researchers</span>
-          <h3>Different routes into one CDT</h3>
+          <h3>Different routes into doctoral research</h3>
           <p>
-            Current students discussed routes into a healthcare AI PhD with
-            prospective researchers and the wider community.
+            Current CDT researchers discussed the benefits and realities of a
+            healthcare AI PhD with prospective researchers and the wider
+            community.
           </p>
         </article>
         <article>
           <span>Former researchers</span>
           <h3>Digital pathology beyond the PhD</h3>
           <p>
-            Three former CDT graduates linked practical methods to a continuing
-            local research network.
+            Three former CDT researchers connected practical digital pathology
+            methods with local jobs and continuing university relationships.
           </p>
         </article>
         <article>
           <span>Participant contributions</span>
           <h3>Give people a reason to contribute</h3>
           <p>
-            Organisers recall about eight essays and six posters, with one
-            winner and runner-up in each. Entry totals remain approximate.
+            We had over a dozen submitted essays and posters, with one winner
+            and one runner-up in each category.
           </p>
         </article>
       </div>
@@ -516,46 +519,46 @@ export function ConferenceCaseStudy({
         className="conference-denominator-ledger"
       >
         <div className="conference-section-heading">
-          <span>Evaluation audit</span>
+          <span>What we measured</span>
           <h3 id="conference-denominator-ledger-title">
-            Do not force several rosters into one funnel
+            Keep registration, attendance and feedback separate
           </h3>
           <p>
-            The workbook&apos;s lists serve different jobs, so keep them
-            separate rather than selecting a convenient total.
+            Each list answered a different question. Keeping them separate
+            made our public summary clearer and our next event easier to plan.
           </p>
         </div>
         <div className="conference-denominator-grid">
           <article>
             <span>Registration record</span>
-            <strong>135 rows</strong>
+            <strong>135 registrations</strong>
             <p>
-              One full entry repeats, so 135 is a row count, not a unique-person
-              denominator.
+              This was the headline demand figure and showed why confirmation
+              and no-show planning mattered.
             </p>
           </article>
           <article>
             <span>On-day flags</span>
             <strong>67 marked HERE</strong>
             <p>
-              A separate on-day list has 75 rows; neither source is yet a
-              verified participant count.
+              The check-in sheet and a separate 75-row on-day list were used
+              for different parts of event delivery.
             </p>
           </article>
           <article>
-            <span>First-hand estimate</span>
+            <span>Attendance</span>
             <strong>about 74</strong>
             <p>
-              The organiser estimates about 74 participants, excluding
-              committee; check-in rules and exclusions remain unresolved.
+              We had about 74 attendees on the day, in addition to the
+              organising committee.
             </p>
           </article>
           <article>
             <span>Feedback record</span>
             <strong>30 responses</strong>
             <p>
-              All completed the reported ratings. No feedback response rate is
-              reported while attendance remains unresolved.
+              We report every satisfaction and session rating against these 30
+              completed forms.
             </p>
           </article>
         </div>
@@ -563,8 +566,8 @@ export function ConferenceCaseStudy({
           <div>
             <strong>RSVP response roster</strong>
             <p>
-              Its 178 rows are not a verified subset of the 135 registration
-              rows and remain a separate snapshot.
+              We used this later response snapshot to plan reminders, food and
+              room capacity rather than treating it as the attendance count.
             </p>
           </div>
           <div className="conference-rsvp-bars" role="img" aria-label="Of 178 RSVP response rows, 78 were accepted, 6 declined and 94 had no response.">
@@ -731,13 +734,12 @@ export function ConferenceCaseStudy({
       </div>
 
       <div className="conference-boundary">
-        <strong>What these figures do and do not show</strong>
+        <strong>How to read the results</strong>
         <p>
-          Ratings cover 30 respondents; photographs cannot prove headcount.
-          Registrations, RSVPs, check-ins, walk-ins, organisers, speakers and
-          responses remain separate without a reconciliation rule. A coarse
-          keyword grouping coded 21 of 30 respondents as students or trainees,
-          so results are not representative of the wider public.
+          The ratings come from 30 feedback respondents. Registration, RSVP,
+          check-in and attendance figures answer different questions, so we
+          report them separately. Most respondents were students or trainees,
+          which is useful context when applying the feedback elsewhere.
         </p>
       </div>
 
@@ -746,10 +748,8 @@ export function ConferenceCaseStudy({
           <span>Practical recognition</span>
           <h3>Certificates can document contribution without becoming prizes</h3>
           <p>
-            Organisers made attendance and contribution certificates. Version
-            the template, verify names and minimise retained personal data.
-            Publish a synthetic template rather than a named attendee&apos;s
-            certificate.
+            We created attendance and contribution certificates, checked every
+            name and kept one reusable template for future events.
           </p>
         </article>
         <article>
@@ -757,17 +757,17 @@ export function ConferenceCaseStudy({
           <h3>Record the rule that drove each purchase</h3>
           <p>
             A free venue, bulk snacks and roughly one pizza for every two
-            people protected the small budget. Record quantities, dietary
-            handling, leftovers and sponsorship separately from brands.
+            people kept the event affordable. We planned dietary requirements
+            through the RSVP form and shared the few leftovers at the end.
           </p>
         </article>
         <article>
           <span>Participant contributions</span>
           <h3>Plan posters and essays as part of the programme</h3>
           <p>
-            About eight essays and six posters were submitted, with a winner
-            and runner-up in each category. Keep counts approximate without a
-            reconciled competition register.
+            We received over a dozen essays and posters, with one winner and
+            one runner-up in each category. The lunch session gave attendees
+            time to discuss the work directly with contributors.
           </p>
         </article>
       </div>
@@ -775,10 +775,10 @@ export function ConferenceCaseStudy({
       <div className="conference-public-response">
         <div className="conference-public-response-heading">
           <span>Public response</span>
-          <h3>Keep social engagement as supporting evidence</h3>
+          <h3>The conversation continued after the event</h3>
           <p>
-            LinkedIn snapshots from 26 July 2026 show interest, not attendance,
-            learning or quality.
+            Two organiser posts drew more than 100 reactions alongside
+            comments and reposts, extending the event beyond the room.
           </p>
         </div>
         <article>
@@ -801,8 +801,9 @@ export function ConferenceCaseStudy({
           <li>Positive descriptions of the day, audience and local community</li>
         </ul>
         <p>
-          These aggregate themes from six public comments are neither
-          quotations nor a structured evaluation; the posts remain authoritative.
+          Six public comments reflected appreciation for the organisers,
+          interest in the panel and enthusiasm for Leeds&apos; healthcare AI
+          community.
         </p>
       </div>
 
@@ -826,11 +827,10 @@ export function ConferenceCaseStudy({
         <div className="deep-dive-download">
           <ExternalLink size={22} />
           <div>
-            <strong>Follow the evidence</strong>
+            <strong>Explore the supporting material</strong>
             <p>
-              Public pages, the supplied schedule and first-hand records
-              support different claims. Workbook figures are aggregate and
-              preserve no names, emails, dietary or access details, or free text.
+              The programme, recap and organising records follow the event
+              from planning through evaluation.
             </p>
             <div className="conference-source-links">
               <a

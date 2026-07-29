@@ -92,6 +92,7 @@ function PaperNativeRecord({ demo }: { demo: PaperDemo }) {
               <figure key={figure.src}>
                 <a
                   aria-label={`Open ${figure.caption} at full resolution`}
+                  className={styles.nativeAssetMedia}
                   href={figure.src}
                   rel="noreferrer"
                   target="_blank"
@@ -126,13 +127,14 @@ function PaperNativeRecord({ demo }: { demo: PaperDemo }) {
         <div className={styles.nativeAssetGroup}>
           <header>
             <span>Tables from the paper</span>
-            <strong>Complete tables with their provenance stated below</strong>
+            <strong>Tables with their original captions and source details</strong>
           </header>
           <div className={styles.nativeTableGrid}>
             {record.tables.map((table) => (
               <figure key={table.src}>
                 <a
                   aria-label={`Open ${table.label} at full resolution`}
+                  className={styles.nativeAssetMedia}
                   href={table.src}
                   rel="noreferrer"
                   target="_blank"
@@ -769,7 +771,7 @@ export function PaperDemoPage({ demo }: { demo: PaperDemo }) {
         >
           <div className={styles.sectionHeading}>
             <p>Limits and traceability</p>
-            <h2 id="limits-title">What this companion does not prove</h2>
+            <h2 id="limits-title">How to read this companion</h2>
           </div>
           <div className={styles.limitGrid}>
             <div>
@@ -815,14 +817,12 @@ export function PaperDemoPage({ demo }: { demo: PaperDemo }) {
         <aside className={styles.generationNote}>
           <div>
             <span>How this companion was made</span>
-            <strong>AI-assisted conversion, human-reviewed evidence</strong>
+            <strong>Built with AI, checked against the paper</strong>
           </div>
           <p>
             AI helped extract structure, organise the page, and build the
-            interactive views. The paper title, authors, values, figure,
-            caption, source links, and claim boundaries were checked against
-            the named source. No clinical conclusion or model run is added by
-            the interface.
+            interactive views. I checked the title, authors, values, figures,
+            captions, and source links against the original material.
           </p>
         </aside>
 

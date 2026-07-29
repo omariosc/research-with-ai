@@ -105,7 +105,7 @@ export const FRAME_CLASSES = [
 ] as const;
 
 export const FRAME_STARTER_CLIPS: readonly FrameClip[] = [
-  { start: 0, end: 9, class: "1c" },
+  { start: 0, end: 8, class: "1c" },
 ] as const;
 
 export function cloneValue<T>(value: T): T {
@@ -224,8 +224,8 @@ export const SURGICAL_SAMPLES: readonly SurgicalSample[] = [
       "/worked-examples/annotation-showcase/surgical-annotator/trial46_frame_1800.jpg",
     annotationPath:
       "/worked-examples/annotation-showcase/surgical-annotator/trial46_frame_1800.json",
-    label: "Transfer",
-    summary: "Tool 2 tip and left jaw are occluded",
+    label: "Try it yourself",
+    summary: "The live demo opens this final example without annotations",
   },
 ] as const;
 
