@@ -1,0 +1,214 @@
+{
+  "checked": "2026-07-29",
+  "privacy_boundary": "No workstation paths, complete unpublished manuscript file, reviews, responses, or participant-level records are included.",
+  "source_documents": [
+    {
+      "source_title": "Real-Time Tool Detection in Laparoscopic Datasets for Surgical Training in Low-Resource Settings",
+      "source_url": "https://doi.org/10.1049/htl2.70045",
+      "rights": "CC BY 4.0",
+      "published_pdf_sha256": "c7a7bb77192baa28c64d53dc0c9875a4f5ae49c42a5ca13518691b25358d33b3",
+      "author_source_bundle_sha256": "49ce646ee7d78ff2b213e0e00d6a81465df3f14dbde6a3f13dc7d825ac61efe0",
+      "image_boundary": "Figures 1 and 3 include already-published, deidentified ART-Net and EndoVis in-vivo panels. They contain no patient identifiers or embedded metadata and remain part of the attributed CC BY 4.0 paper record.",
+      "distribution_boundary": "The author source bundle is used only to obtain the original figure images and is not distributed by this website."
+    },
+    {
+      "source_title": "7-DoF Laparoscopic Peg Transfer Dataset for Surgical Skill Assessment",
+      "source_url": "https://doi.org/10.3389/978-2-8325-5137-0",
+      "rights": "Author-created figures used with the lead author's permission",
+      "published_proceedings_extract_sha256": "3277cd65e3a5df64b412cfa9f4df4a9f9e8c17b231d219801c7ba2f53d043545",
+      "version_boundary": "The website displays the abstract exactly as it appears in the published Frontiers extract. The earlier accepted author manuscript contains a longer opening and uses different ordinal numbers for the two Urology Boot Camps, so the companion does not silently merge those versions.",
+      "distribution_boundary": "Only public-paper figures and aggregate evidence are included. No participant-level record or workstation path is distributed."
+    },
+    {
+      "source_title": "Bayesian Temporal Pose Networks for Uncertainty-Calibrated Laparoscopic Tool Pose Tracking",
+      "source_url": null,
+      "public_project_record": "https://github.com/omariosc/BTPN",
+      "rights": "The exact abstract, section headings, selected author-owned figures, and tightly bounded table crops are used with the lead author's explicit permission for this companion; copyright remains with the authors pending publication",
+      "accepted_camera_ready_pdf_sha256": "69dc0c01b6b240eff5e887647ff51bdbdb03c8c5e094562514fa3fac2b23c719",
+      "distribution_boundary": "The publication URL is pending. The public BTPN repository already publishes the title, abstract, method overview, aggregate results, tables, figures, and reproduction guidance. This companion checks those public materials against the accepted camera-ready paper and uses the lead author's selected paper figures and tightly bounded table regions. The complete manuscript PDF, reviews, responses, affiliations, emails, and workstation paths are not distributed."
+    }
+  ],
+  "assets": [
+    {
+      "path": "/paper-demos/htl/figure-1-dataset-samples.webp",
+      "source_title": "Real-Time Tool Detection in Laparoscopic Datasets for Surgical Training in Low-Resource Settings",
+      "source_locator": "Figure 1, published PDF page 4 of 13",
+      "source_url": "https://doi.org/10.1049/htl2.70045",
+      "rights": "CC BY 4.0",
+      "source_asset": "updated_samples.png",
+      "source_asset_sha256": "2ccd7df96022257bc7bfca69b67dc2f1b77b6be85db3f083b228344b551aa778",
+      "transformation": "Resized to 2000 by 478 pixels, converted to WebP at quality 90, and stripped of metadata without visual editing.",
+      "sha256": "3e41ed1fc04cbb290e2f322a5c5c86f2b98cc510ac11f77138290d5d8890a2d7"
+    },
+    {
+      "path": "/paper-demos/htl/figure-2-experimental-pipeline.webp",
+      "source_title": "Real-Time Tool Detection in Laparoscopic Datasets for Surgical Training in Low-Resource Settings",
+      "source_locator": "Figure 2, published PDF page 5 of 13",
+      "source_url": "https://doi.org/10.1049/htl2.70045",
+      "rights": "CC BY 4.0",
+      "source_asset": "experiments.png",
+      "source_asset_sha256": "36b0eddf11f2041a02d37a3f8f6d19113aecd3343b1ade75e9fa827707dc4b62",
+      "transformation": "Resized to 2000 by 888 pixels, converted to WebP at quality 92, and stripped of metadata without visual editing.",
+      "sha256": "477c4453ce07cadf1ddfca4fd51950ac2075d6bb93774011630dfc66e95c6ced"
+    },
+    {
+      "path": "/paper-demos/htl/figure-3-detection-results.webp",
+      "source_title": "Real-Time Tool Detection in Laparoscopic Datasets for Surgical Training in Low-Resource Settings",
+      "source_locator": "Figure 3, published PDF page 10 of 13",
+      "source_url": "https://doi.org/10.1049/htl2.70045",
+      "rights": "CC BY 4.0",
+      "source_asset": "detections and labels.png",
+      "source_asset_sha256": "90f572bacf747381ad2f9d8b8e0073cac8837aed17ef0cf43b74a373ebd55ad0",
+      "transformation": "Retained at 1920 by 1080 pixels, converted to WebP at quality 90, and stripped of metadata without visual editing.",
+      "sha256": "30ca1f315470137d52449d0f1d2f44e82aa75b33a6675143d178ffbe864a2f9c"
+    },
+    {
+      "path": "/paper-demos/htl/table-3-systematic-benchmark.webp",
+      "source_title": "Real-Time Tool Detection in Laparoscopic Datasets for Surgical Training in Low-Resource Settings",
+      "source_locator": "Table 3, published PDF page 8 of 13",
+      "source_url": "https://doi.org/10.1049/htl2.70045",
+      "rights": "CC BY 4.0",
+      "transformation": "Rendered from the published PDF at 220 DPI, cropped to the complete caption, table, highlights, and footnotes, encoded as lossless 1660 by 2090 WebP, and stripped of metadata.",
+      "sha256": "149fab018a7992e4df32de7dcb5685048aff5c289e09b8c8347569d1c3f13336"
+    },
+    {
+      "path": "/paper-demos/htl/table-4-generalisation.webp",
+      "source_title": "Real-Time Tool Detection in Laparoscopic Datasets for Surgical Training in Low-Resource Settings",
+      "source_locator": "Table 4, published PDF page 9 of 13",
+      "source_url": "https://doi.org/10.1049/htl2.70045",
+      "rights": "CC BY 4.0",
+      "transformation": "Rendered from the published PDF at 220 DPI, cropped to the complete caption, table, colour coding, and footnotes, encoded as lossless 1660 by 1610 WebP, and stripped of metadata.",
+      "sha256": "3fa5d1d4d8b10570fdcaf22c1cf9bee287b21a041f450f3e445befef4abededf"
+    },
+    {
+      "path": "/paper-demos/htl/table-5-jetson-compilation.webp",
+      "source_title": "Real-Time Tool Detection in Laparoscopic Datasets for Surgical Training in Low-Resource Settings",
+      "source_locator": "Table 5, published PDF page 10 of 13",
+      "source_url": "https://doi.org/10.1049/htl2.70045",
+      "rights": "CC BY 4.0",
+      "transformation": "Rendered from the published PDF at 220 DPI, cropped to the complete caption, table, and precision-grouped column labels, encoded as lossless 1660 by 1070 WebP, and stripped of metadata.",
+      "source_discrepancy": "The abstract assigns 3.1 ms and approximately 322.6 FPS to YOLOv11-N. Table 5 prints 3.2 ms and 312.5 FPS for YOLOv11-N, while 3.1 ms and 322.6 FPS appear in the YOLOv8-N row.",
+      "sha256": "56b785f969539b04dba0b0e55c49ac5657eaf7423413ef5576a94ad40b53f020"
+    },
+    {
+      "path": "/paper-demos/lask/figure-1-setup.webp",
+      "source_title": "7-DoF Laparoscopic Peg Transfer Dataset for Surgical Skill Assessment",
+      "source_locator": "Figure 1, Overview of the LASK data collection setup and sample annotated video frame",
+      "source_url": "https://doi.org/10.3389/978-2-8325-5137-0",
+      "rights": "Author-created figure used with the lead author's permission",
+      "transformation": "Extracted from the published proceedings paper, resized to 2000 by 856 pixels, converted to WebP, and stripped of metadata without visual editing.",
+      "sha256": "e4c51a8d0e7b7529022a856f7d7e3e7f0613a7b6a6b1c6fe9103f9bf590e9ffb"
+    },
+    {
+      "path": "/paper-demos/lask/figure-1-annotation-detail.webp",
+      "source_title": "7-DoF Laparoscopic Peg Transfer Dataset for Surgical Skill Assessment",
+      "source_locator": "Figure 1, sample annotated video frame detail",
+      "source_url": "https://doi.org/10.3389/978-2-8325-5137-0",
+      "rights": "Author-created figure used with the lead author's permission",
+      "transformation": "Cropped from the published Figure 1 to isolate its sample bounding-box annotation panel, resized to 760 by 510 pixels, converted to WebP, and stripped of metadata without changing the annotation content.",
+      "sha256": "66cbf3506bb3afc7f36b5bb7ff6ea1cef139c5eb84f316914d3679539661d868"
+    },
+    {
+      "path": "/paper-demos/btpn/figure-1-datasets.webp",
+      "source_title": "Bayesian Temporal Pose Networks for Uncertainty-Calibrated Laparoscopic Tool Pose Tracking",
+      "source_locator": "Figure 1, Representative annotated frames from each dataset",
+      "source_url": null,
+      "rights": "Selected author-owned figure used with the lead author's permission; copyright remains with the authors pending publication",
+      "source_assets": [
+        {
+          "name": "dataset_a.png",
+          "sha256": "3ead05579fcb86912b262094183fa4b011fbadb889710227e1ad6c18f9f6e098"
+        },
+        {
+          "name": "dataset_b.png",
+          "sha256": "28ab2577e9b0c363c69be6ac2c198a9229b0ef3dc7e33fb9683fd256f1563f51"
+        },
+        {
+          "name": "dataset_c.png",
+          "sha256": "6f6977832ab82a98374c91712572a500a30fd6fae6bb4bbd6c18e6dd126cfaea"
+        }
+      ],
+      "transformation": "Joined the three author figure panels in their paper order, resized the result to 2000 by 379 pixels, converted it to WebP, and stripped metadata without editing the scientific content.",
+      "sha256": "9a4973531ee187ade106b63a5447537c63f412902d462aab209c16fd261f8b49"
+    },
+    {
+      "path": "/paper-demos/btpn/figure-2-architecture.webp",
+      "source_title": "Bayesian Temporal Pose Networks for Uncertainty-Calibrated Laparoscopic Tool Pose Tracking",
+      "source_locator": "Figure 2, BTPN architecture overview",
+      "source_url": null,
+      "rights": "Selected author-owned figure used with the lead author's permission; copyright remains with the authors pending publication",
+      "source_asset": "BTPN.pdf, figure-only source",
+      "source_asset_sha256": "3db5d96700cafad8451a6a52812890c0935a9c0cba10bc079f1e23e99dc331bc",
+      "transformation": "Rendered from the figure-only author source, resized to 2000 by 1401 pixels, converted to WebP, and stripped of metadata without visual editing.",
+      "sha256": "132933cda789ff3a1746cea7d931ca444be9a2ee8c3492fdd8d4a320fdbfbd42"
+    },
+    {
+      "path": "/paper-demos/btpn/figure-3-trajectories.webp",
+      "source_title": "Bayesian Temporal Pose Networks for Uncertainty-Calibrated Laparoscopic Tool Pose Tracking",
+      "source_locator": "Figure 3, 7-DoF predictions for a held-out trial sequence",
+      "source_url": null,
+      "rights": "Selected author-owned figure used with the lead author's permission; copyright remains with the authors pending publication",
+      "source_asset": "output_comparison.pdf, figure-only source",
+      "source_asset_sha256": "0c93cddf15975484893c96623f4c4daba22758039450b75f778ab36b52fcde9a",
+      "transformation": "Rendered from the figure-only author source at 1282 by 975 pixels, converted to WebP, and stripped of metadata without visual editing.",
+      "sha256": "ad269f22df39e1b3d605d82935911799808bbb031a7df48077a28e4464581ab3"
+    },
+    {
+      "path": "/paper-demos/btpn/figure-4-uncertainty.webp",
+      "source_title": "Bayesian Temporal Pose Networks for Uncertainty-Calibrated Laparoscopic Tool Pose Tracking",
+      "source_locator": "Figure 4, Uncertainty quality assessment",
+      "source_url": null,
+      "rights": "Selected author-owned figure used with the lead author's permission; copyright remains with the authors pending publication",
+      "source_asset": "uncertainty_quality.pdf, figure-only source",
+      "source_asset_sha256": "5973fac88cd73707a0691c9e4d3d9fe95eacca9a8e6d54440eb4b8b630681bcd",
+      "transformation": "Rendered from the figure-only author source at 1280 by 1039 pixels, converted to WebP, and stripped of metadata without visual editing.",
+      "sha256": "e25c7e3646ea65b1472ac6442acfbd6a6945906a0da031871b8f57d9a4f6efd6"
+    },
+    {
+      "path": "/paper-demos/btpn/table-1-datasets.webp",
+      "source_title": "Bayesian Temporal Pose Networks for Uncertainty-Calibrated Laparoscopic Tool Pose Tracking",
+      "source_locator": "Table 1, Dataset overview",
+      "source_url": null,
+      "rights": "Tightly bounded crop of an author-owned table, used with the lead author's permission; copyright remains with the authors pending publication",
+      "source_asset": "Accepted camera-ready manuscript PDF held privately",
+      "source_asset_sha256": "69dc0c01b6b240eff5e887647ff51bdbdb03c8c5e094562514fa3fac2b23c719",
+      "transformation": "Rendered camera-ready PDF page 3 at 300 DPI, cropped to Table 1 only, encoded as a 1470 by 330 WebP, and stripped of metadata. No surrounding manuscript prose, participant-level records, affiliations, reviews, or private paths are included.",
+      "sha256": "b668c756264533c48072d3b649d0938fbda1c9f84bf92be61c48ac57fa6ddf7d"
+    },
+    {
+      "path": "/paper-demos/btpn/table-2-quantitative-results.webp",
+      "source_title": "Bayesian Temporal Pose Networks for Uncertainty-Calibrated Laparoscopic Tool Pose Tracking",
+      "source_locator": "Table 2, Quantitative results overview, panels a to c",
+      "source_url": null,
+      "rights": "Tightly bounded crop of an author-owned table, used with the lead author's permission; copyright remains with the authors pending publication",
+      "source_asset": "Accepted camera-ready manuscript PDF held privately",
+      "source_asset_sha256": "69dc0c01b6b240eff5e887647ff51bdbdb03c8c5e094562514fa3fac2b23c719",
+      "transformation": "Rendered camera-ready PDF page 7 at 300 DPI, cropped to the complete Table 2 only, encoded as a 1470 by 1235 WebP, and stripped of metadata. The crop preserves all three panels and every baseline and ablation row while excluding surrounding manuscript prose, affiliations, reviews, responses, emails, and private paths.",
+      "sha256": "8f80389c52336fa606b1dffbf019283914ac373fc78b26646d952e3cfed9c01b"
+    }
+  ],
+  "gallery_captures": [
+    {
+      "path": "/paper-demos/screenshots/real-time-tool-detection-landing.webp",
+      "route": "/paper-demos/real-time-tool-detection",
+      "viewport": "1440x900",
+      "transformation": "Captured from the final local paper-native page in Chrome, encoded as WebP at quality 88, and stripped of metadata.",
+      "sha256": "7543e1f40cc5f3cddb1c47c40b80218549d287337ab850f6b7ff2f8ac934306c"
+    },
+    {
+      "path": "/paper-demos/screenshots/lask-7dof-landing.webp",
+      "route": "/paper-demos/lask-7dof",
+      "viewport": "1440x900",
+      "transformation": "Captured from the final local paper-native page in Chrome, encoded as WebP at quality 88, and stripped of metadata.",
+      "sha256": "7f10021fb9ea915b0ccaa5da4144f1b3ebb8f728fbd60dc0d9d336b2ff20f042"
+    },
+    {
+      "path": "/paper-demos/screenshots/btpn-landing.webp",
+      "route": "/paper-demos/btpn",
+      "viewport": "1440x900",
+      "transformation": "Captured from the final local paper-native page in Chrome at the page origin, encoded as WebP at quality 88, and stripped of metadata.",
+      "sha256": "c079249f57e3ee1817ab457bafa38997f6d46cd73159cbd510efe8491be837f7"
+    }
+  ],
+  "claim_boundary": "The pages compare and explain reported values. They do not run inference, retrain models, independently reproduce results, or establish clinical validity."
+}

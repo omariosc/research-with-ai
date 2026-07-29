@@ -54,23 +54,26 @@ contains no patient or clinical image.
 
 ### Frame-annotator sample images
 
-The current showcase includes byte-for-byte copies of only the first three
-sample images from `omariosc/frame-annotator` at commit
-`3e94ed03c1487331b8c041ca755421686b41d031`:
+The static demo vendors the public `omariosc/frame-annotator` frontend at
+commit `0dcfc9e90dfd7867c58d3bc45f4508b19c4f4a5a`. That repository identifies
+Omar Choudhry as copyright holder and is MIT licensed.
 
-- `public/worked-examples/annotation-showcase/frame-annotator/frame_0000.png`
-- `public/worked-examples/annotation-showcase/frame-annotator/frame_0001.png`
-- `public/worked-examples/annotation-showcase/frame-annotator/frame_0002.png`
+The ten published PNGs are the first ten sequential frames decoded from an
+author-owned presentation video used for the 2025 Hamlyn Winter School group
+project. They are not the synthetic sample frames distributed in the source
+repository. The missing raw prototype image directory was unavailable, so this
+is a lossy presentation recovery rather than a raw-frame recovery. Existing
+clip, class, and safety overlays remain visible. No new overlay, crop, resize,
+or retouching was applied.
 
-The source repository identifies Omar Choudhry as copyright holder and is
-licensed under MIT. The files are unchanged. Only the first three images were
-approved because the author is not clearly identifiable in them. No later
-sample frame is included or covered by this notice.
+Omar Choudhry is the only identifiable person in the ten-frame selection and
+explicitly approved publication of those ten frames on 29 July 2026. That
+approval does not extend to later frames or missing raw prototype media.
 
-The accompanying `starter-annotations.json`, SHA-256
-`1ef19d0e7eb12a2d65bf7304e362ea5a88038fe170c4909e5fd0841cd5341983`,
-is a new teaching record. It is not an original research annotation or source
-ground truth.
+The accompanying `starter-annotations.json` reconstructs the visible
+Controller Collision selection in the interface's native clip shape. It is a
+teaching record, not original ground truth or independent evidence that every
+frame contains that event.
 
 ### LASK v1.0 Trial46 stills and annotations
 
@@ -103,7 +106,39 @@ establish annotation accuracy, inter-rater reliability, model or clinical
 performance, and they are not fresh AI predictions. Full paths, hashes,
 transformations, attribution, and the browser-local editing boundary are
 recorded in
-`public/citations/annotation-showcase-media-2026-07-27.md`.
+`public/citations/annotation-showcase-media-2026-07-29.md`.
+
+## Interactive paper companion source assets
+
+The research website tutorial includes paper-native figure and table assets:
+
+- `public/paper-demos/htl/` contains Figures 1 to 3 and direct crops of Tables
+  3 to 5 from the open-access HTL paper. These remain under CC BY 4.0.
+  Figures 1 and 3 include the paper's already-published, deidentified ART-Net
+  and EndoVis in-vivo panels. They contain no patient identifiers or embedded
+  image metadata.
+- `public/paper-demos/lask/` contains the author-created MIUA Figure 1 and an
+  exact detail crop, used with the lead author's permission.
+- The BTPN companion includes the exact accepted-paper abstract, source section
+  headings, author-created Figures 1 to 4 and tightly bounded crops of
+  camera-ready Tables 1 and 2, used with the lead author's explicit permission
+  before the official proceedings link is available. The public
+  [`omariosc/BTPN`](https://github.com/omariosc/BTPN) project record already
+  publishes the title, abstract, method overview, aggregate results, figures,
+  tables, and reproduction guidance. This companion checks those materials
+  against the accepted camera-ready paper.
+
+The assets were extracted, rendered or tightly cropped, converted to WebP,
+resized where recorded, and stripped of metadata without editing their
+scientific content. The complete unpublished BTPN manuscript, reviews,
+responses, source bundle, affiliations and emails are not distributed.
+Copyright and any third-party rights remain with their respective
+rights holders. The repository does not place these assets under the tutorial's
+CC BY 4.0 licence.
+
+Sources, dimensions, transformations, hashes, retained AI disclosure, and
+claim boundaries are recorded in
+`public/citations/paper-demo-assets-2026-07-29.md`.
 
 ## Generated social preview
 

@@ -45,7 +45,7 @@ export default function VersionsPage() {
           <p>
             Each workshop has its own canonical address and can be cited,
             reviewed, and submitted independently. All four workshops are in
-            the reviewed v1.4.0 release.
+            the reviewed v1.5.0 release.
           </p>
         </section>
 
@@ -87,29 +87,29 @@ export default function VersionsPage() {
             </time>
           </div>
           <div>
-            <h3>Four complete tutorials and refreshed evidence</h3>
+            <h3>Live paper companions and authentic annotation tools</h3>
             <ul>
               <li>
-                Released the case-study-led AI in healthcare conference
-                tutorial, conference planner, evaluation record, and dedicated
-                canonical domain
+                Added source-backed live companions for the HTL real-time tool
+                detection paper, the 7-DoF LASK abstract, and the accepted BTPN
+                paper
               </li>
               <li>
-                Added faithful frame-annotator and surgical-annotator teaching
-                demonstrations under strict public-image boundaries
+                Replaced teaching recreations with browser-local adaptations of
+                the authentic frame-annotator and surgical-annotator interfaces
               </li>
               <li>
-                Connected the annotation-tool story to the Hamlyn group
-                project, MIUA bounding-box work, LASK v1.0, and BTPN while
-                keeping each evidence boundary explicit
+                Expanded the approved frame demonstration to ten sequential
+                Hamlyn presentation frames while retaining exactly three public
+                LASK surgical examples
               </li>
               <li>
-                Added an original Paper2Web prevalence visual and updated
-                evidence for building useful research websites
+                Added a collapsible workshop table of contents with progress
+                context and destination-coloured continuation cards
               </li>
               <li>
-                Strengthened recurring AI paper review and refreshed
-                screenshots, citations, schemas, and release records
+                Corrected narrow columns, text overflow, and responsive layout
+                behaviour across mobile, tablet, and desktop widths
               </li>
             </ul>
             <p>
@@ -119,6 +119,44 @@ export default function VersionsPage() {
               </a>
               .
             </p>
+            <p>
+              Open the{" "}
+              <a
+                href="https://github.com/omariosc/research-with-ai/releases/tag/v1.5.0"
+              >
+                v1.5.0 release record on GitHub
+              </a>
+              .
+            </p>
+          </div>
+        </section>
+
+        <section className="release-notes release-notes-previous">
+          <div>
+            <p>Previous release</p>
+            <h2>v1.4.0</h2>
+            <time dateTime="2026-07-27">Released 2026-07-27</time>
+          </div>
+          <div>
+            <h3>Four complete tutorials and refreshed evidence</h3>
+            <ul>
+              <li>
+                Released the case-study-led AI in healthcare conference
+                tutorial and its dedicated canonical domain
+              </li>
+              <li>
+                Added the first faithful frame and surgical annotation teaching
+                demonstrations under the original public-image boundary
+              </li>
+              <li>
+                Connected the annotation-tool story to the Hamlyn group
+                project, MIUA bounding-box work, LASK v1.0, and BTPN
+              </li>
+              <li>
+                Added the Paper2Web prevalence visual and recurring AI
+                paper-review guidance
+              </li>
+            </ul>
             <p>
               Download the{" "}
               <a

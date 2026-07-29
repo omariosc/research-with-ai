@@ -70,14 +70,14 @@ export const aiHealthcareConference: Workshop = {
   title: "Run an AI in Healthcare Conference",
   navTitle: "Healthcare conference",
   description:
-    "Turn a local need into a safe, useful, and welcoming research event. Follow a first-hand Leeds AI Week case from purpose and partnerships through delivery, honest evaluation, and community follow-up.",
+    "Build a safe, useful research event from a local need. Follow a first-hand Leeds AI Week case through delivery and evaluation.",
   promise:
-    "Finish with a conference brief, responsibility map, costed programme, speaker pack, privacy and safety checks, versioned run sheet, evaluation plan, and reusable public record.",
+    "Finish with a brief, responsibility map, costed programme, speaker pack, safety checks, versioned run sheet, evaluation plan, and public record.",
   duration: "10 stages · about 85 guided minutes",
   projectTime:
-    "A one-day conference normally needs several months of relationship-building and coordinated preparation. A smaller half-day event can move faster, but safety, accessibility, privacy, and speaker care still need named owners.",
+    "A one-day conference normally needs months. Smaller events can move faster, but safety, accessibility, privacy, and speaker care still need named owners.",
   audience:
-    "Students, researchers, clinicians, technical communities, and local organisers who want to convene people around AI in healthcare without treating an event as a marketing exercise.",
+    "Students, researchers, clinicians, technical communities, and local organisers convening people around AI in healthcare.",
   prerequisites: [
     "A clear local need and one accountable event lead",
     "A host organisation or venue contact who can confirm approval, capacity, safety, and access requirements",
@@ -85,7 +85,7 @@ export const aiHealthcareConference: Workshop = {
     "Permission to process registration data and a plan that keeps personal or sensitive details out of general-purpose AI tools",
   ],
   outcomes: [
-    "Define a conference around a community outcome, not only a list of speakers",
+    "Define the conference around a community outcome",
     "Build a transparent team structure with decision rights, deadlines, budget limits, and escalation routes",
     "Design an interdisciplinary programme that connects research careers, practical methods, and the wider public",
     "Use AI to compare options and prepare materials while people own relationships, commitments, safety, and public claims",
@@ -106,7 +106,7 @@ export const aiHealthcareConference: Workshop = {
       "First-hand account: the panel discussed the benefits and realities of doing a PhD while giving people outside the immediate research group a route into the conversation.",
       "First-hand account: the NPIC digital pathology workshop was led by three CDT graduates whose PhDs involved digital histopathology. The chair describes their later local employment and continued university relationships as an example of how a research network can persist beyond doctoral study.",
       "First-hand approximate counts: the competitions received about eight essays and six posters. Each had one winner and one runner-up.",
-      "The organiser reports 135 registration rows and estimates about 74 participants attended, excluding the committee. The workbook also contains 67 HERE flags and a separate 75-row on-day list, so the tutorial keeps attendance approximate until reconciliation.",
+      "The organiser reports 135 registration rows and estimates about 74 participants attended, excluding the committee. Because other records differ, attendance remains approximate until reconciliation.",
       "Thirty feedback forms were returned. Mean ratings were 4.63 out of 5 for satisfaction, 4.67 for content value, and 4.73 for organisation.",
       "Among the 30 respondents, 22 said they had not attended a similar AI or healthcare conference and 28 said yes or maybe to future involvement.",
       "The delivered programme changed: the advertised second workshop did not run, and the organiser joined the final panel. The tutorial treats that difference as a change-control lesson rather than hiding it.",
@@ -116,7 +116,7 @@ export const aiHealthcareConference: Workshop = {
     changes: [
       "Keep a public programme and a separate versioned operational run sheet, then archive what was actually delivered.",
       "Use existing relationships to open doors, but design sessions so that people outside those networks can participate.",
-      "Treat career routes, local employment, and research collaboration as programme outcomes, not incidental networking.",
+      "Treat career routes and research collaboration as programme outcomes.",
       "Reconcile registration, acceptance, walk-in, check-in, and feedback records before publishing attendance or response rates.",
       "Protect safety, consent, access, speaker commitments, committee welfare, and decision ownership while remaining flexible about walk-ins, small timing changes, and session format.",
       "Recruit for reliability and constructive progress, record who decides when consensus stalls, and keep two or three people available for urgent tasks.",

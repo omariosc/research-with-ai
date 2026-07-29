@@ -20,6 +20,8 @@ used to build the site.
 | AI scientist comparison | Dated reading-note appendix with paper versions, claims, limitations, code status, and media rights | Primary papers, repositories, and versions checked; original comparison used instead of copied figures |
 | Annotation origin and outcomes | MIUA and detection publications, official Hamlyn record, public commits, LASK DOI, BTPN repository, author account, and AI contribution ledger | Cohorts and publication states kept separate; first-hand software links labelled; released labels remain described as manual |
 | Research-website prevalence | Paper2Web counts, denominator, calculation, method boundary, and dated evidence note | Original HTML and CSS chart checked against the accepted ACL paper; no source figure or third-party website copied |
+| Live paper companions | Paper versions, reported values, extracted figures, captions, rights, transformations, hashes, and publication limits | Sources were checked directly; the pages preserve contradictory reporting contexts and do not claim a reproduction, model run, or clinical validation |
+| Authentic annotation demos | Pinned public frontend commit, browser-local adapters, ten authorised Hamlyn presentation frames, three public LASK examples, native records, and hashes | Frontends were compared with the public source; fixture boundaries, local-only requests, save and reset behaviour, and absence of server code were checked |
 | Project workspaces | Versioned local-storage schema and export format | Migration, sanitisation, project isolation, scoped reset, and separate builder drafts covered by automated tests |
 | Model container lab | Complete source pack, model hash, dependency locks, tests, Docker profile, and deployment record | Locked Python tests plus live health, authentication, validation, non-root, read-only, and log checks |
 | Interface implementation | Git diff and build artefacts | Lint, production build, rendered HTML and schema tests, edge tests, responsive browser checks, and comparison with the approved visual direction |
@@ -34,25 +36,29 @@ Omar Choudhry.
 
 No patient data, private research records, credentials, or identifiable study
 material were intentionally supplied during development. The annotation demo
-uses the exact first three privacy-approved frame-annotator samples and three
-public, non-in-vivo LASK frames. Its browser edits are temporary teaching
-changes rather than new research labels or a clinical system.
+uses ten sequential Hamlyn frames explicitly approved by Omar Choudhry and
+three public, non-in-vivo LASK frames. The Hamlyn images are a lossy recovery
+from an author-owned presentation video rather than raw prototype frames. Demo
+edits stay in the browser and are temporary teaching changes rather than new
+research labels or a clinical system.
 The MedMNIST case uses public CC BY 4.0 benchmark data and author-released
 predictions. Its claim is limited to prediction-artifact metric
 re-evaluation.
 
 ## Review status
 
-The v1.4.0 source, interface, links, accessibility behaviours, examples, and
+The v1.5.0 source, interface, links, accessibility behaviours, examples, and
 public-media boundaries received machine-assisted and manual implementation
-checks on 27 July 2026. Browser review covered all four tutorial routes,
-project creation and switching, project-specific notes and deep-dive progress,
-light and dark modes, desktop and mobile layouts, table overflow, the
-privacy-bounded frame and LASK annotation interactions, the conference planner,
+checks on 29 July 2026. Browser review covered all four tutorial routes, the
+three paper companions, both authentic annotation interfaces, project creation
+and switching, project-specific notes and deep-dive progress, light and dark
+modes, desktop, tablet, and mobile layouts, table overflow, the floating table
+of contents, destination-coloured continuation cards, the conference planner,
 and the container lab. Automated checks cover storage migration, project
-isolation and reset, route navigation, sources, schemas, annotations, public
-asset allowlists, conference aggregate-only records, citation consistency, the
-container pack, edge behaviour, and rendered content. Independent
+isolation and reset, route navigation, sources, schemas, annotations,
+browser-local demo adapters, public asset allowlists, conference aggregate-only
+records, citation consistency, the container pack, edge behaviour, and
+rendered content. Independent
 screen-reader and learner-pilot sessions remain open. Final author sign-off for
 the four MICCAI submissions, video recordings, transcripts, and any later claim
 changes remains a named human task. Every published revision should update this
